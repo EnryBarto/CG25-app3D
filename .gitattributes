@@ -1,3 +1,7 @@
+dependencies/** linguist-vendored
+src/app/glad.c linguist-vendored
+*.dll linguist-binary
+
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
