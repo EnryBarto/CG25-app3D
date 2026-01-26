@@ -22,6 +22,9 @@
     <Filter Include="Source Files\App">
       <UniqueIdentifier>{d5b2bc5f-69ff-466f-b85a-3f055a14e1d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\App">
+      <UniqueIdentifier>{cec36df1-d8e0-496d-a788-6ed81a9102da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -54,6 +57,15 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\app\initializations.cpp">
+      <Filter>Source Files\App</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\callbacks.cpp">
+      <Filter>Source Files\App</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\gui.cpp">
+      <Filter>Source Files\App</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\ImGui\imgui_impl_glfw.h">
@@ -82,6 +94,18 @@
     </ClInclude>
     <ClInclude Include="dependencies\ImGui\imgui_impl_opengl3.h">
       <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\initializations.h">
+      <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\settings.h">
+      <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\callbacks.h">
+      <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\gui.h">
+      <Filter>Header Files\App</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
