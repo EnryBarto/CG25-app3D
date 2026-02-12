@@ -142,9 +142,20 @@
     <ClCompile Include="src\app\glad.c" />
     <ClCompile Include="src\app\gui.cpp" />
     <ClCompile Include="src\app\initializations.cpp" />
+    <ClCompile Include="src\graphics\shader\Shader.cpp" />
+    <ClCompile Include="src\graphics\shader\ShaderMaker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="resources\shaders\cubemap_fragment_shader.glsl" />
+    <None Include="resources\shaders\cubemap_vertex_shader.glsl" />
+    <None Include="resources\shaders\interpolation_fragment_shader.glsl" />
+    <None Include="resources\shaders\interpolation_vertex_shader.glsl" />
+    <None Include="resources\shaders\phong_fragment_shader.glsl" />
+    <None Include="resources\shaders\phong_vertex_shader.glsl" />
+    <None Include="resources\shaders\reflection_fragment_shader.glsl" />
+    <None Include="resources\shaders\reflection_vertex_shader.glsl" />
+    <None Include="resources\shaders\wave_vertex_shader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\ImGui\imconfig.h" />
@@ -159,7 +170,9 @@
     <ClInclude Include="src\app\callbacks.h" />
     <ClInclude Include="src\app\gui.h" />
     <ClInclude Include="src\app\initializations.h" />
-    <ClInclude Include="src\app\settings.h" />
+    <ClInclude Include="src\graphics\shader\Shader.h" />
+    <ClInclude Include="src\graphics\shader\ShaderMaker.h" />
+    <ClInclude Include="src\settings.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

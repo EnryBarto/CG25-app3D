@@ -1,6 +1,6 @@
 #include "initializations.h"
 
-GLFWwindow* initialize_all() {
+GLFWwindow* create_window() {
     
 	if (init_gl_glfw() != 0) {
 		std::cout << "Glfw initialization failed!" << std::endl;
@@ -106,4 +106,14 @@ void init_imgui(GLFWwindow* window) {
     // Initialize ImGui for GLFW and OpenGL 3.3
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330 core");
+}
+
+std::map<std::string, Shader*>* init_shaders() {
+    std::map<std::string, Shader*>* shaders = new std::map<std::string, Shader*>();
+    shaders->insert({ BASIC_SHADER_NAME, new Shader(BASIC_SHADER_NAME, "interpolation_vertex_shader.glsl", "interpolation_fragment_shader.glsl") });
+    shaders->insert({ PHONG_SHADER_NAME, new Shader(PHONG_SHADER_NAME, "phong_vertex_shader.glsl", "phong_fragment_shader.glsl") });
+    shaders->insert({ CUBEMAP_SHADER_NAME, new Shader(CUBEMAP_SHADER_NAME, "cubemap_vertex_shader.glsl", "cubemap_fragment_shader.glsl") });
+    shaders->insert({ REFLECTION_SHADER_NAME, new Shader(REFLECTION_SHADER_NAME, "reflection_vertex_shader.glsl", "reflection_fragment_shader.glsl") });
+    shaders->insert({ WAVE_SHADER_NAME, new Shader(WAVE_SHADER_NAME, "wave_vertex_shader.glsl", "interpolation_fragment_shader.glsl") });
+    return shaders;
 }

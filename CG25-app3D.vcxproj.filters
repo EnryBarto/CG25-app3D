@@ -25,9 +25,51 @@
     <Filter Include="Header Files\App">
       <UniqueIdentifier>{cec36df1-d8e0-496d-a788-6ed81a9102da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{153c86d8-1339-42b0-9772-7ef15c87cbaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{886d179b-7bfc-43d2-ba25-34777af35d98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Shader">
+      <UniqueIdentifier>{24c189cf-06d4-4c94-b8a8-378aefcd50d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Shader">
+      <UniqueIdentifier>{ae5fe336-ccf1-4007-9dcc-12ccb519e043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{586feabb-8f0d-40df-ab03-46d6960d4f95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="resources\shaders\cubemap_fragment_shader.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\cubemap_vertex_shader.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\interpolation_fragment_shader.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\interpolation_vertex_shader.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\phong_fragment_shader.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\phong_vertex_shader.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\reflection_fragment_shader.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\reflection_vertex_shader.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\shaders\wave_vertex_shader.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dependencies\ImGui\imgui.cpp">
@@ -66,6 +108,12 @@
     <ClCompile Include="src\app\gui.cpp">
       <Filter>Source Files\App</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\shader\Shader.cpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\shader\ShaderMaker.cpp">
+      <Filter>Source Files\Graphics\Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\ImGui\imgui_impl_glfw.h">
@@ -98,14 +146,20 @@
     <ClInclude Include="src\app\initializations.h">
       <Filter>Header Files\App</Filter>
     </ClInclude>
-    <ClInclude Include="src\app\settings.h">
-      <Filter>Header Files\App</Filter>
-    </ClInclude>
     <ClInclude Include="src\app\callbacks.h">
       <Filter>Header Files\App</Filter>
     </ClInclude>
     <ClInclude Include="src\app\gui.h">
       <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\shader\ShaderMaker.h">
+      <Filter>Header Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\shader\Shader.h">
+      <Filter>Header Files\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\settings.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

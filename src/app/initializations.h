@@ -7,13 +7,16 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include "settings.h"
+#include "../settings.h"
 #include "callbacks.h"
+#include <map>
+#include "../graphics/shader/Shader.h"
 
-GLFWwindow* initialize_all();
+GLFWwindow* create_window();
 int init_gl_glfw();
 GLFWwindow* init_window_context_events();
 void init_callbacks(GLFWwindow* window);
 void init_imgui(GLFWwindow* window);
+std::map<std::string, Shader*>* init_shaders();
 
 #endif

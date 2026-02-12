@@ -2,16 +2,27 @@
 
 #include "src/app/initializations.h"
 #include "src/app/gui.h"
+#include <map>
+#include "src/graphics/shader/Shader.h"
+
+using namespace std;
 
 GLFWwindow* window;
+map<string, Shader*>* shaders;
 
 int main() {
 	
-	window = initialize_all();
-
+	window = create_window();
 	if (window == NULL) {
-		std::cout << "Initialization failed!" << std::endl;
+		cout << "Initialization failed!" << endl;
 		return -1;
+	} else {
+		cout << "Window initialized" << endl;
+	}
+
+	shaders = init_shaders();
+	if (shaders != NULL) {
+		cout << "Shaders initialized" << endl;
 	}
 
 	while (!glfwWindowShouldClose(window)) {
