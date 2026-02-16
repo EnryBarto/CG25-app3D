@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Shader.h"
 
 Shader::Shader(const char* name, const char* vertexShader, const char* fragmentShader) {

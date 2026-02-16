@@ -40,6 +40,12 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{586feabb-8f0d-40df-ab03-46d6960d4f95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Graphics\Renderable">
+      <UniqueIdentifier>{16148c9c-c264-46b8-8edd-4248c6142df0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Renderable">
+      <UniqueIdentifier>{6e38af47-a20d-4bc8-ae95-08d53babb409}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -114,6 +120,15 @@
     <ClCompile Include="src\graphics\shader\ShaderMaker.cpp">
       <Filter>Source Files\Graphics\Shader</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\renderable\AbstractMesh.cpp">
+      <Filter>Source Files\Graphics\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\MeshGeometry.cpp">
+      <Filter>Source Files\Graphics\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\InsideGpuMesh.cpp">
+      <Filter>Source Files\Graphics\Renderable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\ImGui\imgui_impl_glfw.h">
@@ -160,6 +175,18 @@
     </ClInclude>
     <ClInclude Include="src\settings.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\AbstractMesh.h">
+      <Filter>Header Files\Graphics\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\MeshGeometry.h">
+      <Filter>Header Files\Graphics\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\InsideGpuMesh.h">
+      <Filter>Header Files\Graphics\Renderable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

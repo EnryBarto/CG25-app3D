@@ -1,5 +1,3 @@
-#pragma once
-
 #include "ShaderMaker.h"
 
 #pragma warning(disable:4996)

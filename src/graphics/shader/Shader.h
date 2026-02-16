@@ -12,5 +12,5 @@ class Shader {
 
 	private:
 		std::string name;
-		int programId;
+		GLuint programId;
 };
