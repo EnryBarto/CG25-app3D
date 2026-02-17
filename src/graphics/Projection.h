@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../libs.h"
 #include "../settings.h"
 
@@ -5,7 +7,7 @@ class Projection {
 
 	public:
         Projection(int width, int height);
-        mat4 getMatrix();
+        mat4 getProjectionMatrix();
 
 	private:
         float fovY;         // Vertical field of view in degrees

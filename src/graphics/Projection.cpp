@@ -8,6 +8,6 @@ Projection::Projection(int width, int height) {
 	this->matrix = perspective(radians(this->fovY), this->aspectRatio, this->nearPlane, this->farPlane);
 }
 
-mat4 Projection::getMatrix() {
+mat4 Projection::getProjectionMatrix() {
 	return mat4(this->matrix);
 }

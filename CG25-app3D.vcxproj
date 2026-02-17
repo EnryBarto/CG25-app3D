@@ -147,6 +147,8 @@
     <ClCompile Include="src\graphics\renderable\AbstractMesh.cpp" />
     <ClCompile Include="src\graphics\renderable\InsideGpuMesh.cpp" />
     <ClCompile Include="src\graphics\renderable\MeshGeometry.cpp" />
+    <ClCompile Include="src\graphics\renderable\Skybox.cpp" />
+    <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\shader\Shader.cpp" />
     <ClCompile Include="src\graphics\shader\ShaderMaker.cpp" />
   </ItemGroup>
@@ -180,6 +182,8 @@
     <ClInclude Include="src\graphics\renderable\AbstractMesh.h" />
     <ClInclude Include="src\graphics\renderable\InsideGpuMesh.h" />
     <ClInclude Include="src\graphics\renderable\MeshGeometry.h" />
+    <ClInclude Include="src\graphics\renderable\Skybox.h" />
+    <ClInclude Include="src\graphics\Scene.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />
     <ClInclude Include="src\graphics\shader\ShaderMaker.h" />
     <ClInclude Include="src\libs.h" />

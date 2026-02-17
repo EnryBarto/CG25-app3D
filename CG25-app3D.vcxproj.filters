@@ -135,6 +135,12 @@
     <ClCompile Include="src\graphics\Projection.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\Scene.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\Skybox.cpp">
+      <Filter>Source Files\Graphics\Renderable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\ImGui\imgui_impl_glfw.h">
@@ -199,6 +205,12 @@
     </ClInclude>
     <ClInclude Include="src\graphics\Projection.h">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Scene.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\Skybox.h">
+      <Filter>Header Files\Graphics\Renderable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
