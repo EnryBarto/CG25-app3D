@@ -23,13 +23,23 @@ void RenderableBackground::render(mat4* viewMatrix, mat4* projectionMatrix) {
         return;
     }
 
-    glDepthMask(GL_FALSE);
     glUseProgram(this->shader->getProgramId());
+    glDepthMask(GL_FALSE); // Disable depth writing for skybox background
+
+    // Texture unit configuration
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, this->texture->getProgramId());
     glUniform1i(this->uniform_Skybox, 0);
+
+    // Uniform updates
     glUniformMatrix4fv(this->uniform_View, 1, GL_FALSE, value_ptr(*viewMatrix));
     glUniformMatrix4fv(this->uniform_Projection, 1, GL_FALSE, value_ptr(*projectionMatrix));
-    glBindTexture(GL_TEXTURE_CUBE_MAP, this->texture->getProgramId());
+
+    // Rendering
+    glBindVertexArray(this->vao);
     glDrawElements(GL_TRIANGLES, this->numIndexes, GL_UNSIGNED_INT, 0);
+
+    // State recover
     glBindVertexArray(0);
     glDepthMask(GL_TRUE);
 }

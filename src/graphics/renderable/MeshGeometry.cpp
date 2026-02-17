@@ -14,6 +14,7 @@ MeshGeometry::MeshGeometry(vector<vec3>* vertices, vector<vec4>* colors, vector<
 		(normals->size() != NULL && normals->size() != vertices->size()) ||
 		(textureCoordinates->size() != NULL && textureCoordinates->size() != vertices->size())
 	) {
+		cerr << "CANNOT CREATE GEOMETRY: Vertices: " << vertices->size() << " Colors: " << colors->size() << " Indexes: " << indexes->size() << " Normals: " << normals->size() << " TexCoord: " << textureCoordinates->size() << endl;
 		throw exception();
 	}
 

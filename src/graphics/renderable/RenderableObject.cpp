@@ -11,7 +11,7 @@ void RenderableObject::getUniforms() {
 	this->uniform_UsingTexture = glGetUniformLocation(shader->getProgramId(), "uUseTexture");
 }
 
-void RenderableObject::render(mat4 *modelMatrix, mat4 *projectionMatrix) {
+void RenderableObject::render(mat4* modelMatrix, mat4* projectionMatrix, mat4* viewMatrix) {
 	
 	if (this->vao == 0) {
 		cerr << "ATTENTION!!! VAO not initialized" << endl;
@@ -38,8 +38,8 @@ void RenderableObject::render(mat4 *modelMatrix, mat4 *projectionMatrix) {
 
 	// Check for uniform existence in the active shader; if present, update them
 	if (this->uniform_Model != -1) glUniformMatrix4fv(this->uniform_Model, 1, GL_FALSE, value_ptr(*modelMatrix));
-
 	if (this->uniform_Projection != -1) glUniformMatrix4fv(this->uniform_Projection, 1, GL_FALSE, value_ptr(*projectionMatrix));
+	if (this->uniform_View != -1) glUniformMatrix4fv(this->uniform_View, 1, GL_FALSE, value_ptr(*viewMatrix));
 
 	// TODO: Set all uniforms
 
