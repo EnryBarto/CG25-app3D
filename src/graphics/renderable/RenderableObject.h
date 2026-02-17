@@ -5,7 +5,7 @@
 class RenderableObject: public GpuBuffers {
 
     public:
-        void render(mat4* modelMatrix, mat4* projectionMatrix, GLfloat currentTime, vec2 viewportResolution);
+        void render(mat4* modelMatrix, mat4* projectionMatrix);
 
     protected:
         void getUniforms() override;
@@ -18,4 +18,6 @@ class RenderableObject: public GpuBuffers {
         GLint uniform_ViewPos = -1;
         GLint uniform_Light = -1;
         GLint uniform_Material = -1;
+        GLint uniform_Texture = -1;
+        GLint uniform_UsingTexture = -1;
 };  

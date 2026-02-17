@@ -46,6 +46,12 @@
     <Filter Include="Header Files\Graphics\Renderable">
       <UniqueIdentifier>{6e38af47-a20d-4bc8-ae95-08d53babb409}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Graphics\Texture">
+      <UniqueIdentifier>{7e82041f-abeb-4d03-906f-353b60d23c32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Texture">
+      <UniqueIdentifier>{2f15ed48-7f79-468a-8c65-44eb72424ce3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -147,8 +153,11 @@
     <ClCompile Include="src\graphics\renderable\RenderableBackground.cpp">
       <Filter>Source Files\Graphics\Renderable</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\TextureHelper.cpp">
-      <Filter>Source Files\Graphics</Filter>
+    <ClCompile Include="src\graphics\texture\Texture.cpp">
+      <Filter>Source Files\Graphics\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\texture\TextureMaker.cpp">
+      <Filter>Source Files\Graphics\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -227,8 +236,11 @@
     <ClInclude Include="src\graphics\renderable\RenderableBackground.h">
       <Filter>Header Files\Graphics\Renderable</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\TextureHelper.h">
-      <Filter>Header Files\Graphics</Filter>
+    <ClInclude Include="src\graphics\texture\Texture.h">
+      <Filter>Header Files\Graphics\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\texture\TextureMaker.h">
+      <Filter>Header Files\Graphics\Texture</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

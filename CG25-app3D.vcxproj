@@ -153,7 +153,8 @@
     <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\shader\Shader.cpp" />
     <ClCompile Include="src\graphics\shader\ShaderMaker.cpp" />
-    <ClCompile Include="src\graphics\TextureHelper.cpp" />
+    <ClCompile Include="src\graphics\texture\Texture.cpp" />
+    <ClCompile Include="src\graphics\texture\TextureMaker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -191,7 +192,8 @@
     <ClInclude Include="src\graphics\Scene.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />
     <ClInclude Include="src\graphics\shader\ShaderMaker.h" />
-    <ClInclude Include="src\graphics\TextureHelper.h" />
+    <ClInclude Include="src\graphics\texture\Texture.h" />
+    <ClInclude Include="src\graphics\texture\TextureMaker.h" />
     <ClInclude Include="src\libs.h" />
     <ClInclude Include="src\settings.h" />
   </ItemGroup>

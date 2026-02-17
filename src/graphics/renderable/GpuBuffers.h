@@ -3,6 +3,7 @@
 #include "../../libs.h"
 #include "../../settings.h"
 #include "../shader/Shader.h"
+#include "../texture/Texture.h"
 #include "MeshGeometry.h"
 
 class GpuBuffers {
@@ -11,6 +12,8 @@ class GpuBuffers {
         void setModes(GLenum polygonMode, GLenum renderMode);
         void initVao(MeshGeometry* geometry);
         void setShader(Shader* shader);
+        void setTexture(Texture* texture);
+        void unsetTexture();
 
     protected:
 
@@ -35,4 +38,5 @@ class GpuBuffers {
         GLenum drawMode;    // Vertex interpretation mode for the rendering stage (ex. GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_LINES, GL_POINTS)
 
         Shader* shader = 0;
+        Texture* texture = nullptr;
 };

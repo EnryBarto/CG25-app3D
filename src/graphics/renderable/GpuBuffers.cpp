@@ -87,3 +87,11 @@ void GpuBuffers::setShader(Shader* shader) {
 	this->shader = shader;
 	this->getUniforms();
 }
+
+void GpuBuffers::setTexture(Texture* texture) {
+	this->texture = texture;
+}
+
+void GpuBuffers::unsetTexture() {
+	this->texture = nullptr;
+}
