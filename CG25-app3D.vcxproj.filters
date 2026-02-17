@@ -129,6 +129,9 @@
     <ClCompile Include="src\graphics\renderable\InsideGpuMesh.cpp">
       <Filter>Source Files\Graphics\Renderable</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\Camera.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\ImGui\imgui_impl_glfw.h">
@@ -187,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="src\graphics\renderable\InsideGpuMesh.h">
       <Filter>Header Files\Graphics\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Camera.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

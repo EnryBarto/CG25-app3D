@@ -5,6 +5,7 @@
 #define WIDTH_RESIZE_FACTOR 0.8f
 #define HEIGHT_RESIZE_FACTOR 0.8f
 #define FONT_RESIZE_FACTOR 2.0f
+#define CAMERA_SPEED 2.0f
 
 // SHADERS
 #define SHADER_FOLDER "resources/shaders/"
