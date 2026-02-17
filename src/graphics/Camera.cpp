@@ -1,18 +1,23 @@
 #include "Camera.h"
 
-Camera::Camera():
-	Camera(vec3(0.0, 0.0, 20.0), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0)) { }
+Camera::Camera(int screenWidth, int screenHeight):
+	Camera(vec3(0.0, 0.0, 20.0), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0), screenWidth, screenHeight) { }
 
-Camera::Camera(vec3 position, vec3 target, vec3 upVector) {
+Camera::Camera(vec3 position, vec3 target, vec3 upVector, int screenWidth, int screenHeight) {
     this->position = vec3(position);
     this->target = vec3(target);
     this->upVector = normalize(vec3(upVector));
     this->direction = normalize(this->target - this->position);
     this->viewMatrix = lookAt(this->position, this->target, this->upVector);
+    this->projection = new Projection(screenWidth, screenHeight);
 }
 
-mat4 Camera::getLookAtMatrix() {
+mat4 Camera::getViewMatrix() {
     return mat4(this->viewMatrix);
+}
+
+mat4 Camera::getProjectionMatrix() {
+    return this->projection->getMatrix();
 }
 
 void Camera::moveForward(float deltaTime) {

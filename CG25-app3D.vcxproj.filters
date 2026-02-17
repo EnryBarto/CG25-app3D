@@ -132,6 +132,9 @@
     <ClCompile Include="src\graphics\Camera.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\Projection.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\ImGui\imgui_impl_glfw.h">
@@ -192,6 +195,9 @@
       <Filter>Header Files\Graphics\Renderable</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Camera.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Projection.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
