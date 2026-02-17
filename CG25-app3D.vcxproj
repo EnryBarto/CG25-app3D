@@ -145,12 +145,15 @@
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\Projection.cpp" />
     <ClCompile Include="src\graphics\renderable\AbstractMesh.cpp" />
-    <ClCompile Include="src\graphics\renderable\InsideGpuMesh.cpp" />
+    <ClCompile Include="src\graphics\renderable\GpuBuffers.cpp" />
+    <ClCompile Include="src\graphics\renderable\RenderableObject.cpp" />
     <ClCompile Include="src\graphics\renderable\MeshGeometry.cpp" />
+    <ClCompile Include="src\graphics\renderable\RenderableBackground.cpp" />
     <ClCompile Include="src\graphics\renderable\Skybox.cpp" />
     <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\shader\Shader.cpp" />
     <ClCompile Include="src\graphics\shader\ShaderMaker.cpp" />
+    <ClCompile Include="src\graphics\TextureHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -180,12 +183,15 @@
     <ClInclude Include="src\graphics\Camera.h" />
     <ClInclude Include="src\graphics\Projection.h" />
     <ClInclude Include="src\graphics\renderable\AbstractMesh.h" />
-    <ClInclude Include="src\graphics\renderable\InsideGpuMesh.h" />
+    <ClInclude Include="src\graphics\renderable\GpuBuffers.h" />
+    <ClInclude Include="src\graphics\renderable\RenderableObject.h" />
     <ClInclude Include="src\graphics\renderable\MeshGeometry.h" />
+    <ClInclude Include="src\graphics\renderable\RenderableBackground.h" />
     <ClInclude Include="src\graphics\renderable\Skybox.h" />
     <ClInclude Include="src\graphics\Scene.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />
     <ClInclude Include="src\graphics\shader\ShaderMaker.h" />
+    <ClInclude Include="src\graphics\TextureHelper.h" />
     <ClInclude Include="src\libs.h" />
     <ClInclude Include="src\settings.h" />
   </ItemGroup>

@@ -126,7 +126,7 @@
     <ClCompile Include="src\graphics\renderable\MeshGeometry.cpp">
       <Filter>Source Files\Graphics\Renderable</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\InsideGpuMesh.cpp">
+    <ClCompile Include="src\graphics\renderable\RenderableObject.cpp">
       <Filter>Source Files\Graphics\Renderable</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Camera.cpp">
@@ -140,6 +140,15 @@
     </ClCompile>
     <ClCompile Include="src\graphics\renderable\Skybox.cpp">
       <Filter>Source Files\Graphics\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\GpuBuffers.cpp">
+      <Filter>Source Files\Graphics\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\RenderableBackground.cpp">
+      <Filter>Source Files\Graphics\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\TextureHelper.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,7 +206,7 @@
     <ClInclude Include="src\libs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\renderable\InsideGpuMesh.h">
+    <ClInclude Include="src\graphics\renderable\RenderableObject.h">
       <Filter>Header Files\Graphics\Renderable</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Camera.h">
@@ -211,6 +220,15 @@
     </ClInclude>
     <ClInclude Include="src\graphics\renderable\Skybox.h">
       <Filter>Header Files\Graphics\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\GpuBuffers.h">
+      <Filter>Header Files\Graphics\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\RenderableBackground.h">
+      <Filter>Header Files\Graphics\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\TextureHelper.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

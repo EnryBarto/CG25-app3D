@@ -5,15 +5,17 @@
 #include "../shader/Shader.h"
 #include "MeshGeometry.h"
 
-class InsideGpuMesh {
+class GpuBuffers {
 
-    public:
+	public:
         void setModes(GLenum polygonMode, GLenum renderMode);
         void initVao(MeshGeometry* geometry);
-        void setShader(Shader *shader);
-        void render(mat4* modelMatrix, mat4* projectionMatrix, GLfloat currentTime, vec2 viewportResolution);
+        void setShader(Shader* shader);
 
-	private:
+    protected:
+
+        virtual void getUniforms() = 0;
+
         const static uint8_t VERTICES_LAYER = 0;
         const static uint8_t COLORS_LAYER = 1;
         const static uint8_t NORMALS_LAYER = 2;
@@ -33,10 +35,4 @@ class InsideGpuMesh {
         GLenum drawMode;    // Vertex interpretation mode for the rendering stage (ex. GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_LINES, GL_POINTS)
 
         Shader* shader = 0;
-        
-        // Cached handles to shader uniform variables to avoid repeated lookups, -1 if not used by the shader
-        GLint uniform_Projection = -1;
-        GLint uniform_Model = -1;
-        GLint uniform_iTime = -1;
-        GLint uniform_iResolution = -1;
-};  
+};

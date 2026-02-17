@@ -3,12 +3,12 @@
 #include "../../libs.h"
 
 // Avoid circular declarations since these classes are declared as friends
-class InsideGpuMesh;
+class GpuBuffers;
 class AbstractMesh;
 
 class MeshGeometry {
 
-    friend class InsideGpuMesh; // Needs access to vertices and colors to copy them into GPU buffers
+    friend class GpuBuffers;    // Needs access to vertices and colors to copy them into GPU buffers
     friend class AbstractMesh;  // Needs access to vertices to compute the bounding box
 
     public:
