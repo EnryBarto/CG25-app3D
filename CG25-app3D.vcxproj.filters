@@ -159,6 +159,9 @@
     <ClCompile Include="src\graphics\texture\TextureMaker.cpp">
       <Filter>Source Files\Graphics\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\renderable\MeshGeometryFactory.cpp">
+      <Filter>Source Files\Graphics\Renderable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\ImGui\imgui_impl_glfw.h">
@@ -241,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="src\graphics\texture\TextureMaker.h">
       <Filter>Header Files\Graphics\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\MeshGeometryFactory.h">
+      <Filter>Header Files\Graphics\Renderable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
