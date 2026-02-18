@@ -21,6 +21,9 @@ GLFWwindow* create_window() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
 
+    // Set base color
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+
     init_imgui(window);
 
 	return window;

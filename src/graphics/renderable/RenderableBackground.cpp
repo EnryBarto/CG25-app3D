@@ -36,8 +36,9 @@ void RenderableBackground::render(mat4* viewMatrix, mat4* projectionMatrix) {
     glUniformMatrix4fv(this->uniform_Projection, 1, GL_FALSE, value_ptr(*projectionMatrix));
 
     // Rendering
+    glPolygonMode(GL_FRONT_AND_BACK, this->polygonMode);
     glBindVertexArray(this->vao);
-    glDrawElements(GL_TRIANGLES, this->numIndexes, GL_UNSIGNED_INT, 0);
+    glDrawElements(this->drawMode, this->numIndexes, GL_UNSIGNED_INT, 0);
 
     // State recover
     glBindVertexArray(0);
