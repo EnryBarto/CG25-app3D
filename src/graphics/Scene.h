@@ -4,14 +4,18 @@
 #include "Projection.h"
 #include "Camera.h"
 #include "renderable/Skybox.h"
+#include "renderable/PhysicalObject.h"
+#include "renderable/PhysicalObjectFactory.h"
 
 class Scene {
 	public:
-		Scene(int screenWidth, int screenHeight, Shader* skyboxShader, string skyboxCubemapDirectory);
+		Scene(int screenWidth, int screenHeight, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory);
 		void render();
 
 	private:
 		Camera* camera;
 		Projection* projection;
 		Skybox* skybox;
+		vector<PhysicalObject*> objects;
+		PhysicalObjectFactory* objectFactory;
 };

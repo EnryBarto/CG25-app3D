@@ -4,8 +4,8 @@
 class MeshGeometryFactory {
 
 	public:
-		static MeshGeometry* getCube();
-		static MeshGeometry* getPyramid();
-		static MeshGeometry* getPlane(vec4 color);
-		static MeshGeometry* getSphere(vec4 color);
+		static MeshGeometry* createCube();
+		static MeshGeometry* createPyramid();
+		static MeshGeometry* createPlane(vec4 color);
+		static MeshGeometry* createSphere(vec4 color);
 };

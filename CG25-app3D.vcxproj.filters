@@ -126,7 +126,7 @@
     <ClCompile Include="src\graphics\shader\ShaderMaker.cpp">
       <Filter>Source Files\Graphics\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\AbstractMesh.cpp">
+    <ClCompile Include="src\graphics\renderable\Mesh.cpp">
       <Filter>Source Files\Graphics\Renderable</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\renderable\MeshGeometry.cpp">
@@ -160,6 +160,12 @@
       <Filter>Source Files\Graphics\Texture</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\renderable\MeshGeometryFactory.cpp">
+      <Filter>Source Files\Graphics\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\PhysicalObject.cpp">
+      <Filter>Source Files\Graphics\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\PhysicalObjectFactory.cpp">
       <Filter>Source Files\Graphics\Renderable</Filter>
     </ClCompile>
   </ItemGroup>
@@ -209,7 +215,7 @@
     <ClInclude Include="src\settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\renderable\AbstractMesh.h">
+    <ClInclude Include="src\graphics\renderable\Mesh.h">
       <Filter>Header Files\Graphics\Renderable</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\renderable\MeshGeometry.h">
@@ -246,6 +252,12 @@
       <Filter>Header Files\Graphics\Texture</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\renderable\MeshGeometryFactory.h">
+      <Filter>Header Files\Graphics\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\PhysicalObject.h">
+      <Filter>Header Files\Graphics\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\PhysicalObjectFactory.h">
       <Filter>Header Files\Graphics\Renderable</Filter>
     </ClInclude>
   </ItemGroup>

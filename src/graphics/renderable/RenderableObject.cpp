@@ -11,7 +11,7 @@ void RenderableObject::getUniforms() {
 	this->uniform_UsingTexture = glGetUniformLocation(shader->getProgramId(), "uUseTexture");
 }
 
-void RenderableObject::render(mat4* modelMatrix, mat4* projectionMatrix, mat4* viewMatrix) {
+void RenderableObject::render(mat4* modelMatrix, mat4* viewMatrix, mat4* projectionMatrix, vec3* camPos) {
 	
 	if (this->vao == 0) {
 		cerr << "ATTENTION!!! VAO not initialized" << endl;
@@ -40,6 +40,7 @@ void RenderableObject::render(mat4* modelMatrix, mat4* projectionMatrix, mat4* v
 	if (this->uniform_Model != -1) glUniformMatrix4fv(this->uniform_Model, 1, GL_FALSE, value_ptr(*modelMatrix));
 	if (this->uniform_Projection != -1) glUniformMatrix4fv(this->uniform_Projection, 1, GL_FALSE, value_ptr(*projectionMatrix));
 	if (this->uniform_View != -1) glUniformMatrix4fv(this->uniform_View, 1, GL_FALSE, value_ptr(*viewMatrix));
+	if (this->uniform_ViewPos != -1) glUniform3f(this->uniform_ViewPos, camPos->x, camPos->y, camPos->z);
 
 	// TODO: Set all uniforms
 

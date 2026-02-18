@@ -12,6 +12,10 @@ mat4 Camera::getViewMatrix() {
     return mat4(this->viewMatrix);
 }
 
+vec3 Camera::getPosition() {
+    return vec3(this->position);
+}
+
 void Camera::moveForward(float deltaTime) {
     // Move forward along the normalized viewing direction
     vec3 dir = normalize(this->direction);

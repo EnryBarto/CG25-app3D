@@ -144,9 +144,11 @@
     <ClCompile Include="src\app\initializations.cpp" />
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\Projection.cpp" />
-    <ClCompile Include="src\graphics\renderable\AbstractMesh.cpp" />
+    <ClCompile Include="src\graphics\renderable\Mesh.cpp" />
     <ClCompile Include="src\graphics\renderable\GpuBuffers.cpp" />
     <ClCompile Include="src\graphics\renderable\MeshGeometryFactory.cpp" />
+    <ClCompile Include="src\graphics\renderable\PhysicalObject.cpp" />
+    <ClCompile Include="src\graphics\renderable\PhysicalObjectFactory.cpp" />
     <ClCompile Include="src\graphics\renderable\RenderableObject.cpp" />
     <ClCompile Include="src\graphics\renderable\MeshGeometry.cpp" />
     <ClCompile Include="src\graphics\renderable\RenderableBackground.cpp" />
@@ -184,9 +186,11 @@
     <ClInclude Include="src\app\initializations.h" />
     <ClInclude Include="src\graphics\Camera.h" />
     <ClInclude Include="src\graphics\Projection.h" />
-    <ClInclude Include="src\graphics\renderable\AbstractMesh.h" />
+    <ClInclude Include="src\graphics\renderable\Mesh.h" />
     <ClInclude Include="src\graphics\renderable\GpuBuffers.h" />
     <ClInclude Include="src\graphics\renderable\MeshGeometryFactory.h" />
+    <ClInclude Include="src\graphics\renderable\PhysicalObject.h" />
+    <ClInclude Include="src\graphics\renderable\PhysicalObjectFactory.h" />
     <ClInclude Include="src\graphics\renderable\RenderableObject.h" />
     <ClInclude Include="src\graphics\renderable\MeshGeometry.h" />
     <ClInclude Include="src\graphics\renderable\RenderableBackground.h" />

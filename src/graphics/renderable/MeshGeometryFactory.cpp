@@ -1,6 +1,6 @@
 #include "MeshGeometryFactory.h"
 
-MeshGeometry* MeshGeometryFactory::getCube() {
+MeshGeometry* MeshGeometryFactory::createCube() {
 	vector<vec3> vertices;
 	vector<vec4> colors;
 	vector<GLuint> indices;
@@ -58,7 +58,7 @@ MeshGeometry* MeshGeometryFactory::getCube() {
 	return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords);
 }
 
-MeshGeometry* MeshGeometryFactory::getPyramid() {
+MeshGeometry* MeshGeometryFactory::createPyramid() {
 	vector<vec3> vertices;
 	vector<vec4> colors;
 	vector<GLuint> indices;
@@ -98,7 +98,7 @@ MeshGeometry* MeshGeometryFactory::getPyramid() {
 	return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords);
 }
 
-MeshGeometry* MeshGeometryFactory::getPlane(vec4 color) {
+MeshGeometry* MeshGeometryFactory::createPlane(vec4 color) {
 	vector<vec3> vertices;
 	vector<vec4> colors;
 	vector<GLuint> indices;
@@ -130,7 +130,7 @@ MeshGeometry* MeshGeometryFactory::getPlane(vec4 color) {
 	return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords);
 }
 
-MeshGeometry* MeshGeometryFactory::getSphere(vec4 color) {
+MeshGeometry* MeshGeometryFactory::createSphere(vec4 color) {
 	vector<vec3> vertices;
 	vector<vec4> colors;
 	vector<GLuint> indices;

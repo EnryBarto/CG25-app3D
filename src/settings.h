@@ -5,7 +5,7 @@
 #define WIDTH_RESIZE_FACTOR 0.8f
 #define HEIGHT_RESIZE_FACTOR 0.8f
 #define FONT_RESIZE_FACTOR 2.0f
-
+#define MAX_FPS 60
 #define SKYBOX_CUBEMAP_DIRECTORY "resources/skyboxes/clouds/"
 
 // CAMERA AND PROJECTION SETTINGS
