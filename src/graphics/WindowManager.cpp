@@ -30,6 +30,9 @@ WindowManager::WindowManager() {
     // Set base color
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
+    // Set polygon mode
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
     init_imgui(this->window);
 }
 

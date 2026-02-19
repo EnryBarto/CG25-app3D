@@ -12,7 +12,6 @@
 #include <map>
 #include "../graphics/shader/Shader.h"
 
-GLFWwindow* create_window();
 int init_gl_glfw();
 GLFWwindow* init_window_context_events();
 void init_callbacks(GLFWwindow* window);

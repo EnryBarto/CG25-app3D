@@ -45,7 +45,6 @@ void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, c
 	// TODO: Set all uniforms
 
 	// RENDER!
-	glPolygonMode(GL_FRONT_AND_BACK, this->polygonMode);
 	glBindVertexArray(this->vao);
 	glDrawElements(this->drawMode, this->numIndexes, GL_UNSIGNED_INT, 0);
 }

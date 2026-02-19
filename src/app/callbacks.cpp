@@ -2,30 +2,30 @@
 
 extern WindowManager* windowManager;
 extern Camera* camera;
-extern bool showingCommands;
+extern AppSettings* currentSettings;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (action == GLFW_RELEASE) return;
 
 	switch (key) {
         case GLFW_KEY_F1:
-            showingCommands = !showingCommands;
+            currentSettings->toggleShowingCommands();
             break;
 
 		case GLFW_KEY_F11:
 			windowManager->toggleFullScreen();
 			break;
 
-        // Move the cursor outside the window
         case GLFW_KEY_ESCAPE:
-            if (windowManager->isFullScreen()) windowManager->toggleFullScreen();
+            currentSettings->togglePause();
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            glfwSetCursorPos(window, (int)-150, (int)-150);
             break;
 	}
 }
 
 void cursor_position_callback(GLFWwindow* window, double xPosIn, double yPosIn) {
+
+    if (currentSettings->isPaused()) return;
 
     // When the mouse is captured, hide it
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -38,8 +38,8 @@ void cursor_position_callback(GLFWwindow* window, double xPosIn, double yPosIn) 
     float centerY = height / 2.0f;
 
     // Because the pointer is in the center of the screen, the movement is the distance between the center and the position of the mouse 
-    float xOffset = ((float)xPosIn - centerX) * MOUSE_SENSITIVITY;
-    float yOffset = ((float)yPosIn - centerY) * MOUSE_SENSITIVITY;
+    float xOffset = ((float)xPosIn - centerX) * currentSettings->getCurrentMouseSensitivity();
+    float yOffset = ((float)yPosIn - centerY) * currentSettings->getCurrentMouseSensitivity();
 
     // The movement of the mouse along the x axis, causes the rotation around the y axis and vice versa
     camera->changeDirection(yOffset, xOffset);

@@ -10,7 +10,7 @@
 
 class Scene {
 	public:
-		Scene(WindowManager* windowManager, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory);
+		Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory);
 		Camera* getCamera();
 		void update(float deltaTime);
 		void render();
@@ -23,4 +23,5 @@ class Scene {
 		PhysicalObjectFactory* objectFactory;
 		WindowManager* windowManager;
 		GLFWwindow* window;
+		AppSettings* currentSettings;
 };

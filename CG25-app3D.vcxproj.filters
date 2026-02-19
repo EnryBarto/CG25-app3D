@@ -171,6 +171,9 @@
     <ClCompile Include="src\graphics\WindowManager.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\app\AppSettings.cpp">
+      <Filter>Source Files\App</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\ImGui\imgui_impl_glfw.h">
@@ -265,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="src\graphics\WindowManager.h">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\AppSettings.h">
+      <Filter>Header Files\App</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

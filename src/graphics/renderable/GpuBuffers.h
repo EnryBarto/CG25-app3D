@@ -9,7 +9,7 @@
 class GpuBuffers {
 
 	public:
-        void setModes(GLenum polygonMode, GLenum renderMode);
+        void setModes(GLenum renderMode);
         void initVao(MeshGeometry* geometry);
         void setShader(Shader* shader);
         void setTexture(Texture* texture);
@@ -34,7 +34,6 @@ class GpuBuffers {
         GLuint vboTexture;  // VBO identifier containing the texture coordinates for the mesh vertices
         GLuint eboIndexes;  // Element Buffer Object (EBO) identifier
 
-        GLenum polygonMode = GL_FILL;   // Drawing mode for vertex-to-polygon interpretation (ex. GL_FILL, GL_LINE, GL_POINT)
         GLenum drawMode = GL_TRIANGLES; // Vertex interpretation mode for the rendering stage (ex. GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_LINES, GL_POINTS)
 
         Shader* shader = 0;

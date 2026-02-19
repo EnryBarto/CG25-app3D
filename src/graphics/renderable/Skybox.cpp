@@ -15,7 +15,7 @@ Skybox::Skybox(Shader* shader, string textureDirectory) {
 	this->gpuBuffer->initVao(MeshGeometryFactory::createCube());
 	this->gpuBuffer->setShader(shader);
 	this->gpuBuffer->setTexture(new Texture("Cubemap", faces));
-	this->gpuBuffer->setModes(GL_FILL, GL_TRIANGLES);
+	this->gpuBuffer->setModes(GL_TRIANGLES);
 }
 
 void Skybox::render(const mat4& viewMatrix, const mat4& projectionMatrix) {

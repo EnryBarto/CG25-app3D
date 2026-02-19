@@ -1,7 +1,6 @@
 #include "GpuBuffers.h"
 
-void GpuBuffers::setModes(GLenum polygonMode, GLenum renderMode) {
-	this->polygonMode = polygonMode;
+void GpuBuffers::setModes(GLenum renderMode) {
 	this->drawMode = renderMode;
 }
 

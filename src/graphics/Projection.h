@@ -6,8 +6,9 @@
 class Projection {
 
 	public:
-        Projection(float aspectRatio);
+        Projection(float aspectRatio, float _fov);
         void changeAspectRatio(float newAspectRatio);
+        void changeFov(float newFov);
         const mat4& getProjectionMatrix();
 
 	private:

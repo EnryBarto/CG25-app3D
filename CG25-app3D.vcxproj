@@ -138,6 +138,7 @@
     <ClCompile Include="dependencies\ImGui\imgui_tables.cpp" />
     <ClCompile Include="dependencies\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\app\AppSettings.cpp" />
     <ClCompile Include="src\app\callbacks.cpp" />
     <ClCompile Include="src\app\glad.c" />
     <ClCompile Include="src\app\gui.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="dependencies\ImGui\imstb_rectpack.h" />
     <ClInclude Include="dependencies\ImGui\imstb_textedit.h" />
     <ClInclude Include="dependencies\ImGui\imstb_truetype.h" />
+    <ClInclude Include="src\app\AppSettings.h" />
     <ClInclude Include="src\app\callbacks.h" />
     <ClInclude Include="src\app\gui.h" />
     <ClInclude Include="src\app\initializations.h" />

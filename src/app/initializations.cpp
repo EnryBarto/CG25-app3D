@@ -1,34 +1,5 @@
 #include "initializations.h"
 
-GLFWwindow* create_window() {
-    
-	if (init_gl_glfw() != 0) {
-		std::cout << "Glfw initialization failed!" << std::endl;
-		return NULL;
-	}
-
-    GLFWwindow* window = init_window_context_events();
-
-    if (window == NULL) {
-        std::cout << "Failed creating the window and it's context!" << std::endl;
-        return NULL;
-    }
-
-    init_callbacks(window);
-    
-    // Enable transparency management and depth test
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
-
-    // Set base color
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-
-    init_imgui(window);
-
-	return window;
-}
-
 int init_gl_glfw() {
 
 	if (!glfwInit()) return -1;

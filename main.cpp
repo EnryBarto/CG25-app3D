@@ -8,6 +8,7 @@
 #include "src/graphics/shader/Shader.h"
 #include "src/graphics/Scene.h"
 #include "src/graphics/WindowManager.h"
+#include "src/app/AppSettings.h"
 
 using namespace std;
 using namespace this_thread;
@@ -17,9 +18,9 @@ WindowManager* windowManager;
 GLFWwindow* window;
 Scene* scene;
 Camera* camera;
+AppSettings* currentSettings;
 map<string, Shader*>* shaders;
 double currentTime, deltaTime = 0, lastFrame = 0;
-bool showingCommands = false;
 
 int main() {
 	
@@ -39,10 +40,10 @@ int main() {
 	} else {
 		cout << "Shaders initialized" << endl;
 	}
-
-	scene = new Scene(windowManager, shaders->at(BASIC_SHADER_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
+	currentSettings = new AppSettings();
+	scene = new Scene(windowManager, currentSettings, shaders->at(BASIC_SHADER_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
 	camera = scene->getCamera();
-
+	
 	while (!glfwWindowShouldClose(window)) {
 
 		currentTime = glfwGetTime();
@@ -60,7 +61,8 @@ int main() {
 
 		scene->render();
 
-		if (showingCommands) show_commands();
+		if (currentSettings->isShowingCommands()) show_commands();
+		if (currentSettings->isPaused()) show_settings();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
