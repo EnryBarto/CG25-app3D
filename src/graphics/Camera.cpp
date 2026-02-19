@@ -1,11 +1,15 @@
 #include "Camera.h"
 
-Camera::Camera(vec3 position, vec3 target, vec3 upVector) {
+Camera::Camera(vec3 position, vec3 target) {
     this->position = vec3(position);
     this->target = vec3(target);
-    this->upVector = normalize(vec3(upVector));
+    this->upVector = vec3(0, 1, 0);
     this->direction = normalize(this->target - this->position);
     this->viewMatrix = lookAt(this->position, this->target, this->upVector);
+
+    // Compute the pitch and the yaw
+    this->xAxisAngle = degrees(asin(clamp(this->direction.y, -1.0f, 1.0f))); // Use clamp to avoid NaN values (asin defined for [-1, 1]) because of float precision
+    this->yAxisAngle = degrees(atan2(this->direction.z, this->direction.x));
 }
 
 const mat4& Camera::getViewMatrix() {
@@ -14,6 +18,29 @@ const mat4& Camera::getViewMatrix() {
 
 const vec3& Camera::getPosition() {
     return this->position;
+}
+
+void Camera::changeDirection(float xAxisRotation, float yAxisRotation) {
+
+    // Update the rotation along the axes by the given offset
+    this->yAxisAngle += yAxisRotation;
+    this->xAxisAngle += xAxisRotation;
+
+    // Let's make sure the camera doesn't flip
+    if (this->xAxisAngle >  89.0f) this->xAxisAngle =  89.0f;
+    if (this->xAxisAngle < -89.0f) this->xAxisAngle = -89.0f;
+
+    // Calculate the x, y, and z coordinates of a point on the unit sphere, using the angles converted to radians.
+    // This point represents the direction the camera is pointing.
+    vec3 point;
+    point.x = cos(radians(this->yAxisAngle)) * cos(radians(this->xAxisAngle));
+    point.y = sin(radians(this->xAxisAngle));
+    point.z = sin(radians(this->yAxisAngle)) * cos(radians(this->xAxisAngle));
+
+    // Update the camera
+    this->direction = normalize(point);
+    this->target = this->position + this->direction;
+    this->viewMatrix = lookAt(this->position, this->target, this->upVector);
 }
 
 void Camera::moveForward(float deltaTime) {

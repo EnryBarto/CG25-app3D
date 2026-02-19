@@ -11,6 +11,7 @@
 class Scene {
 	public:
 		Scene(WindowManager* windowManager, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory);
+		Camera* getCamera();
 		void update(float deltaTime);
 		void render();
 

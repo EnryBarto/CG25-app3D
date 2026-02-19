@@ -7,8 +7,8 @@
 class Camera {
     
     public:
-        Camera();
-        Camera(vec3 position, vec3 target, vec3 upVector);
+        Camera(vec3 position, vec3 target);
+        void changeDirection(float xAxisRotation, float yAxisRotation);
         void moveForward(float deltaTime);
         void moveBack(float deltaTime);
         void moveLeft(float deltaTime);
@@ -23,6 +23,8 @@ class Camera {
         vec3 target;    // Point the camera is looking at
         vec3 upVector;  // Up direction vector for the camera
         vec3 direction; // Viewing direction vector of the camera
+        float xAxisAngle; // Pitch in degrees
+        float yAxisAngle; // Yaw in degrees
 
         mat4 viewMatrix;
 

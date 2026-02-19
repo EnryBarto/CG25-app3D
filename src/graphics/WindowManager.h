@@ -9,6 +9,7 @@ class WindowManager {
 		GLFWwindow* getWindow();
 		void frameBufferChanged();
 		bool isFrameBufferChanged();
+		bool isFullScreen();
 		float getAspectRatio();
 		void toggleFullScreen();
 

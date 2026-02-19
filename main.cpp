@@ -16,6 +16,7 @@ using namespace chrono;
 WindowManager* windowManager;
 GLFWwindow* window;
 Scene* scene;
+Camera* camera;
 map<string, Shader*>* shaders;
 double currentTime, deltaTime = 0, lastFrame = 0;
 
@@ -36,6 +37,7 @@ int main() {
 	}
 
 	scene = new Scene(windowManager, shaders->at(BASIC_SHADER_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
+	camera = scene->getCamera();
 
 	while (!glfwWindowShouldClose(window)) {
 

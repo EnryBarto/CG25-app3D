@@ -9,10 +9,11 @@
 #define SKYBOX_CUBEMAP_DIRECTORY "resources/skyboxes/clouds/"
 
 // CAMERA AND PROJECTION SETTINGS
-#define CAMERA_SPEED 2.5f
+#define CAMERA_SPEED 5.0f
 #define PROJ_FOVY 45.0f
 #define PROJ_FARPLANE 2000.0f
 #define PROJ_NEARPLANE 0.1f
+#define MOUSE_SENSITIVITY 0.05f
 
 // SHADERS
 #define SHADER_FOLDER "resources/shaders/"

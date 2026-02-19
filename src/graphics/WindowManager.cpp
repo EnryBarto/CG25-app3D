@@ -51,6 +51,10 @@ bool WindowManager::isFrameBufferChanged() {
     return tmp;
 }
 
+bool WindowManager::isFullScreen() {
+    return this->_fullScreen;
+}
+
 float WindowManager::getAspectRatio() {
     int width, height;
     glfwGetWindowSize(this->window, &width, &height);
