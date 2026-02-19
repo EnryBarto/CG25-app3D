@@ -33,9 +33,7 @@ int main() {
 		cout << "Shaders initialized" << endl;
 	}
 
-	int width, height;
-	glfwGetWindowSize(window, &width, &height);
-	scene = new Scene(width, height, shaders->at(BASIC_SHADER_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
+	scene = new Scene(window, shaders->at(BASIC_SHADER_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
 	messageBus = scene->getMessageBus();
 
 	while (!glfwWindowShouldClose(window)) {

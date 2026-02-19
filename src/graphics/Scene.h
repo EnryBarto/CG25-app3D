@@ -10,7 +10,7 @@
 
 class Scene {
 	public:
-		Scene(int screenWidth, int screenHeight, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory);
+		Scene(GLFWwindow* window, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory);
 		void update(float deltaTime);
 		void render();
 		MessageBus* getMessageBus();
@@ -22,4 +22,5 @@ class Scene {
 		vector<PhysicalObject*> objects;
 		PhysicalObjectFactory* objectFactory;
 		MessageBus messageBus;
+		GLFWwindow* window;
 };

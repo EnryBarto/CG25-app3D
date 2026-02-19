@@ -1,8 +1,11 @@
 #include "Scene.h"
 
-Scene::Scene(int screenWidth, int screenHeight, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory) {
+Scene::Scene(GLFWwindow* window, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory) {
+	this->window = window;
 	this->camera = new Camera(vec3(0.0, 0.0, -10.0), vec3(0.0, 0.0, 20.0), vec3(0.0, 1.0, 0.0));
-	this->projection = new Projection(screenWidth, screenHeight);
+	int width, height;
+	glfwGetWindowSize(window, &width, &height);
+	this->projection = new Projection(width, height);
 	this->skybox = new Skybox(skyboxShader, skyboxCubemapDirectory);
 	this->objectFactory = new PhysicalObjectFactory(defaultShader);
 	this->objects.push_back(this->objectFactory->createBase());
@@ -11,11 +14,13 @@ Scene::Scene(int screenWidth, int screenHeight, Shader* defaultShader, Shader* s
 }
 
 void Scene::update(float deltaTime) {
-	this->camera->moveUp(deltaTime);
-	this->camera->moveRight(deltaTime);
-	if (this->messageBus.isAspectRatioChanged()) {
-		this->projection->changeAspectRatio(this->messageBus.getNewAspectRatio());
-	}
+    if (this->messageBus.isAspectRatioChanged()) this->projection->changeAspectRatio(this->messageBus.getNewAspectRatio());
+    if (glfwGetKey(this->window, GLFW_KEY_A) == GLFW_PRESS) this->camera->moveLeft(deltaTime);
+    if (glfwGetKey(this->window, GLFW_KEY_D) == GLFW_PRESS) this->camera->moveRight(deltaTime);
+    if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_PRESS) this->camera->moveForward(deltaTime);
+    if (glfwGetKey(this->window, GLFW_KEY_S) == GLFW_PRESS) this->camera->moveBack(deltaTime);
+    if (glfwGetKey(this->window, GLFW_KEY_U) == GLFW_PRESS && (glfwGetKey(this->window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)) this->camera->moveDown(deltaTime);
+	else if (glfwGetKey(this->window, GLFW_KEY_U) == GLFW_PRESS) this->camera->moveUp(deltaTime);
 }
 
 void Scene::render() {
