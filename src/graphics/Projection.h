@@ -6,7 +6,7 @@
 class Projection {
 
 	public:
-        Projection(int width, int height);
+        Projection(float aspectRatio);
         void changeAspectRatio(float newAspectRatio);
         const mat4& getProjectionMatrix();
 

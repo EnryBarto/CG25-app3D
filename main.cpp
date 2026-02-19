@@ -7,22 +7,24 @@
 #include "src/settings.h"
 #include "src/graphics/shader/Shader.h"
 #include "src/graphics/Scene.h"
+#include "src/graphics/WindowManager.h"
 
 using namespace std;
 using namespace this_thread;
 using namespace chrono;
 
+WindowManager* windowManager;
 GLFWwindow* window;
 Scene* scene;
 map<string, Shader*>* shaders;
 double currentTime, deltaTime = 0, lastFrame = 0;
-MessageBus* messageBus;
 
 int main() {
 	
-	window = create_window();
+	windowManager = new WindowManager();
+	window = windowManager->getWindow();
 	if (window == NULL) {
-		cout << "Initialization failed!" << endl;
+		cout << "Window initialization failed!" << endl;
 		return -1;
 	} else {
 		cout << "Window initialized" << endl;
@@ -33,8 +35,7 @@ int main() {
 		cout << "Shaders initialized" << endl;
 	}
 
-	scene = new Scene(window, shaders->at(BASIC_SHADER_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
-	messageBus = scene->getMessageBus();
+	scene = new Scene(windowManager, shaders->at(BASIC_SHADER_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
 
 	while (!glfwWindowShouldClose(window)) {
 

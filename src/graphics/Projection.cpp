@@ -1,10 +1,10 @@
 #include "Projection.h"
 
-Projection::Projection(int width, int height) {
+Projection::Projection(float aspectRatio) {
 	this->fovY = PROJ_FOVY;
 	this->nearPlane = PROJ_NEARPLANE;
 	this->farPlane = PROJ_FARPLANE;
-	this->changeAspectRatio((float)width / (float)height);
+	this->changeAspectRatio(aspectRatio);
 }
 
 void Projection::changeAspectRatio(float newAspectRatio) {

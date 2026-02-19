@@ -6,14 +6,13 @@
 #include "renderable/Skybox.h"
 #include "renderable/PhysicalObject.h"
 #include "renderable/PhysicalObjectFactory.h"
-#include "../app/MessageBus.h"
+#include "../graphics/WindowManager.h"
 
 class Scene {
 	public:
-		Scene(GLFWwindow* window, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory);
+		Scene(WindowManager* windowManager, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory);
 		void update(float deltaTime);
 		void render();
-		MessageBus* getMessageBus();
 
 	private:
 		Camera* camera;
@@ -21,6 +20,6 @@ class Scene {
 		Skybox* skybox;
 		vector<PhysicalObject*> objects;
 		PhysicalObjectFactory* objectFactory;
-		MessageBus messageBus;
+		WindowManager* windowManager;
 		GLFWwindow* window;
 };

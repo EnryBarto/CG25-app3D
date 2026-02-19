@@ -168,8 +168,8 @@
     <ClCompile Include="src\graphics\renderable\PhysicalObjectFactory.cpp">
       <Filter>Source Files\Graphics\Renderable</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\MessageBus.cpp">
-      <Filter>Source Files\App</Filter>
+    <ClCompile Include="src\graphics\WindowManager.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,8 +263,8 @@
     <ClInclude Include="src\graphics\renderable\PhysicalObjectFactory.h">
       <Filter>Header Files\Graphics\Renderable</Filter>
     </ClInclude>
-    <ClInclude Include="src\app\MessageBus.h">
-      <Filter>Header Files\App</Filter>
+    <ClInclude Include="src\graphics\WindowManager.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
