@@ -142,6 +142,7 @@
     <ClCompile Include="src\app\glad.c" />
     <ClCompile Include="src\app\gui.cpp" />
     <ClCompile Include="src\app\initializations.cpp" />
+    <ClCompile Include="src\app\MessageBus.cpp" />
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\Projection.cpp" />
     <ClCompile Include="src\graphics\renderable\Mesh.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="src\app\callbacks.h" />
     <ClInclude Include="src\app\gui.h" />
     <ClInclude Include="src\app\initializations.h" />
+    <ClInclude Include="src\app\MessageBus.h" />
     <ClInclude Include="src\graphics\Camera.h" />
     <ClInclude Include="src\graphics\Projection.h" />
     <ClInclude Include="src\graphics\renderable\Mesh.h" />

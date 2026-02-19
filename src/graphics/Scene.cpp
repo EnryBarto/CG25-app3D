@@ -13,6 +13,9 @@ Scene::Scene(int screenWidth, int screenHeight, Shader* defaultShader, Shader* s
 void Scene::update(float deltaTime) {
 	this->camera->moveUp(deltaTime);
 	this->camera->moveRight(deltaTime);
+	if (this->messageBus.isAspectRatioChanged()) {
+		this->projection->changeAspectRatio(this->messageBus.getNewAspectRatio());
+	}
 }
 
 void Scene::render() {
@@ -25,4 +28,8 @@ void Scene::render() {
 	for (PhysicalObject* o : this->objects) {
 		o->render(v, p, c);
 	}
+}
+
+MessageBus* Scene::getMessageBus() {
+	return &this->messageBus;
 }

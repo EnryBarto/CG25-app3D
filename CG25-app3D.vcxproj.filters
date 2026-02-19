@@ -168,6 +168,9 @@
     <ClCompile Include="src\graphics\renderable\PhysicalObjectFactory.cpp">
       <Filter>Source Files\Graphics\Renderable</Filter>
     </ClCompile>
+    <ClCompile Include="src\app\MessageBus.cpp">
+      <Filter>Source Files\App</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\ImGui\imgui_impl_glfw.h">
@@ -259,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="src\graphics\renderable\PhysicalObjectFactory.h">
       <Filter>Header Files\Graphics\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\MessageBus.h">
+      <Filter>Header Files\App</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
