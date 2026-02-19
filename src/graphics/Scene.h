@@ -10,6 +10,7 @@
 class Scene {
 	public:
 		Scene(int screenWidth, int screenHeight, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory);
+		void update(float deltaTime);
 		void render();
 
 	private:

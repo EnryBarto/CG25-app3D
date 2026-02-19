@@ -42,6 +42,8 @@ int main() {
 		deltaTime = currentTime - lastFrame;
 		lastFrame = currentTime;
 
+		scene->update((float)deltaTime);
+
 		scene->render();
 
 		glfwSwapBuffers(window);

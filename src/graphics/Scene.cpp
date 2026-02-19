@@ -7,6 +7,12 @@ Scene::Scene(int screenWidth, int screenHeight, Shader* defaultShader, Shader* s
 	this->objectFactory = new PhysicalObjectFactory(defaultShader);
 	this->objects.push_back(this->objectFactory->createBase());
 	this->objects.push_back(this->objectFactory->createSimpleCube());
+	this->objects.push_back(this->objectFactory->createHouse());
+}
+
+void Scene::update(float deltaTime) {
+	this->camera->moveUp(deltaTime);
+	this->camera->moveRight(deltaTime);
 }
 
 void Scene::render() {

@@ -19,3 +19,14 @@ PhysicalObject* PhysicalObjectFactory::createBase() {
 	toReturn->addMesh(cube);
 	return toReturn;
 }
+
+PhysicalObject* PhysicalObjectFactory::createHouse() {
+	PhysicalObject* toReturn = new PhysicalObject(vec3(-5, 0, 2), vec3(0), 0, vec3(1));
+	MeshGeometry* geometry = MeshGeometryFactory::createCube();
+	Mesh* mesh = new Mesh(geometry, this->defaultShader, vec3(0), vec3(0, 1, 0), 180, vec3(1));
+	toReturn->addMesh(mesh);
+	geometry = MeshGeometryFactory::createPyramid();
+	mesh = new Mesh(geometry, this->defaultShader, vec3(0, 1, 0), vec3(0, 1, 0), 180, vec3(1));
+	toReturn->addMesh(mesh);
+	return toReturn;
+}
