@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-Mesh::Mesh(MeshGeometry* geometry, Shader* basicShader, vec3 translation, vec3 rotationAxis, float angle, vec3 scale) {
+Mesh::Mesh(MeshGeometry* geometry, Shader* basicShader, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector) {
 	this->geometry = geometry;
 	this->gpuObject = new RenderableObject();
 	this->gpuObject->initVao(geometry);
@@ -8,19 +8,17 @@ Mesh::Mesh(MeshGeometry* geometry, Shader* basicShader, vec3 translation, vec3 r
 	this->translation = translation;
 	this->rotationAxis = rotationAxis;
 	this->angle = angle;
-	this->scaleVector = scale;
+	this->scaleVector = scaleVector;
+	this->computeModelMatrix();
 }
 
-mat4 Mesh::getModelMatrix() {
-	mat4 m = mat4(1.0);
-	m = translate(m, this->translation);
-	if (this->angle != 0) m = rotate(m, radians(this->angle), this->rotationAxis);
-	m = scale(m, this->scaleVector);
-	return m;
+void Mesh::computeModelMatrix() {
+	this->modelMatrix = translate(mat4(1.0), this->translation);
+	if (this->angle != 0 && this->rotationAxis != vec3(0)) this->modelMatrix = rotate(this->modelMatrix, radians(this->angle), this->rotationAxis);
+	this->modelMatrix = scale(this->modelMatrix, this->scaleVector);
 }
 
-void Mesh::render(mat4* globalModelMatrix, mat4* viewMatrix, mat4* projectionMatrix, vec3* camPos) {
-	mat4 localModel = this->getModelMatrix();
-	mat4 modelMatrix = *globalModelMatrix * localModel;
-	this->gpuObject->render(&modelMatrix, viewMatrix, projectionMatrix, camPos);
+void Mesh::render(const mat4& globalModelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos) {
+	mat4 modelMatrix = globalModelMatrix * this->modelMatrix; // Apply first the local transform, next the global
+	this->gpuObject->render(modelMatrix, viewMatrix, projectionMatrix, camPos);
 }

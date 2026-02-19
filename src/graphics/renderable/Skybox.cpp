@@ -18,6 +18,6 @@ Skybox::Skybox(Shader* shader, string textureDirectory) {
 	this->gpuBuffer->setModes(GL_FILL, GL_TRIANGLES);
 }
 
-void Skybox::render(mat4* viewMatrix, mat4* projectionMatrix) {
+void Skybox::render(const mat4& viewMatrix, const mat4& projectionMatrix) {
 	this->gpuBuffer->render(viewMatrix, projectionMatrix);
 }

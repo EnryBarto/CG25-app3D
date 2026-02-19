@@ -15,8 +15,8 @@ class Camera {
         void moveRight(float deltaTime);
         void moveUp(float deltaTime);
         void moveDown(float deltaTime);
-        mat4 getViewMatrix();
-        vec3 getPosition();
+        const mat4& getViewMatrix();
+        const vec3& getPosition();
 
 	private:
         vec3 position;  // Camera position in 3D space

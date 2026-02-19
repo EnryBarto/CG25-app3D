@@ -5,11 +5,11 @@
 #define WIDTH_RESIZE_FACTOR 0.8f
 #define HEIGHT_RESIZE_FACTOR 0.8f
 #define FONT_RESIZE_FACTOR 2.0f
-#define MAX_FPS 60
+#define MAX_FPS 100
 #define SKYBOX_CUBEMAP_DIRECTORY "resources/skyboxes/clouds/"
 
 // CAMERA AND PROJECTION SETTINGS
-#define CAMERA_SPEED 2.0f
+#define CAMERA_SPEED 1.5f
 #define PROJ_FOVY 45.0f
 #define PROJ_FARPLANE 2000.0f
 #define PROJ_NEARPLANE 0.1f

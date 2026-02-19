@@ -5,7 +5,7 @@
 class RenderableBackground : public GpuBuffers {
 
     public:
-        void render(mat4* viewMatrix, mat4* projectionMatrix);
+        void render(const mat4& viewMatrix, const mat4& projectionMatrix);
 
     protected:
         void getUniforms() override;

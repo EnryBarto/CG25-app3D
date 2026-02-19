@@ -5,7 +5,7 @@
 class RenderableObject: public GpuBuffers {
 
     public:
-        void render(mat4* modelMatrix, mat4* viewMatrix, mat4* projectionMatrix, vec3* camPos);
+        void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos);
 
     protected:
         void getUniforms() override;

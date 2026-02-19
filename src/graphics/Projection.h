@@ -7,7 +7,7 @@ class Projection {
 
 	public:
         Projection(int width, int height);
-        mat4 getProjectionMatrix();
+        const mat4& getProjectionMatrix();
 
 	private:
         float fovY;         // Vertical field of view in degrees

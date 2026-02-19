@@ -9,11 +9,13 @@
 #include "src/graphics/Scene.h"
 
 using namespace std;
+using namespace this_thread;
+using namespace chrono;
 
 GLFWwindow* window;
 Scene* scene;
 map<string, Shader*>* shaders;
-float currentTime, deltaTime = 0, lastFrame = 0;
+double currentTime, deltaTime = 0, lastFrame = 0;
 
 int main() {
 	
@@ -36,7 +38,7 @@ int main() {
 
 	while (!glfwWindowShouldClose(window)) {
 
-		currentTime = (float)glfwGetTime();
+		currentTime = glfwGetTime();
 		deltaTime = currentTime - lastFrame;
 		lastFrame = currentTime;
 
@@ -45,8 +47,8 @@ int main() {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 		
-		// Limita gli FPS
-		this_thread::sleep_for(chrono::milliseconds(1000 / MAX_FPS) - chrono::milliseconds((int)(deltaTime * 1000)));
+		// FPS limiter
+		sleep_for(milliseconds(1000 / MAX_FPS) - milliseconds((int)(deltaTime * 1000)));
 	}
 
 	close_gui();

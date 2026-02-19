@@ -8,12 +8,12 @@ Camera::Camera(vec3 position, vec3 target, vec3 upVector) {
     this->viewMatrix = lookAt(this->position, this->target, this->upVector);
 }
 
-mat4 Camera::getViewMatrix() {
-    return mat4(this->viewMatrix);
+const mat4& Camera::getViewMatrix() {
+    return this->viewMatrix;
 }
 
-vec3 Camera::getPosition() {
-    return vec3(this->position);
+const vec3& Camera::getPosition() {
+    return this->position;
 }
 
 void Camera::moveForward(float deltaTime) {

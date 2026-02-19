@@ -9,6 +9,7 @@ class PhysicalObjectFactory {
 	public:
 		PhysicalObjectFactory(Shader* defaultShader);
 		PhysicalObject* createSimpleCube();
+		PhysicalObject* createBase();
 
 	private:
 		Shader* defaultShader;

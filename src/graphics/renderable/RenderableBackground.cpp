@@ -6,7 +6,7 @@ void RenderableBackground::getUniforms() {
     this->uniform_Skybox = glGetUniformLocation(shader->getProgramId(), "skybox");
 }
 
-void RenderableBackground::render(mat4* viewMatrix, mat4* projectionMatrix) {
+void RenderableBackground::render(const mat4& viewMatrix, const mat4& projectionMatrix) {
 
     if (this->vao == 0) {
         cerr << "ATTENTION!!! VAO not initialized" << endl;
@@ -32,8 +32,8 @@ void RenderableBackground::render(mat4* viewMatrix, mat4* projectionMatrix) {
     glUniform1i(this->uniform_Skybox, 0);
 
     // Uniform updates
-    glUniformMatrix4fv(this->uniform_View, 1, GL_FALSE, value_ptr(*viewMatrix));
-    glUniformMatrix4fv(this->uniform_Projection, 1, GL_FALSE, value_ptr(*projectionMatrix));
+    glUniformMatrix4fv(this->uniform_View, 1, GL_FALSE, value_ptr(viewMatrix));
+    glUniformMatrix4fv(this->uniform_Projection, 1, GL_FALSE, value_ptr(projectionMatrix));
 
     // Rendering
     glPolygonMode(GL_FRONT_AND_BACK, this->polygonMode);

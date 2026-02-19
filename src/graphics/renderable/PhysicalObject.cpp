@@ -1,27 +1,25 @@
 #include "PhysicalObject.h"
 
-PhysicalObject::PhysicalObject(vec3 translation, vec3 rotationAxis, float angle, vec3 scale) {
+PhysicalObject::PhysicalObject(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector) {
 	this->translation = translation;
 	this->rotationAxis = rotationAxis;
 	this->angle = angle;
-	this->scaleVector = scale;
+	this->scaleVector = scaleVector;
+	this->computeModelMatrix();
 }
 
 void PhysicalObject::addMesh(Mesh* toAdd) {
 	this->meshes.push_back(toAdd);
 }
 
-void PhysicalObject::render(mat4* viewMatrix, mat4* projectionMatrix, vec3* camPos) {
-	mat4 modelMatrix = this->getModelMatrix();
-	for (Mesh* m : this->meshes) {
-		m->render(&modelMatrix, viewMatrix, projectionMatrix, camPos);
-	}
+void PhysicalObject::computeModelMatrix() {
+	this->modelMatrix = translate(mat4(1.0), this->translation);
+	if (this->angle != 0 && this->rotationAxis != vec3(0)) this->modelMatrix = rotate(this->modelMatrix, radians(this->angle), this->rotationAxis);
+	this->modelMatrix = scale(this->modelMatrix, this->scaleVector);
 }
 
-mat4 PhysicalObject::getModelMatrix() {
-	mat4 m = mat4(1.0);
-	m = translate(m, this->translation);
-	if (this->angle != 0 && this->rotationAxis != vec3(0)) m = rotate(m, radians(this->angle), this->rotationAxis);
-	m = scale(m, this->scaleVector);
-	return m;
+void PhysicalObject::render(const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos) {
+	for (Mesh* m : this->meshes) {
+		m->render(this->modelMatrix, viewMatrix, projectionMatrix, camPos);
+	}
 }
