@@ -34,7 +34,6 @@ void Scene::render() {
 	const mat4& p = this->projection->getProjectionMatrix();
 	const vec3& c = this->camera->getPosition();
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	this->skybox->render(v, p);
 	for (PhysicalObject* o : this->objects) {
 		o->render(v, p, c);

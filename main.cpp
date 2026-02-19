@@ -19,6 +19,7 @@ Scene* scene;
 Camera* camera;
 map<string, Shader*>* shaders;
 double currentTime, deltaTime = 0, lastFrame = 0;
+bool showingCommands = false;
 
 int main() {
 	
@@ -32,7 +33,10 @@ int main() {
 	}
 
 	shaders = init_shaders();
-	if (shaders != NULL) {
+	if (shaders == NULL) {
+		cout << "Shaders initialization failed!" << endl;
+		return -1;
+	} else {
 		cout << "Shaders initialized" << endl;
 	}
 
@@ -47,7 +51,19 @@ int main() {
 
 		scene->update((float)deltaTime);
 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// GUI 
+		ImGui_ImplGlfw_NewFrame();          // Prepare a new frame for GLFW input
+		ImGui_ImplOpenGL3_NewFrame();       // Prepare a new frame for OpenGL3 rendering
+		ImGui::NewFrame();                  // Begin recording the new UI frame
+
 		scene->render();
+
+		if (showingCommands) show_commands();
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -58,6 +74,9 @@ int main() {
 
 	close_gui();
 	glfwDestroyWindow(window);
+	for (auto const& s : *shaders) {
+		glDeleteProgram(s.second->getProgramId());
+	}
 	glfwTerminate();
 
 	return 0;

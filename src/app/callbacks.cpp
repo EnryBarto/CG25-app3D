@@ -2,11 +2,16 @@
 
 extern WindowManager* windowManager;
 extern Camera* camera;
+extern bool showingCommands;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (action == GLFW_RELEASE) return;
 
 	switch (key) {
+        case GLFW_KEY_F1:
+            showingCommands = !showingCommands;
+            break;
+
 		case GLFW_KEY_F11:
 			windowManager->toggleFullScreen();
 			break;
