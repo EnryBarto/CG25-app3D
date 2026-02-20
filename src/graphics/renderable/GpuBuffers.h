@@ -24,7 +24,7 @@ class GpuBuffers {
         const static uint8_t NORMALS_LAYER = 2;
         const static uint8_t TEXTURE_LAYER = 3;
 
-        unsigned int numIndexes, numVertices;
+        unsigned int numIndexes, numVertices; // The number of vertices and indexes without considering the anchor
 
         // GPU buffers location
         GLuint vao = 0;     // Vertex Array Object (VAO) identifier

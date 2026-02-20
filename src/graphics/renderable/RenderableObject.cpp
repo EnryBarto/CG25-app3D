@@ -11,7 +11,7 @@ void RenderableObject::getUniforms() {
 	this->uniform_UsingTexture = glGetUniformLocation(shader->getProgramId(), "uUseTexture");
 }
 
-void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos) {
+void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor) {
 	
 	if (this->vao == 0) {
 		cerr << "ATTENTION!!! VAO not initialized" << endl;
@@ -47,4 +47,9 @@ void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, c
 	// RENDER!
 	glBindVertexArray(this->vao);
 	glDrawElements(this->drawMode, this->numIndexes, GL_UNSIGNED_INT, 0);
+
+	if (showAnchor) {
+		glPointSize(ANCHOR_SIZE);
+		glDrawElements(GL_POINTS, 1, GL_UNSIGNED_INT, BUFFER_OFFSET(this->numIndexes * sizeof(GLuint)));
+	}
 }

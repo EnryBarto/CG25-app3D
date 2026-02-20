@@ -2,10 +2,12 @@
 
 #include "GpuBuffers.h"
 
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
 class RenderableObject: public GpuBuffers {
 
     public:
-        void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos);
+        void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor);
 
     protected:
         void getUniforms() override;

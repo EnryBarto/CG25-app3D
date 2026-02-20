@@ -18,7 +18,7 @@ void Mesh::computeModelMatrix() {
 	this->modelMatrix = scale(this->modelMatrix, this->scaleVector);
 }
 
-void Mesh::render(const mat4& globalModelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos) {
+void Mesh::render(const mat4& globalModelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor) {
 	mat4 modelMatrix = globalModelMatrix * this->modelMatrix; // Apply first the local transform, next the global
-	this->gpuObject->render(modelMatrix, viewMatrix, projectionMatrix, camPos);
+	this->gpuObject->render(modelMatrix, viewMatrix, projectionMatrix, camPos, showAnchor);
 }

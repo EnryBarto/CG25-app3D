@@ -37,6 +37,9 @@ void show_settings() {
     bool isActive = currentSettings->isWireframeActive();
     if (ImGui::Checkbox("Wireframe", &isActive)) currentSettings->toggleWireframe();
 
+    bool anchor = currentSettings->isAnchorActive();
+    if (ImGui::Checkbox("Anchor", &anchor)) currentSettings->toggleAnchor();
+
     float tempFov = currentSettings->getCurrentFov();
     if (ImGui::SliderFloat(" FOV", &tempFov, PROJ_FOVY_MIN, PROJ_FOVY_MAX)) currentSettings->setFov(tempFov);
 
@@ -48,6 +51,7 @@ void show_settings() {
 
     ImGui::NewLine();
     if (ImGui::Button("Resume")) currentSettings->togglePause();
+    if (ImGui::Button("Quit")) currentSettings->exit();
     ImGui::NewLine();
 
     ImGui::End();

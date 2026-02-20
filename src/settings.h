@@ -7,6 +7,7 @@
 #define FONT_RESIZE_FACTOR 2.0f
 #define MAX_FPS 100
 #define SKYBOX_CUBEMAP_DIRECTORY "resources/skyboxes/clouds/"
+#define ANCHOR_SIZE 15
 
 // CAMERA AND PROJECTION SETTINGS
 #define CAMERA_SPEED_DEFAULT 5.0f

@@ -1,15 +1,9 @@
 #include "MeshGeometry.h"
 
-MeshGeometry::MeshGeometry(vector<vec3>* vertices, vector<vec4>* colors, vector<uint32_t>* indexes) : MeshGeometry(vertices, colors, indexes, NULL, NULL) {
-}
+MeshGeometry::MeshGeometry(vector<vec3>* vertices, vector<vec4>* colors, vector<uint32_t>* indexes, vector<vec3>* normals, vector<vec2>* textureCoordinates):
+	MeshGeometry(vertices, colors, indexes, normals, textureCoordinates, vec3(0), vec4(1)) { }
 
-MeshGeometry::MeshGeometry(vector<vec3>* vertices, vector<vec4>* colors, vector<uint32_t>* indexes, vector<vec3>* normals) : MeshGeometry(vertices, colors, indexes, normals, NULL) {
-}
-
-MeshGeometry::MeshGeometry(vector<vec3>* vertices, vector<vec4>* colors, vector<uint32_t>* indexes, vector<vec2>* textureCoordinates) : MeshGeometry(vertices, colors, indexes, NULL, textureCoordinates) {
-}
-
-MeshGeometry::MeshGeometry(vector<vec3>* vertices, vector<vec4>* colors, vector<uint32_t>* indexes, vector<vec3>* normals, vector<vec2>* textureCoordinates) {
+MeshGeometry::MeshGeometry(vector<vec3>* vertices, vector<vec4>* colors, vector<uint32_t>* indexes, vector<vec3>* normals, vector<vec2>* textureCoordinates, vec3 anchor, vec4 anchorColor) {
 	if (vertices->size() <= 0 || vertices->size() != colors->size() ||
 		(normals->size() != NULL && normals->size() != vertices->size()) ||
 		(textureCoordinates->size() != NULL && textureCoordinates->size() != vertices->size())
@@ -38,6 +32,10 @@ MeshGeometry::MeshGeometry(vector<vec3>* vertices, vector<vec4>* colors, vector<
 			this->textureCoordinates.push_back(textureCoordinates->at(i));
 		}
 	}
+
+	// Anchor handling
+	this->anchor = vec3(anchor);
+	this->anchorColor = vec4(anchorColor);
 }
 
 unsigned int MeshGeometry::getNumVertices() {

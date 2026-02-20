@@ -38,6 +38,14 @@ float AppSettings::getCurrentMouseSensitivity() {
 	return this->_mouseSensitivity;
 }
 
+bool AppSettings::isActive() {
+	return this->_isActive;
+}
+
+bool AppSettings::isAnchorActive() {
+	return this->_anchor;
+}
+
 void AppSettings::toggleWireframe() {
 	this->_wireframeActiveChanged = true;
 	this->_wireframeActive = !this->_wireframeActive;
@@ -70,4 +78,12 @@ void AppSettings::setCameraSpeed(float newCameraSpeed) {
 void AppSettings::setMouseSensitivity(float newMouseSensitivity) {
 	if (newMouseSensitivity == this->_mouseSensitivity) return;
 	this->_mouseSensitivity = glm::clamp(newMouseSensitivity, MOUSE_SENSITIVITY_MIN, MOUSE_SENSITIVITY_MAX);
+}
+
+void AppSettings::exit() {
+	this->_isActive = false;
+}
+
+void AppSettings::toggleAnchor() {
+	this->_anchor = !this->_anchor;
 }

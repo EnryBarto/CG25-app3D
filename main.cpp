@@ -44,7 +44,7 @@ int main() {
 	scene = new Scene(windowManager, currentSettings, shaders->at(BASIC_SHADER_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
 	camera = scene->getCamera();
 	
-	while (!glfwWindowShouldClose(window)) {
+	while (!glfwWindowShouldClose(window) && currentSettings->isActive()) {
 
 		currentTime = glfwGetTime();
 		deltaTime = currentTime - lastFrame;
@@ -61,8 +61,8 @@ int main() {
 
 		scene->render();
 
-		if (currentSettings->isShowingCommands()) show_commands();
 		if (currentSettings->isPaused()) show_settings();
+		if (currentSettings->isShowingCommands()) show_commands();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

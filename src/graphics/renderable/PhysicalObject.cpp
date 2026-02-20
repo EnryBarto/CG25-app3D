@@ -18,8 +18,8 @@ void PhysicalObject::computeModelMatrix() {
 	this->modelMatrix = scale(this->modelMatrix, this->scaleVector);
 }
 
-void PhysicalObject::render(const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos) {
+void PhysicalObject::render(const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor) {
 	for (Mesh* m : this->meshes) {
-		m->render(this->modelMatrix, viewMatrix, projectionMatrix, camPos);
+		m->render(this->modelMatrix, viewMatrix, projectionMatrix, camPos, showAnchor);
 	}
 }

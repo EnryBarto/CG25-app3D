@@ -11,7 +11,7 @@ class PhysicalObject {
 		PhysicalObject(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
 		void addMesh(Mesh* toAdd);
 		void computeModelMatrix();
-		void render(const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos);
+		void render(const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor);
 
 	private:
 		vector<Mesh*> meshes;
