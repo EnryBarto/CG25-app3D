@@ -10,6 +10,7 @@ class Mesh {
 		~Mesh();
 		void computeModelMatrix();
 		void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor);
+		float distanceFromAnchor(vec3 point, vec3 direction, mat4 worldModelMatrix);
 
 	private:
 		RenderableObject* gpuObject;

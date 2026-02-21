@@ -26,7 +26,7 @@ class AppSettings {
 	private:
 		bool _wireframeActive = false;
 		bool _wireframeActiveChanged = false;
-		bool _showingCommands = true;
+		bool _showingCommands = false;
 		float _fov = PROJ_FOVY_DEFAULT;
 		bool _fovChanged = false;
 		float _cameraSpeed = CAMERA_SPEED_DEFAULT;

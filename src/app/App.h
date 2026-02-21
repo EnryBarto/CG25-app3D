@@ -8,6 +8,7 @@
 #include "AppState.h"
 #include "../graphics/Camera.h"
 #include <string>
+#include <stack>
 
 class App {
 	public:
@@ -22,12 +23,22 @@ class App {
 		WindowManager* getWindowManager();
 		Scene* getScene();
 		AppSettings* getAppSettings();
+		void escPressed();
+
+		// Object and mesh selection
+		void pick(vec2 clickPosition);
+		void setSelectedObject(PhysicalObject* selected);
+		void setSelectedMesh(PhysicalObject* selectedObject, string selectedMesh);
+		void resetObjectSelection();
+		void resetMeshSelection();
 
 	private:
 		map<string, Shader*>* shaders;
-		AppState currentState;
-		AppState precState;
 		AppSettings* currentSettings;
 		WindowManager* windowManager;
 		Scene* scene;
+		AppState nextState;
+		AppState currentState;
+		stack<AppState> statesHistory;
+		void setNextStateFromHistory();
 };

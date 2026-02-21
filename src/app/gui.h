@@ -8,6 +8,8 @@
 void show_commands();
 void show_settings();
 void show_status_bar();
+ImVec2 show_object_inspector();
+void show_mesh_inspector();
 void close_gui();
 
 #endif

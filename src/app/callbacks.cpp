@@ -16,6 +16,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			break;
 
         case GLFW_KEY_ESCAPE:
+            app.escPressed();
+            break;
+
+        case GLFW_KEY_P:
             app.togglePause();
             break;
 
@@ -29,9 +33,6 @@ void cursor_position_callback(GLFWwindow* window, double xPosIn, double yPosIn) 
 
     if (app.getCurrentAppState() != AppState::NAVIGATION) return;
     
-    // When the mouse is captured, hide it
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
     int width, height;
     glfwGetWindowSize(window, &width, &height);
     yPosIn = height - yPosIn; // Inverts the zero of the y-axis
@@ -52,6 +53,13 @@ void cursor_position_callback(GLFWwindow* window, double xPosIn, double yPosIn) 
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
 
+    if (action == GLFW_RELEASE || app.getCurrentAppState() != AppState::PICKING) return;
+    
+    // Retrieve mouse position
+    double xPos, yPos;
+    glfwGetCursorPos(window, &xPos, &yPos);
+
+    app.pick(vec2(xPos, yPos));
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int newWidth, int newHeight) {

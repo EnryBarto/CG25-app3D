@@ -5,12 +5,13 @@
 extern App app;
 
 void show_commands() {
-    ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_FirstUseEver);
 
     ImGui::Begin("Commands", NULL, ImGuiWindowFlags_AlwaysAutoResize);
 
     ImGui::Text("----- COMMANDS -----");
     ImGui::Text("Space bar: Toggle Picking / Navigation modes");
+    ImGui::Text("ESC: Go back to previous mode");
     ImGui::NewLine();
     ImGui::Text("----- CAMERA COMMANDS -----");
     ImGui::Text("W: Move forward");
@@ -23,14 +24,14 @@ void show_commands() {
     ImGui::Text("----- WINDOW COMMANDS -----");
     ImGui::Text("F1: Toggle commands window");
     ImGui::Text("F11: Toggle fullscreen mode");
-    ImGui::Text("ESC: Toggle pause and open / close settings");
+    ImGui::Text("P: Toggle pause and open / close settings");
     ImGui::NewLine();
 
     ImGui::End();
 }
 
 void show_settings() {
-    ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Always);
+    ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
 
     ImGui::Begin("PAUSE - Settings", NULL,
         ImGuiWindowFlags_NoResize
@@ -55,6 +56,8 @@ void show_settings() {
     if (ImGui::SliderFloat(" Mouse Sensitivity", &tempMouseSensitivity, MOUSE_SENSITIVITY_MIN, MOUSE_SENSITIVITY_MAX)) app.getAppSettings()->setMouseSensitivity(tempMouseSensitivity);
 
     ImGui::NewLine();
+    ImGui::Text("Press F1 to show the helper"); 
+    ImGui::NewLine();
     if (ImGui::Button("Resume")) app.togglePause();
     if (ImGui::Button("Quit")) app.close();
     ImGui::NewLine();
@@ -64,9 +67,9 @@ void show_settings() {
 
 void show_status_bar() {
 
-    ImGui::SetNextWindowSize(ImVec2(app.getWindowManager()->getCurrentResolution().x - STATUS_BAR_PADDING * 2, 0.0f));
+    ImGui::SetNextWindowSize(ImVec2(app.getWindowManager()->getCurrentResolution().x - GUI_WINDOWS_PADDING * 2, 0.0f));
     ImGui::SetNextWindowPos(
-        ImVec2(STATUS_BAR_PADDING, app.getWindowManager()->getCurrentResolution().y - STATUS_BAR_PADDING),
+        ImVec2(GUI_WINDOWS_PADDING, app.getWindowManager()->getCurrentResolution().y - GUI_WINDOWS_PADDING),
         ImGuiCond_Always,
         ImVec2(0.0f, 1.0f) // Consider as Y pivot the end of the window
     );
@@ -84,6 +87,65 @@ void show_status_bar() {
         cameraPos.x, cameraPos.y, cameraPos.z,
         appStateToString(app.getCurrentAppState()),
         ImGui::GetIO().Framerate);
+    ImGui::End();
+}
+
+ImVec2 show_object_inspector() {
+
+    if (app.getScene()->getSelectedObject() == nullptr) return ImVec2(0, 0);
+
+    ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
+
+    ImGui::Begin("OBJECT INSPECTOR", NULL,
+        ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoCollapse
+        | ImGuiWindowFlags_AlwaysAutoResize
+        | ImGuiWindowFlags_NoMove
+    );
+
+    ImGui::Text("Name: %s", app.getScene()->getSelectedObject()->getName());
+    ImGui::Text("                        "); // Sets the min width of the window
+
+    ImGui::Text("Meshes:");
+
+    PhysicalObject* selectedObject = app.getScene()->getSelectedObject();
+
+    for (auto m : *selectedObject->getMeshes()) {
+        if (ImGui::Button((m.first + " ->").c_str())) app.setSelectedMesh(selectedObject, m.first);
+    }
+
+    ImGui::NewLine();
+    if (ImGui::Button("Close")) app.resetObjectSelection();
+    ImGui::NewLine();
+    
+    ImVec2 windowSize = ImGui::GetWindowSize();
+    ImGui::End();
+
+    return windowSize;
+}
+
+void show_mesh_inspector() {
+
+    ImVec2 objectInspectorSize = show_object_inspector();
+
+    if (get<1>(app.getScene()->getSelectedMesh()) == nullptr) return;
+
+    ImGui::SetNextWindowPos(ImVec2(objectInspectorSize.x + 2 * GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
+
+    ImGui::Begin("MESH INSPECTOR", NULL,
+        ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoCollapse
+        | ImGuiWindowFlags_AlwaysAutoResize
+        | ImGuiWindowFlags_NoMove
+    );
+
+    ImGui::Text("Mesh name: %s", get<0>(app.getScene()->getSelectedMesh()));
+    ImGui::Text("                        "); // Sets the min width of the window
+    
+    ImGui::NewLine();
+    if (ImGui::Button("Close")) app.resetMeshSelection();
+    ImGui::NewLine();
+    
     ImGui::End();
 }
 

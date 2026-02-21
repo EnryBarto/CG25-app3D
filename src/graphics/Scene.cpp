@@ -1,4 +1,6 @@
 #include "Scene.h"
+#include <limits>
+#include <algorithm>
 
 Scene::Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory) {
 	this->windowManager = windowManager;
@@ -31,8 +33,8 @@ Camera* Scene::getCamera() {
 
 void Scene::update(float deltaTime, AppState currentState) {
 
-	// Updates to check only if the app isn't paused
-	if (currentState != AppState::PAUSED) {
+	// Activate camera moving only when in navigation or picking
+	if (currentState == AppState::NAVIGATION || currentState == AppState::PICKING) {
 		if (glfwGetKey(this->window, GLFW_KEY_A) == GLFW_PRESS) this->camera->moveLeft(deltaTime);
 		if (glfwGetKey(this->window, GLFW_KEY_D) == GLFW_PRESS) this->camera->moveRight(deltaTime);
 		if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_PRESS) this->camera->moveForward(deltaTime);
@@ -64,4 +66,98 @@ void Scene::render() {
 	for (PhysicalObject* o : this->objects) {
 		o->render(v, p, c, anchor);
 	}
+}
+
+vec3 Scene::getRayFromMouseClick(vec2 clickPosition) {
+	clickPosition.y = this->windowManager->getCurrentResolution().y - clickPosition.y;
+
+	// Map viewport coordinates [0,width], [0,height] in NDC [-1,1]  
+	clickPosition = 2.0f * clickPosition / this->windowManager->getCurrentResolution() - 1.0f;
+
+	//Nello spazio di clippling z più piccola, oggetto più vicino all'osservatore, quindi si pone la z a - 1, 
+	// posizionando il punto sul piano vicino del frustum.
+	// Questo significa che il raggio che stiamo calcolando partirà dalla telecamera e si dirigerà 
+	// verso il punto più vicino visibile sullo schermo.
+	
+	// Coordinate nel clip space 
+	vec4 clickClipSpace = vec4(clickPosition.x, clickPosition.y, -1, 1);
+
+	// Le coordinate nell' eye space si ottengono premoltiplicando per l'inversa della matrice Projection.
+	vec4 viewModelp = inverse(this->projection->getProjectionMatrix()) * clickClipSpace;
+
+	// le coordinate nel world space: si ottengono premoltiplicando per l'inversa della matrice di Vista 
+
+	viewModelp.w = 1;
+	vec4 Pw = inverse(this->camera->getViewMatrix()) * viewModelp;
+
+	//Il vettore del raggio viene calcolato sottraendo la posizione della telecamera SetupTelecamera.position dal punto Pw nel world space.
+	return normalize(vec3(Pw) - this->camera->getPosition());
+}
+
+tuple<PhysicalObject*, string> Scene::mousePicked(vec2 clickPosition) {
+	vec3 direction = this->getRayFromMouseClick(clickPosition);
+	float minDist = std::numeric_limits<float>::max();
+	PhysicalObject* _selectedObj = nullptr;
+	string _selectedMesh = "";
+	for (PhysicalObject* o : this->objects) {
+		tuple<string, float> mesh = o->selectNearestMesh(this->camera->getPosition(), direction);
+		if (get<0>(mesh) != "" && get<1>(mesh) < minDist) {
+			_selectedObj = o;
+			_selectedMesh = get<0>(mesh);
+			minDist = get<1>(mesh);
+		}
+	}
+	return make_tuple(_selectedObj, _selectedMesh);
+}
+
+PhysicalObject* Scene::getSelectedObject() {
+	return this->selectedObject;
+}
+
+tuple<string, Mesh*> Scene::getSelectedMesh() {
+	if (this->selectedMesh == "") return { "", nullptr };
+	
+	return {this->selectedMesh, this->selectedObject->getMeshes()->at(this->selectedMesh)};
+}
+
+bool Scene::setSelectedObject(PhysicalObject* object) {
+	auto iterator = std::find(this->objects.begin(), this->objects.end(), object);
+
+	if (iterator != this->objects.end()) {
+		this->selectedObject = object;
+		return true;
+	} else {
+		this->resetObjectSelection();
+		return false;
+	}
+}
+
+bool Scene::setSelectedMesh(PhysicalObject* object, string mesh) {
+
+	if (this->setSelectedObject(object)) {
+		map<string, Mesh*>* meshes = this->selectedObject->getMeshes();
+
+		auto it = meshes->find(mesh);
+
+		if (it != meshes->end()) {
+			this->selectedMesh = mesh;
+			return true;
+		} else {
+			this->resetObjectSelection();
+			return false;
+		}
+
+	} else {
+		this->resetObjectSelection();
+		return false;
+	}
+}
+
+void Scene::resetMeshSelection() {
+	this->selectedMesh = "";
+}
+
+void Scene::resetObjectSelection() {
+	this->selectedMesh = "";
+	this->selectedObject = nullptr;
 }

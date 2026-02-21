@@ -23,9 +23,9 @@ App::App() {
 	this->currentSettings = new AppSettings();
 	this->scene = new Scene(windowManager, currentSettings, shaders->at(BASIC_SHADER_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
 
-	this->currentState = AppState::PAUSED;
-	this->precState = AppState::NAVIGATION;
-	glfwSetInputMode(this->windowManager->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	this->nextState = AppState::PAUSED;
+	this->currentState = AppState::NAVIGATION;
+	this->statesHistory.push(AppState::NAVIGATION);
 }
 
 App::~App() {
@@ -47,6 +47,17 @@ App::~App() {
 
 void App::update(float deltaTime) {
 	if (glfwWindowShouldClose(this->windowManager->getWindow())) this->close();
+	if (this->currentState != this->nextState) {
+		switch (this->nextState) {
+			case AppState::NAVIGATION:
+				glfwSetInputMode(this->windowManager->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+				break;
+			default:
+				glfwSetInputMode(this->windowManager->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+				break;
+		}
+		this->currentState = this->nextState;
+	}
 	scene->update((float)deltaTime, this->currentState);
 }
 
@@ -61,6 +72,10 @@ void App::render() {
 	this->scene->render();
 
 	show_status_bar();
+	if (this->currentState != AppState::PAUSED) {
+		if (this->currentState == AppState::EDITING_OBJ) show_object_inspector();
+		if (this->currentState == AppState::EDITING_MESH) show_mesh_inspector();
+	}
 	if (this->currentState == AppState::PAUSED) show_settings();
 	if (this->currentSettings->isShowingCommands()) show_commands();
 
@@ -72,7 +87,7 @@ void App::render() {
 }
 
 void App::close() {
-	this->currentState = AppState::CLOSED;
+	this->nextState = AppState::CLOSED;
 }
 
 AppState App::getCurrentAppState() {
@@ -82,13 +97,12 @@ AppState App::getCurrentAppState() {
 void App::togglePause() {
 	switch (this->currentState) {
 		case AppState::PAUSED:
-			this->currentState = this->precState;
-			this->precState = AppState::PAUSED;
+			this->nextState = this->statesHistory.top();
+			this->statesHistory.pop();
 			break;
 		default:
-			this->precState = this->currentState;
-			this->currentState = AppState::PAUSED;
-			glfwSetInputMode(this->windowManager->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			this->nextState = AppState::PAUSED;
+			this->statesHistory.push(this->currentState);
 			break;
 	}
 }
@@ -96,16 +110,19 @@ void App::togglePause() {
 void App::toggleMode() {
 	switch (this->currentState) {
 		case AppState::NAVIGATION:
-			this->currentState = AppState::PICKING;
-			this->precState = AppState::NAVIGATION;
-			glfwSetInputMode(this->windowManager->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			this->nextState = AppState::PICKING;
 			break;
 		case AppState::PICKING:
-			this->currentState = AppState::NAVIGATION;
-			this->precState = AppState::PICKING;
+			this->nextState = AppState::NAVIGATION;
 			break;
 		default:
 			break;
+	}
+}
+
+void App::escPressed() {
+	if (!this->statesHistory.empty()) {
+		this->setNextStateFromHistory();
 	}
 }
 
@@ -119,4 +136,42 @@ Scene* App::getScene() {
 
 AppSettings* App::getAppSettings() {
 	return this->currentSettings;
+}
+
+void App::setSelectedObject(PhysicalObject* selected) {
+	if (this->scene->setSelectedObject(selected)) {
+		this->statesHistory.push(this->currentState);
+		this->nextState = AppState::EDITING_OBJ;
+	}
+}
+
+void App::setSelectedMesh(PhysicalObject* selectedObject, string selectedMesh) {
+	if (this->scene->setSelectedMesh(selectedObject, selectedMesh)) {
+		if (this->currentState != AppState::EDITING_OBJ && this->currentState != AppState::EDITING_MESH) this->statesHistory.push(this->currentState);
+		if (this->currentState != AppState::EDITING_MESH) this->statesHistory.push(AppState::EDITING_OBJ);
+		this->nextState = AppState::EDITING_MESH;
+	}
+}
+
+void App::pick(vec2 clickPosition) {
+	tuple<PhysicalObject*, string> selected = this->scene->mousePicked(clickPosition);
+	if (get<0>(selected) != nullptr && get<1>(selected) != "") {
+		this->setSelectedMesh(get<0>(selected), get<1>(selected));
+	}
+}
+
+void App::resetObjectSelection() {
+	if (this->currentState == AppState::EDITING_MESH) this->statesHistory.pop();
+	this->setNextStateFromHistory();
+	this->scene->resetObjectSelection();
+}
+
+void App::resetMeshSelection() {
+	this->setNextStateFromHistory();
+	this->scene->resetMeshSelection();
+}
+
+void App::setNextStateFromHistory() {
+	this->nextState = this->statesHistory.top();
+	this->statesHistory.pop();
 }
