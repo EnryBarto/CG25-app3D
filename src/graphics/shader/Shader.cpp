@@ -18,6 +18,10 @@ Shader::Shader(const char* name, const char* vertexShader, const char* fragmentS
 	this->name = std::string(name);
 }
 
+Shader::~Shader() {
+	glDeleteProgram(this->getProgramId());
+}
+
 std::string Shader::getName() {
 	return name;
 }

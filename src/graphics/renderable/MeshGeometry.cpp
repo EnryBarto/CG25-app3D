@@ -45,3 +45,7 @@ unsigned int MeshGeometry::getNumVertices() {
 unsigned int MeshGeometry::getNumIndexes() {
 	return (unsigned int)this->indexes.size();
 }
+
+vec3 MeshGeometry::getAnchor() {
+	return vec3(this->anchor);
+}

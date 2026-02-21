@@ -1,32 +1,34 @@
 #include "callbacks.h"
+#include "App.h" 
 
-extern WindowManager* windowManager;
-extern Camera* camera;
-extern AppSettings* currentSettings;
+extern App app;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (action == GLFW_RELEASE) return;
 
 	switch (key) {
         case GLFW_KEY_F1:
-            currentSettings->toggleShowingCommands();
+            app.getAppSettings()->toggleShowingCommands();
             break;
 
 		case GLFW_KEY_F11:
-			windowManager->toggleFullScreen();
+			app.getWindowManager()->toggleFullScreen();
 			break;
 
         case GLFW_KEY_ESCAPE:
-            currentSettings->togglePause();
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            app.togglePause();
+            break;
+
+        case GLFW_KEY_SPACE:
+            app.toggleMode();
             break;
 	}
 }
 
 void cursor_position_callback(GLFWwindow* window, double xPosIn, double yPosIn) {
 
-    if (currentSettings->isPaused()) return;
-
+    if (app.getCurrentAppState() != AppState::NAVIGATION) return;
+    
     // When the mouse is captured, hide it
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -38,11 +40,11 @@ void cursor_position_callback(GLFWwindow* window, double xPosIn, double yPosIn) 
     float centerY = height / 2.0f;
 
     // Because the pointer is in the center of the screen, the movement is the distance between the center and the position of the mouse 
-    float xOffset = ((float)xPosIn - centerX) * currentSettings->getCurrentMouseSensitivity();
-    float yOffset = ((float)yPosIn - centerY) * currentSettings->getCurrentMouseSensitivity();
+    float xOffset = ((float)xPosIn - centerX) * app.getAppSettings()->getCurrentMouseSensitivity();
+    float yOffset = ((float)yPosIn - centerY) * app.getAppSettings()->getCurrentMouseSensitivity();
 
     // The movement of the mouse along the x axis, causes the rotation around the y axis and vice versa
-    camera->changeDirection(yOffset, xOffset);
+    app.getScene()->getCamera()->changeDirection(yOffset, xOffset);
 
     // Set the cursor at the center of the screen
     glfwSetCursorPos(window, (int)centerX, (int)centerY);
@@ -53,5 +55,5 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int newWidth, int newHeight) {
-	windowManager->frameBufferChanged();
+	app.getWindowManager()->frameBufferChanged();
 }

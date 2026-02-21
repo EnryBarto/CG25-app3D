@@ -12,6 +12,11 @@ Mesh::Mesh(MeshGeometry* geometry, Shader* basicShader, vec3 translation, vec3 r
 	this->computeModelMatrix();
 }
 
+Mesh::~Mesh() {
+    delete this->gpuObject;
+    delete this->geometry;
+}
+
 void Mesh::computeModelMatrix() {
 	this->modelMatrix = translate(mat4(1.0), this->translation);
 	if (this->angle != 0 && this->rotationAxis != vec3(0)) this->modelMatrix = rotate(this->modelMatrix, radians(this->angle), this->rotationAxis);

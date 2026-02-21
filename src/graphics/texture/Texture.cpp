@@ -10,6 +10,10 @@ Texture::Texture(const char* name, vector<string> facesPath) {
 	this->name = std::string(name);
 }
 
+Texture::~Texture() {
+	glDeleteTextures(1, &this->programId);
+}
+
 std::string Texture::getName() {
 	return name;
 }

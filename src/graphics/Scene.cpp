@@ -17,14 +17,22 @@ Scene::Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader*
 	this->objects.push_back(this->objectFactory->createSimpleCylinder(vec3(3, 0, 2)));
 }
 
+Scene::~Scene() {
+	for (PhysicalObject* o : this->objects) delete o;
+	delete this->camera;
+	delete this->projection;
+	delete this->skybox;
+	delete this->objectFactory;
+}
+
 Camera* Scene::getCamera() {
 	return this->camera;
 }
 
-void Scene::update(float deltaTime) {
+void Scene::update(float deltaTime, AppState currentState) {
 
 	// Updates to check only if the app isn't paused
-	if (!currentSettings->isPaused()) {
+	if (currentState != AppState::PAUSED) {
 		if (glfwGetKey(this->window, GLFW_KEY_A) == GLFW_PRESS) this->camera->moveLeft(deltaTime);
 		if (glfwGetKey(this->window, GLFW_KEY_D) == GLFW_PRESS) this->camera->moveRight(deltaTime);
 		if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_PRESS) this->camera->moveForward(deltaTime);

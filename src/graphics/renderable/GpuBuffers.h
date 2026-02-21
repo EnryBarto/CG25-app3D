@@ -9,6 +9,7 @@
 class GpuBuffers {
 
 	public:
+        virtual ~GpuBuffers();
         void setModes(GLenum renderMode);
         void initVao(MeshGeometry* geometry);
         void setShader(Shader* shader);
@@ -28,11 +29,11 @@ class GpuBuffers {
 
         // GPU buffers location
         GLuint vao = 0;     // Vertex Array Object (VAO) identifier
-        GLuint vboVertices; // Vertex Buffer Object (VBO) identifier containing the object's vertex coordinates
-        GLuint vboColors;   // VBO identifier containing the object's vertex colors
-        GLuint vboNormals;  // VBO identifier containing the vertex normals
-        GLuint vboTexture;  // VBO identifier containing the texture coordinates for the mesh vertices
-        GLuint eboIndexes;  // Element Buffer Object (EBO) identifier
+        GLuint vboVertices = 0; // Vertex Buffer Object (VBO) identifier containing the object's vertex coordinates
+        GLuint vboColors = 0;   // VBO identifier containing the object's vertex colors
+        GLuint vboNormals = 0;  // VBO identifier containing the vertex normals
+        GLuint vboTexture = 0;  // VBO identifier containing the texture coordinates for the mesh vertices
+        GLuint eboIndexes = 0;  // Element Buffer Object (EBO) identifier
 
         GLenum drawMode = GL_TRIANGLES; // Vertex interpretation mode for the rendering stage (ex. GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, GL_LINES, GL_POINTS)
 

@@ -4,10 +4,10 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
-#include "AppSettings.h"
 
 void show_commands();
 void show_settings();
+void show_status_bar();
 void close_gui();
 
 #endif

@@ -1,5 +1,18 @@
 #include "GpuBuffers.h"
 
+GpuBuffers::~GpuBuffers() {
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	glDeleteVertexArrays(1, &this->vao);
+	glDeleteBuffers(1, &this->vboVertices);
+	glDeleteBuffers(1, &this->vboColors);
+	glDeleteBuffers(1, &this->vboNormals);
+	glDeleteBuffers(1, &this->vboTexture);
+	glDeleteBuffers(1, &eboIndexes);
+}
+
 void GpuBuffers::setModes(GLenum renderMode) {
 	this->drawMode = renderMode;
 }

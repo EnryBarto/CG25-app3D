@@ -12,7 +12,7 @@ class WindowManager {
 		bool isFullScreen();
 		float getAspectRatio();
 		void toggleFullScreen();
-
+		vec2 getCurrentResolution();
 
 	private:
 		GLFWwindow* window;

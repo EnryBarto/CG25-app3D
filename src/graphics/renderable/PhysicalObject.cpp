@@ -8,6 +8,10 @@ PhysicalObject::PhysicalObject(vec3 translation, vec3 rotationAxis, float angle,
 	this->computeModelMatrix();
 }
 
+PhysicalObject::~PhysicalObject() {
+	for (Mesh* m : this->meshes) delete m;
+}
+
 void PhysicalObject::addMesh(Mesh* toAdd) {
 	this->meshes.push_back(toAdd);
 }

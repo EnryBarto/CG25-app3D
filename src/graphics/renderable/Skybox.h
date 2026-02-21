@@ -8,6 +8,7 @@
 class Skybox {
 	public:
 		Skybox(Shader* shader, string textureDirectory);
+        ~Skybox();
 		void render(const mat4& viewMatrix, const mat4& projectionMatrix);
 
 	private:

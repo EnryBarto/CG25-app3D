@@ -8,10 +8,6 @@ bool AppSettings::isWireframeActiveChanged() {
 	return this->_wireframeActiveChanged;
 }
 
-bool AppSettings::isPaused() {
-	return this->_pause;
-}
-
 bool AppSettings::isShowingCommands() {
 	return this->_showingCommands;
 }
@@ -38,10 +34,6 @@ float AppSettings::getCurrentMouseSensitivity() {
 	return this->_mouseSensitivity;
 }
 
-bool AppSettings::isActive() {
-	return this->_isActive;
-}
-
 bool AppSettings::isAnchorActive() {
 	return this->_anchor;
 }
@@ -53,10 +45,6 @@ void AppSettings::toggleWireframe() {
 
 void AppSettings::setWireframeUnchanged() {
 	this->_wireframeActiveChanged = false;
-}
-
-void AppSettings::togglePause() {
-	this->_pause = !this->_pause;
 }
 
 void AppSettings::toggleShowingCommands() {
@@ -78,10 +66,6 @@ void AppSettings::setCameraSpeed(float newCameraSpeed) {
 void AppSettings::setMouseSensitivity(float newMouseSensitivity) {
 	if (newMouseSensitivity == this->_mouseSensitivity) return;
 	this->_mouseSensitivity = glm::clamp(newMouseSensitivity, MOUSE_SENSITIVITY_MIN, MOUSE_SENSITIVITY_MAX);
-}
-
-void AppSettings::exit() {
-	this->_isActive = false;
 }
 
 void AppSettings::toggleAnchor() {

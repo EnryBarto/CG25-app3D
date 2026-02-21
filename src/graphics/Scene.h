@@ -7,12 +7,15 @@
 #include "renderable/PhysicalObject.h"
 #include "renderable/PhysicalObjectFactory.h"
 #include "../graphics/WindowManager.h"
+#include "../app/AppSettings.h"
+#include "../app/AppState.h"
 
 class Scene {
 	public:
 		Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory);
+		~Scene();
 		Camera* getCamera();
-		void update(float deltaTime);
+		void update(float deltaTime, AppState currentState);
 		void render();
 
 	private:

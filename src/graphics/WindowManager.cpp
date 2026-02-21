@@ -42,9 +42,8 @@ GLFWwindow* WindowManager::getWindow() {
 
 void WindowManager::frameBufferChanged() {
     // We want to use the full screen but mantaining the proportions
-    int newWidth, newHeight;
-    glfwGetWindowSize(this->window, &newWidth, &newHeight);
-    glViewport(0, 0, newWidth, newHeight);
+    vec2 res = this->getCurrentResolution();
+    glViewport(0, 0, (int)res.x, (int)res.y);
     this->_frameBufferChanged = true;
 }
 
@@ -59,9 +58,8 @@ bool WindowManager::isFullScreen() {
 }
 
 float WindowManager::getAspectRatio() {
-    int width, height;
-    glfwGetWindowSize(this->window, &width, &height);
-    return (float)width / (float)height;
+    vec2 res = this->getCurrentResolution();
+    return res.x / res.y;
 }
 
 void WindowManager::toggleFullScreen() {
@@ -81,6 +79,12 @@ void WindowManager::toggleFullScreen() {
         glfwSetWindowMonitor(this->window, currentMonitor, 0, 0, mode->width, mode->height, mode->refreshRate);
     }
     this->_fullScreen = !this->_fullScreen;
+}
+
+vec2 WindowManager::getCurrentResolution() {
+    int width, height;
+    glfwGetWindowSize(this->window, &width, &height);
+    return vec2(width, height);
 }
 
 GLFWmonitor* WindowManager::getCurrentMonitor() {

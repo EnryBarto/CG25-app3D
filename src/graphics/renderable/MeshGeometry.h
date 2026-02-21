@@ -18,6 +18,7 @@ class MeshGeometry {
         // GET
         unsigned int getNumVertices();
         unsigned int getNumIndexes();
+        vec3 getAnchor();
 
     private:
         vector<vec3> vertices;  // Vector containing the object's vertex coordinates. Each element is a vec3 (x, y, z).

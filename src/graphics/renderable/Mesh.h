@@ -7,6 +7,7 @@
 class Mesh {
 	public:
 		Mesh(MeshGeometry* geometry, Shader* basicShader, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
+		~Mesh();
 		void computeModelMatrix();
 		void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor);
 
