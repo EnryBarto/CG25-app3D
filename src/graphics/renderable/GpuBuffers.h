@@ -15,6 +15,7 @@ class GpuBuffers {
         void setShader(Shader* shader);
         void setTexture(Texture* texture);
         void unsetTexture();
+        Shader* getCurrentShader();
 
     protected:
 

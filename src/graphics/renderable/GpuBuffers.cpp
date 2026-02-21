@@ -117,3 +117,7 @@ void GpuBuffers::setTexture(Texture* texture) {
 void GpuBuffers::unsetTexture() {
 	this->texture = nullptr;
 }
+
+Shader* GpuBuffers::getCurrentShader() {
+	return this->shader;
+}

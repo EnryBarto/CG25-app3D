@@ -92,7 +92,9 @@ void show_status_bar() {
 
 ImVec2 show_object_inspector() {
 
-    if (app.getScene()->getSelectedObject() == nullptr) return ImVec2(0, 0);
+    PhysicalObject* selectedObj = app.getScene()->getSelectedObject();
+    
+    if (selectedObj == nullptr) return ImVec2(0, 0);
 
     ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
 
@@ -103,15 +105,31 @@ ImVec2 show_object_inspector() {
         | ImGuiWindowFlags_NoMove
     );
 
-    ImGui::Text("Name: %s", app.getScene()->getSelectedObject()->getName());
-    ImGui::Text("                        "); // Sets the min width of the window
+    ImGui::Text("Selected object: %s", selectedObj->getName());
+    ImGui::NewLine();
 
+    vec3 translation = selectedObj->getTranslationVector();
+    vec3 rotationAxis = selectedObj->getRotationAxis();
+    float rotationAngle = selectedObj->getRotationAngle();
+    vec3 scaleVector = selectedObj->getScaleVector();
+
+    ImGui::Text("Edit model matrix:");
+    bool changed = false;
+
+    changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
+    changed |= ImGui::DragFloat3(" Rotation axis", glm::value_ptr(rotationAxis), 0.1f);
+    changed |= ImGui::DragFloat(" Rotation °", &rotationAngle, 0.1f);
+    changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(scaleVector), 0.1f);
+
+    if (changed) {
+        selectedObj->updateModelMatrix(translation, rotationAxis, rotationAngle, scaleVector);
+    }
+
+    ImGui::NewLine();
     ImGui::Text("Meshes:");
 
-    PhysicalObject* selectedObject = app.getScene()->getSelectedObject();
-
-    for (auto m : *selectedObject->getMeshes()) {
-        if (ImGui::Button((m.first + " ->").c_str())) app.setSelectedMesh(selectedObject, m.first);
+    for (auto m : *selectedObj->getMeshes()) {
+        if (ImGui::Button((m.first + " ->").c_str())) app.setSelectedMesh(selectedObj, m.first);
     }
 
     ImGui::NewLine();
@@ -128,7 +146,8 @@ void show_mesh_inspector() {
 
     ImVec2 objectInspectorSize = show_object_inspector();
 
-    if (get<1>(app.getScene()->getSelectedMesh()) == nullptr) return;
+    Mesh* selectedMesh = get<1>(app.getScene()->getSelectedMesh());
+    if (selectedMesh == nullptr) return;
 
     ImGui::SetNextWindowPos(ImVec2(objectInspectorSize.x + 2 * GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
 
@@ -139,9 +158,48 @@ void show_mesh_inspector() {
         | ImGuiWindowFlags_NoMove
     );
 
-    ImGui::Text("Mesh name: %s", get<0>(app.getScene()->getSelectedMesh()));
-    ImGui::Text("                        "); // Sets the min width of the window
-    
+    ImGui::Text("Selected mesh: %s", get<0>(app.getScene()->getSelectedMesh()));
+    ImGui::NewLine();
+
+    map<string, Shader*>* shaders = app.getShaders();
+    Shader* currentShader = selectedMesh->getCurrentShader();
+    const char* previewName = "(None)";
+
+    if (shaders != nullptr) {
+        for (const auto& s : *shaders) {
+            if (s.second == currentShader) {
+                previewName = s.first.c_str();
+                break;
+            }
+        }
+    }
+    if (ImGui::BeginCombo(" Shader", previewName) && shaders != NULL) {
+        for (const auto& s : *shaders) {
+            bool isSelected = (currentShader == s.second);
+            if (ImGui::Selectable(s.first.c_str(), isSelected)) selectedMesh->setShader(s.second);
+            if (isSelected) ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+    }
+
+    vec3 translation = selectedMesh->getTranslationVector();
+    vec3 rotationAxis = selectedMesh->getRotationAxis();
+    float rotationAngle = selectedMesh->getRotationAngle();
+    vec3 scaleVector = selectedMesh->getScaleVector();
+
+    ImGui::NewLine();
+    ImGui::Text("Edit model matrix:");
+    bool changed = false;
+
+    changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
+    changed |= ImGui::DragFloat3(" Rotation axis", glm::value_ptr(rotationAxis), 0.1f);
+    changed |= ImGui::DragFloat(" Rotation °", &rotationAngle, 0.1f);
+    changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(scaleVector), 0.1f);
+
+    if (changed) {
+        selectedMesh->updateModelMatrix(translation, rotationAxis, rotationAngle, scaleVector);
+    }
+
     ImGui::NewLine();
     if (ImGui::Button("Close")) app.resetMeshSelection();
     ImGui::NewLine();

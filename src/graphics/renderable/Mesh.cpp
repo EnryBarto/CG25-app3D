@@ -5,11 +5,7 @@ Mesh::Mesh(MeshGeometry* geometry, Shader* basicShader, vec3 translation, vec3 r
 	this->gpuObject = new RenderableObject();
 	this->gpuObject->initVao(geometry);
 	this->gpuObject->setShader(basicShader);
-	this->translation = translation;
-	this->rotationAxis = rotationAxis;
-	this->angle = angle;
-	this->scaleVector = scaleVector;
-	this->computeModelMatrix();
+	this->updateModelMatrix(translation, rotationAxis, angle, scaleVector);
 }
 
 Mesh::~Mesh() {
@@ -17,9 +13,13 @@ Mesh::~Mesh() {
     delete this->geometry;
 }
 
-void Mesh::computeModelMatrix() {
+void Mesh::updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector) {
+    this->translation = translation;
+    this->rotationAxis = rotationAxis;
+    this->angle = angle;
+    this->scaleVector = scaleVector;
 	this->modelMatrix = translate(mat4(1.0), this->translation);
-	if (this->angle != 0 && this->rotationAxis != vec3(0)) this->modelMatrix = rotate(this->modelMatrix, radians(this->angle), this->rotationAxis);
+	if (this->angle != 0 && this->rotationAxis != vec3(0)) this->modelMatrix = rotate(this->modelMatrix, radians(this->angle), normalize(this->rotationAxis));
 	this->modelMatrix = scale(this->modelMatrix, this->scaleVector);
 }
 
@@ -65,4 +65,28 @@ float Mesh::distanceFromAnchor(vec3 point, vec3 direction, mat4 worldModelMatrix
     }
 
     return -1;
+}
+
+vec3 Mesh::getTranslationVector() {
+    return this->translation;
+}
+
+vec3 Mesh::getRotationAxis() {
+    return this->rotationAxis;
+}
+
+float Mesh::getRotationAngle() {
+    return this->angle;
+}
+
+vec3 Mesh::getScaleVector() {
+    return this->scaleVector;
+}
+
+void Mesh::setShader(Shader* shader) {
+    this->gpuObject->setShader(shader);
+}
+
+Shader* Mesh::getCurrentShader() {
+    return this->gpuObject->getCurrentShader();
 }

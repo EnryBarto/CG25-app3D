@@ -13,11 +13,15 @@ class PhysicalObject {
 		PhysicalObject(string name, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
 		~PhysicalObject();
 		void addMesh(Mesh* toAdd, string name);
-		void computeModelMatrix();
+		void updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
 		void render(const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor);
 		tuple<string, float> selectNearestMesh(vec3 point, vec3 direction);
 		string getName();
 		map<string, Mesh*>* getMeshes();
+		vec3 getTranslationVector();
+		vec3 getRotationAxis();
+		float getRotationAngle();
+		vec3 getScaleVector();
 
 	private:
 		map<string, Mesh*> meshes;

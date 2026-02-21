@@ -2,11 +2,7 @@
 
 PhysicalObject::PhysicalObject(string name, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector) {
 	this->name = name;
-	this->translation = translation;
-	this->rotationAxis = rotationAxis;
-	this->angle = angle;
-	this->scaleVector = scaleVector;
-	this->computeModelMatrix();
+	this->updateModelMatrix(translation, rotationAxis, angle, scaleVector);
 }
 
 PhysicalObject::~PhysicalObject() {
@@ -26,9 +22,13 @@ void PhysicalObject::addMesh(Mesh* toAdd, string name) {
 	this->meshes[finalName] = toAdd;
 }
 
-void PhysicalObject::computeModelMatrix() {
+void PhysicalObject::updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector) {
+	this->translation = translation;
+	this->rotationAxis = rotationAxis;
+	this->angle = angle;
+	this->scaleVector = scaleVector;
 	this->modelMatrix = translate(mat4(1.0), this->translation);
-	if (this->angle != 0 && this->rotationAxis != vec3(0)) this->modelMatrix = rotate(this->modelMatrix, radians(this->angle), this->rotationAxis);
+	if (this->angle != 0 && this->rotationAxis != vec3(0)) this->modelMatrix = rotate(this->modelMatrix, radians(this->angle), normalize(this->rotationAxis));
 	this->modelMatrix = scale(this->modelMatrix, this->scaleVector);
 }
 
@@ -56,4 +56,20 @@ string PhysicalObject::getName() {
 
 map<string, Mesh*>* PhysicalObject::getMeshes() {
 	return &this->meshes;
+}
+
+vec3 PhysicalObject::getTranslationVector() {
+	return this->translation;
+}
+
+vec3 PhysicalObject::getRotationAxis() {
+	return this->rotationAxis;
+}
+
+float PhysicalObject::getRotationAngle() {
+	return this->angle;
+}
+
+vec3 PhysicalObject::getScaleVector() {
+	return this->scaleVector;
 }

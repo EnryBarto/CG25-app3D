@@ -126,6 +126,10 @@ void App::escPressed() {
 	}
 }
 
+map<string, Shader*>* App::getShaders() {
+	return this->shaders;
+}
+
 WindowManager* App::getWindowManager() {
 	return this->windowManager;
 }

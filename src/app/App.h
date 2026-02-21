@@ -24,6 +24,7 @@ class App {
 		Scene* getScene();
 		AppSettings* getAppSettings();
 		void escPressed();
+		map<string, Shader*>* getShaders();
 
 		// Object and mesh selection
 		void pick(vec2 clickPosition);
