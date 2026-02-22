@@ -12,6 +12,7 @@ void show_commands() {
     ImGui::Text("----- COMMANDS -----");
     ImGui::Text("Space bar: Toggle Picking / Navigation modes");
     ImGui::Text("ESC: Go back to previous mode");
+    ImGui::Text("Drag & Drop: Upload obj file");
     ImGui::NewLine();
     ImGui::Text("----- CAMERA COMMANDS -----");
     ImGui::Text("W: Move forward");
@@ -20,6 +21,7 @@ void show_commands() {
     ImGui::Text("D: Move right");
     ImGui::Text("U: Move up");
     ImGui::Text("Y: Move down");
+    ImGui::Text("Arrows: Rotate camera");
     ImGui::NewLine();
     ImGui::Text("----- WINDOW COMMANDS -----");
     ImGui::Text("F1: Toggle commands window");
@@ -105,7 +107,8 @@ ImVec2 show_object_inspector() {
         | ImGuiWindowFlags_NoMove
     );
 
-    ImGui::Text("Selected object: %s", selectedObj->getName());
+    ImGui::Text("Selected object:");
+    ImGui::TextWrapped(selectedObj->getName().c_str());
     ImGui::NewLine();
 
     vec3 translation = selectedObj->getTranslationVector();
@@ -158,7 +161,8 @@ void show_mesh_inspector() {
         | ImGuiWindowFlags_NoMove
     );
 
-    ImGui::Text("Selected mesh: %s", get<0>(app.getScene()->getSelectedMesh()));
+    ImGui::Text("Selected mesh:");
+    ImGui::TextWrapped(get<0>(app.getScene()->getSelectedMesh()).c_str());
     ImGui::NewLine();
 
     map<string, Shader*>* shaders = app.getShaders();
@@ -204,6 +208,92 @@ void show_mesh_inspector() {
     if (ImGui::Button("Close")) app.resetMeshSelection();
     ImGui::NewLine();
     
+    ImGui::End();
+}
+
+void show_start_file_loading(const char* path) {
+    ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(app.getWindowManager()->getCurrentResolution().x - GUI_WINDOWS_PADDING * 2, 0.0f));
+
+    ImGui::Begin("FILE LOADER", NULL,
+        ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoCollapse
+        | ImGuiWindowFlags_AlwaysAutoResize
+        | ImGuiWindowFlags_NoMove
+    );
+
+    ImGui::Text("Started loading mesh file:");
+    ImGui::NewLine();
+    ImGui::TextWrapped(path);
+    
+    ImGui::End();
+}
+
+void show_file_error(const char* path, const char* error) {
+    ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(app.getWindowManager()->getCurrentResolution().x - GUI_WINDOWS_PADDING * 2, 0.0f));
+
+    ImGui::Begin("FILE LOADER", NULL,
+        ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoCollapse
+        | ImGuiWindowFlags_AlwaysAutoResize
+        | ImGuiWindowFlags_NoMove
+    );
+
+    ImGui::Text("Error loading file!");
+    ImGui::NewLine();
+    ImGui::TextWrapped("Error:\n%s", error);
+    ImGui::NewLine();
+    ImGui::TextWrapped("Path:\n%s", path);
+    ImGui::NewLine();
+    if (ImGui::Button("Ok")) app.confirmFileUploadError();
+
+    ImGui::End();
+}
+
+void show_file_uploaded(const char* path, PhysicalObject* uploadedObject, char* nameBuffer) {
+    ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(app.getWindowManager()->getCurrentResolution().x - GUI_WINDOWS_PADDING * 2, 0.0f));
+
+    ImGui::Begin("FILE LOADER", NULL,
+        ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoCollapse
+        | ImGuiWindowFlags_AlwaysAutoResize
+        | ImGuiWindowFlags_NoMove
+    );
+
+    ImGui::Text("File uploaded!");
+    ImGui::NewLine();
+    ImGui::TextWrapped("Path:\n%s", path);
+
+    ImGui::NewLine();
+    ImGui::Text("Enter object name:");
+    ImGui::InputText("", nameBuffer, MAX_LENGTH_OBJ_NAME);
+
+    vec3 translation = uploadedObject->getTranslationVector();
+    vec3 rotationAxis = uploadedObject->getRotationAxis();
+    float rotationAngle = uploadedObject->getRotationAngle();
+    vec3 scaleVector = uploadedObject->getScaleVector();
+
+    ImGui::NewLine();
+    ImGui::Text("Edit model matrix:");
+    bool changed = false;
+
+    changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
+    changed |= ImGui::DragFloat3(" Rotation axis", glm::value_ptr(rotationAxis), 0.1f);
+    changed |= ImGui::DragFloat(" Rotation °", &rotationAngle, 0.1f);
+    changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(scaleVector), 0.1f);
+
+    if (changed) {
+        uploadedObject->updateModelMatrix(translation, rotationAxis, rotationAngle, scaleVector);
+    }
+    
+    ImGui::NewLine();
+    if (ImGui::Button("Ok")) {
+        uploadedObject->setName(nameBuffer);
+        app.confirmFileUploadSuccess();
+    }
+
     ImGui::End();
 }
 

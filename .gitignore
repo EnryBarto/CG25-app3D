@@ -1,3 +1,6 @@
+# Ignore obj files
+resources/meshes/*
+
 # Ignore imgui last configuration so the default is loaded
 imgui.ini
 

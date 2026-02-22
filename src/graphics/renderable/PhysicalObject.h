@@ -22,6 +22,7 @@ class PhysicalObject {
 		vec3 getRotationAxis();
 		float getRotationAngle();
 		vec3 getScaleVector();
+		void setName(const char* newName);
 
 	private:
 		map<string, Mesh*> meshes;

@@ -74,23 +74,23 @@ vec3 Scene::getRayFromMouseClick(vec2 clickPosition) {
 	// Map viewport coordinates [0,width], [0,height] in NDC [-1,1]  
 	clickPosition = 2.0f * clickPosition / this->windowManager->getCurrentResolution() - 1.0f;
 
-	//Nello spazio di clippling z più piccola, oggetto più vicino all'osservatore, quindi si pone la z a - 1, 
-	// posizionando il punto sul piano vicino del frustum.
-	// Questo significa che il raggio che stiamo calcolando partirà dalla telecamera e si dirigerà 
-	// verso il punto più vicino visibile sullo schermo.
-	
-	// Coordinate nel clip space 
+	// In clip space a smaller z means the object is closer to the camera, so we set z to -1
+	// to place the point on the near plane of the frustum.
+	// This means the ray we compute will start from the camera and go towards
+	// the nearest visible point on the screen.
+
+	// Coordinates in clip space
 	vec4 clickClipSpace = vec4(clickPosition.x, clickPosition.y, -1, 1);
 
-	// Le coordinate nell' eye space si ottengono premoltiplicando per l'inversa della matrice Projection.
+	// Eye-space coordinates are obtained by premultiplying by the inverse of the Projection matrix.
 	vec4 viewModelp = inverse(this->projection->getProjectionMatrix()) * clickClipSpace;
 
-	// le coordinate nel world space: si ottengono premoltiplicando per l'inversa della matrice di Vista 
+	// World-space coordinates are obtained by premultiplying by the inverse of the View matrix.
 
 	viewModelp.w = 1;
 	vec4 Pw = inverse(this->camera->getViewMatrix()) * viewModelp;
 
-	//Il vettore del raggio viene calcolato sottraendo la posizione della telecamera SetupTelecamera.position dal punto Pw nel world space.
+	// The ray vector is computed by subtracting the camera position from the world-space point Pw.
 	return normalize(vec3(Pw) - this->camera->getPosition());
 }
 

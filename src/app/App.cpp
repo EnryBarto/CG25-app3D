@@ -47,6 +47,7 @@ App::~App() {
 
 void App::update(float deltaTime) {
 	if (glfwWindowShouldClose(this->windowManager->getWindow())) this->close();
+	this->loopFileUpload(); // Check if there are files to upload
 	if (this->currentState != this->nextState) {
 		switch (this->nextState) {
 			case AppState::NAVIGATION:
@@ -64,19 +65,24 @@ void App::update(float deltaTime) {
 void App::render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// GUI 
+	// GUI Setting
 	ImGui_ImplGlfw_NewFrame();          // Prepare a new frame for GLFW input
 	ImGui_ImplOpenGL3_NewFrame();       // Prepare a new frame for OpenGL3 rendering
 	ImGui::NewFrame();                  // Begin recording the new UI frame
 
+	// 3D Objects rendering
 	this->scene->render();
 
-	show_status_bar();
-	if (this->currentState != AppState::PAUSED) {
-		if (this->currentState == AppState::EDITING_OBJ) show_object_inspector();
-		if (this->currentState == AppState::EDITING_MESH) show_mesh_inspector();
+	// Gui Rendering
+	switch (this->currentState) {
+		case AppState::PAUSED: show_settings(); break;
+		case AppState::LOADING_FILES: case AppState::FILE_LOAD: show_start_file_loading(this->filesToLoad.front().c_str()); break;
+		case AppState::WAIT_FILE_ABORT: show_file_error(this->filesToLoad.front().c_str(), this->stringBuffer); break;
+		case AppState::WAIT_FILE_CONFIRM: show_file_uploaded(this->filesToLoad.front().c_str(), this->scene->getSelectedObject(), this->stringBuffer); break;
+		case AppState::EDITING_OBJ: show_object_inspector(); break;
+		case AppState::EDITING_MESH: show_mesh_inspector(); break;
 	}
-	if (this->currentState == AppState::PAUSED) show_settings();
+	show_status_bar();
 	if (this->currentSettings->isShowingCommands()) show_commands();
 
 	ImGui::Render();
@@ -96,6 +102,9 @@ AppState App::getCurrentAppState() {
 
 void App::togglePause() {
 	switch (this->currentState) {
+		case AppState::WAIT_FILE_CONFIRM:
+			// Do nothing: The user is using the keyboard to write the object name
+			break;
 		case AppState::PAUSED:
 			this->nextState = this->statesHistory.top();
 			this->statesHistory.pop();
@@ -121,8 +130,17 @@ void App::toggleMode() {
 }
 
 void App::escPressed() {
-	if (!this->statesHistory.empty()) {
-		this->setNextStateFromHistory();
+	switch (this->currentState) {
+		case AppState::FILE_LOAD:
+		case AppState::WAIT_FILE_CONFIRM:
+			// Do nothing
+			break;
+		case AppState::WAIT_FILE_ABORT:
+			this->confirmFileUploadError();
+			break;
+		default:
+			if (!this->statesHistory.empty()) this->setNextStateFromHistory();
+			break;
 	}
 }
 
@@ -130,16 +148,23 @@ map<string, Shader*>* App::getShaders() {
 	return this->shaders;
 }
 
-void App::loadObjectFromFile(const char* path) {
+void App::loadObjectsFromFile(const char* paths[], int numFiles) {
 	if (this->currentState == AppState::NAVIGATION || this->currentState == AppState::PICKING) {
-		PhysicalObject* loaded = this->scene->loadObjectFromFile(path);
-		if (loaded != nullptr) {
-			this->setSelectedObject(loaded);
-			cout << "Loaded object from file: " << path << endl;
-		} else {
-			cerr << "ERROR LOADING FILE " << path << endl;
+		for (int i = 0; i < numFiles; i++) {
+			this->filesToLoad.push(paths[i]);
 		}
 	}
+}
+
+void App::confirmFileUploadError() {
+	this->filesToLoad.pop();
+	this->nextState = AppState::LOADING_FILES;
+}
+
+void App::confirmFileUploadSuccess() {
+	this->filesToLoad.pop();
+	this->nextState = AppState::LOADING_FILES;
+	this->scene->resetObjectSelection();
 }
 
 WindowManager* App::getWindowManager() {
@@ -191,3 +216,40 @@ void App::setNextStateFromHistory() {
 	this->nextState = this->statesHistory.top();
 	this->statesHistory.pop();
 }
+
+void App::loopFileUpload() {
+	if (this->currentState == AppState::NAVIGATION || this->currentState == AppState::PICKING) {
+		if (this->filesToLoad.size() > 0) {
+			this->nextState = AppState::LOADING_FILES;
+			this->statesHistory.push(this->currentState);
+		}
+	}
+	if (currentState == AppState::LOADING_FILES) {
+		if (this->filesToLoad.size() == 0) {
+			this->setNextStateFromHistory();
+		} else {
+			this->nextState = AppState::FILE_LOAD;
+		}
+	}
+	if (this->currentState == AppState::FILE_LOAD) {
+		string file = this->filesToLoad.front();
+		if (file.substr(file.size() - 4) == ".obj") {
+			PhysicalObject* loaded = this->scene->loadObjectFromFile(file.c_str());
+			if (loaded != nullptr) {
+				this->nextState = AppState::WAIT_FILE_CONFIRM;
+				this->scene->setSelectedObject(loaded);
+				strcpy_s(this->stringBuffer, loaded->getName().c_str());
+			} else {
+				this->nextState = AppState::WAIT_FILE_ABORT;
+				strcpy_s(this->stringBuffer, "Error creating object");
+			}
+		} else if (file.substr(file.size() - 4) == ".mtl") { // Ignore mtl files
+			this->filesToLoad.pop();
+			this->nextState = AppState::LOADING_FILES;
+		} else {
+			this->nextState = AppState::WAIT_FILE_ABORT;
+			strcpy_s(this->stringBuffer, "The file is not .obj");
+		}
+	}
+}
+

@@ -26,6 +26,22 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         case GLFW_KEY_SPACE:
             app.toggleMode();
             break;
+
+        case GLFW_KEY_UP:
+            app.getScene()->getCamera()->changeDirection(app.getAppSettings()->getCurrentCameraSpeed() * ARROW_KEY_CAMERA_SPEED_FACTOR, 0);
+            break;
+
+        case GLFW_KEY_DOWN:
+            app.getScene()->getCamera()->changeDirection(-app.getAppSettings()->getCurrentCameraSpeed() * ARROW_KEY_CAMERA_SPEED_FACTOR, 0);
+            break;
+
+        case GLFW_KEY_RIGHT:
+            app.getScene()->getCamera()->changeDirection(0, app.getAppSettings()->getCurrentCameraSpeed() * ARROW_KEY_CAMERA_SPEED_FACTOR);
+            break;
+
+        case GLFW_KEY_LEFT:
+            app.getScene()->getCamera()->changeDirection(0, -app.getAppSettings()->getCurrentCameraSpeed() * ARROW_KEY_CAMERA_SPEED_FACTOR);
+            break;
 	}
 }
 
@@ -67,10 +83,5 @@ void framebuffer_size_callback(GLFWwindow* window, int newWidth, int newHeight) 
 }
 
 void dragdrop_callback(GLFWwindow* window, int path_count, const char* paths[]) {
-    for (int i = 0; i < path_count; i++) {
-        unsigned int length = (unsigned int)strlen(paths[i]);
-        if (paths[i][length - 4] == '.' && paths[i][length - 3] == 'o' && paths[i][length - 2] == 'b' && paths[i][length - 1] == 'j') {
-            app.loadObjectFromFile(paths[i]);
-        }
-    }
+    app.loadObjectsFromFile(paths, path_count);
 }

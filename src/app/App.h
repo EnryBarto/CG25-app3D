@@ -9,6 +9,7 @@
 #include "../graphics/Camera.h"
 #include <string>
 #include <stack>
+#include <queue>
 
 class App {
 	public:
@@ -25,7 +26,6 @@ class App {
 		AppSettings* getAppSettings();
 		void escPressed();
 		map<string, Shader*>* getShaders();
-		void loadObjectFromFile(const char* path);
 
 		// Object and mesh selection
 		void pick(vec2 clickPosition);
@@ -33,6 +33,11 @@ class App {
 		void setSelectedMesh(PhysicalObject* selectedObject, string selectedMesh);
 		void resetObjectSelection();
 		void resetMeshSelection();
+
+		// File upload
+		void loadObjectsFromFile(const char* paths[], int numFiles);
+		void confirmFileUploadError();
+		void confirmFileUploadSuccess();
 
 	private:
 		map<string, Shader*>* shaders;
@@ -42,5 +47,8 @@ class App {
 		AppState nextState;
 		AppState currentState;
 		stack<AppState> statesHistory;
+		queue<string> filesToLoad;
+		char stringBuffer[100];
 		void setNextStateFromHistory();
+		void loopFileUpload();
 };

@@ -73,3 +73,8 @@ float PhysicalObject::getRotationAngle() {
 vec3 PhysicalObject::getScaleVector() {
 	return this->scaleVector;
 }
+
+void PhysicalObject::setName(const char* newName) {
+	cout << newName << endl;
+	this->name = newName;
+}
