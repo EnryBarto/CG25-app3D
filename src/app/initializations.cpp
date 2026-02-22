@@ -63,6 +63,8 @@ void init_callbacks(GLFWwindow* window) {
     glfwSetMouseButtonCallback(window, mouse_button_callback);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    glfwSetDropCallback(window, dragdrop_callback);
 }
 
 void init_imgui(GLFWwindow* window) {

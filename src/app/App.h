@@ -25,6 +25,7 @@ class App {
 		AppSettings* getAppSettings();
 		void escPressed();
 		map<string, Shader*>* getShaders();
+		void loadObjectFromFile(const char* path);
 
 		// Object and mesh selection
 		void pick(vec2 clickPosition);

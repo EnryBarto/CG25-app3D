@@ -1,5 +1,7 @@
 #pragma once
 #include "MeshGeometry.h"
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing flags
 
 class MeshGeometryFactory {
 
@@ -11,4 +13,5 @@ class MeshGeometryFactory {
 		static MeshGeometry* createTorus(vec4 color);
 		static MeshGeometry* createCone(vec4 color);
 		static MeshGeometry* createCylinder(vec4 color);
+		static MeshGeometry* createFromAssimpMesh(const aiMesh* mesh);
 };

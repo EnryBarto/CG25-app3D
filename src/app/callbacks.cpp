@@ -65,3 +65,12 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 void framebuffer_size_callback(GLFWwindow* window, int newWidth, int newHeight) {
 	app.getWindowManager()->frameBufferChanged();
 }
+
+void dragdrop_callback(GLFWwindow* window, int path_count, const char* paths[]) {
+    for (int i = 0; i < path_count; i++) {
+        unsigned int length = (unsigned int)strlen(paths[i]);
+        if (paths[i][length - 4] == '.' && paths[i][length - 3] == 'o' && paths[i][length - 2] == 'b' && paths[i][length - 1] == 'j') {
+            app.loadObjectFromFile(paths[i]);
+        }
+    }
+}

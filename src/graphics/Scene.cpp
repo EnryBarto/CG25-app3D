@@ -161,3 +161,9 @@ void Scene::resetObjectSelection() {
 	this->selectedMesh = "";
 	this->selectedObject = nullptr;
 }
+
+PhysicalObject* Scene::loadObjectFromFile(const char* path) {
+	PhysicalObject* loaded = this->objectFactory->createFromFile(path);
+	if (loaded != nullptr) this->objects.push_back(loaded);
+	return loaded;
+}

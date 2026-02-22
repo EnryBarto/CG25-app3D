@@ -130,6 +130,18 @@ map<string, Shader*>* App::getShaders() {
 	return this->shaders;
 }
 
+void App::loadObjectFromFile(const char* path) {
+	if (this->currentState == AppState::NAVIGATION || this->currentState == AppState::PICKING) {
+		PhysicalObject* loaded = this->scene->loadObjectFromFile(path);
+		if (loaded != nullptr) {
+			this->setSelectedObject(loaded);
+			cout << "Loaded object from file: " << path << endl;
+		} else {
+			cerr << "ERROR LOADING FILE " << path << endl;
+		}
+	}
+}
+
 WindowManager* App::getWindowManager() {
 	return this->windowManager;
 }

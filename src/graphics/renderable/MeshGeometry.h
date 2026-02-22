@@ -5,11 +5,13 @@
 // Avoid circular declarations since these classes are declared as friends
 class GpuBuffers;
 class AbstractMesh;
+class PhysicalObjectFactory;
 
 class MeshGeometry {
 
     friend class GpuBuffers;    // Needs access to vertices and colors to copy them into GPU buffers
     friend class AbstractMesh;  // Needs access to vertices to compute the bounding box
+    friend class PhysicalObjectFactory; // Needs access to normalize geometry
 
     public:
         MeshGeometry(vector<vec3>* vertices, vector<vec4>* colors, vector<uint32_t>* indexes, vector<vec3>* normals, vector<vec2>* textureCoordinates);

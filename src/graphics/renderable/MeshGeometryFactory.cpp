@@ -355,3 +355,63 @@ MeshGeometry* MeshGeometryFactory::createCylinder(vec4 color) {
 
 	return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords);
 }
+
+MeshGeometry* MeshGeometryFactory::createFromAssimpMesh(const aiMesh* mesh) {
+	vector<vec3> vertices;
+	vector<vec4> colors;
+	vector<GLuint> indices;
+	vector<vec3> normals;
+	vector<vec2> texCoords;
+
+	// Fill vertices
+	for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+		aiVector3D pos = mesh->mVertices[i];
+		vertices.push_back(vec3(pos.x, pos.y, pos.z));
+	}
+
+	// Fill texture coordinates
+	if (mesh->HasTextureCoords(0)) {
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+			aiVector3D uv = mesh->mTextureCoords[0][i];
+			texCoords.push_back(vec2(uv.x, uv.y));
+		}
+	} else {
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+			texCoords.push_back(vec2(0));
+		}
+	}
+	
+	// Fill Colors
+	if (mesh->HasVertexColors(0)) {
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+			aiColor4D c = mesh->mColors[0][i];
+			colors.push_back(vec4(c.r, c.g, c.b, c.a));
+		}
+	} else {
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+			colors.push_back(vec4(0.1f, 0.5f, 1.0f, 1.0f));
+		}
+	}
+	
+	// Fill vertices normal
+	if (mesh->HasNormals()) {
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+			aiVector3D n = mesh->mNormals[i];
+			normals.push_back(vec3(n.x, n.y, n.z));
+		}
+	} else {
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+			normals.push_back(vec3(0));
+		}
+	}
+
+	// Fill face indices
+	for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
+		// Assume the model has only triangles, so 3 indices per vertex
+		indices.push_back(mesh->mFaces[i].mIndices[0]);
+		indices.push_back(mesh->mFaces[i].mIndices[1]);
+		indices.push_back(mesh->mFaces[i].mIndices[2]);
+	}
+
+	return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords, vertices.back(), vec4(1));
+}

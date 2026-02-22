@@ -8,5 +8,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void cursor_position_callback(GLFWwindow* window, double xposIn, double yposIn);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void framebuffer_size_callback(GLFWwindow* window, int newWidth, int newHeight);
+void dragdrop_callback(GLFWwindow* window, int path_count, const char* paths[]);
 
 #endif

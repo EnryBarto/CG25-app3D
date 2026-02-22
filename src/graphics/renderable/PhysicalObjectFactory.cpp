@@ -62,3 +62,89 @@ PhysicalObject* PhysicalObjectFactory::createHouse(vec3 spawnPoint) {
 	toReturn->addMesh(mesh, "Pyramid");
 	return toReturn;
 }
+
+PhysicalObject* PhysicalObjectFactory::createFromFile(const char* path) {
+	vector<pair<MeshGeometry*, string>> models;
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(path, aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FlipUVs);
+	if (!scene) {
+		cerr << importer.GetErrorString() << endl;
+		return nullptr;
+	}
+
+	PhysicalObject* toReturn = new PhysicalObject("File loaded", vec3(0), vec3(0), 0, vec3(1));
+	
+	const aiMesh* assimpMesh;
+
+	for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
+		assimpMesh = scene->mMeshes[i];
+		MeshGeometry* geometry = MeshGeometryFactory::createFromAssimpMesh(assimpMesh);
+		if (geometry != nullptr) {
+			models.push_back({geometry, assimpMesh->mName.C_Str() });
+		}
+	}
+
+	PhysicalObjectFactory::normalizeModel(models);
+
+	for (auto m : models) {
+		Mesh* mesh = new Mesh(m.first, this->defaultShader, vec3(0), vec3(0), 0, vec3(1));
+		toReturn->addMesh(mesh, m.second);
+	}
+
+	return toReturn;
+}
+
+void PhysicalObjectFactory::normalizeModel(vector<pair<MeshGeometry*, string>>& models) {
+	unsigned int numMeshes = (unsigned int)models.size();
+	vector<vec3> minimum, maximum;
+	vec3 centroid = vec3(0);
+	vec3 min, max;
+
+	// Compute the centroid of the model (by averaging its vertices)
+	unsigned int numVertices = 0;
+	for (auto [mesh, name] : models) {
+		for (vec3 vertex : mesh->vertices) {
+			centroid += vertex;
+			numVertices++;
+		}
+	}
+
+	centroid /= (float)numVertices;
+
+	for (auto [mesh, name] : models) {
+		for (vec3& vertex : mesh->vertices) {
+			vertex -= centroid;
+		}
+		mesh->anchor -= centroid;
+	}
+
+	// Find the minimum and maximum values for all model coordinates
+	min.x = std::numeric_limits<float>::max();
+	max.x = -std::numeric_limits<float>::max();
+	min.y = std::numeric_limits<float>::max();
+	max.y = -std::numeric_limits<float>::max();
+	min.z = std::numeric_limits<float>::max();
+	max.z = -std::numeric_limits<float>::max();
+
+	for (auto [mesh, name] : models) {
+		for (vec3 vertex : mesh->vertices) {
+			min.x = std::min(min.x, vertex.x);
+			max.x = std::max(max.x, vertex.x);
+			min.y = std::min(min.y, vertex.y);
+			max.y = std::max(max.y, vertex.y);
+			min.z = std::min(min.z, vertex.z);
+			max.z = std::max(max.z, vertex.z);
+		}
+	}
+
+	// Compute the scale factor for each dimension (to preserve proportions)
+	vec3 range = max - min;
+
+	float maxRange = std::max({ range.x, range.y, range.z });
+	for (auto [mesh, name] : models) {
+		for (vec3& vertex : mesh->vertices) {
+			vertex = 2.0f * (vertex - min.x) / maxRange - 1.0f;
+		}
+		mesh->anchor = 2.0f * (mesh->anchor - min.x) / maxRange - 1.0f;
+	}
+}

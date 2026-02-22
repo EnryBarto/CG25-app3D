@@ -35,6 +35,7 @@ class Scene {
 		bool setSelectedMesh(PhysicalObject* object, string mesh);
 		void resetMeshSelection();
 		void resetObjectSelection();
+		PhysicalObject* loadObjectFromFile(const char* path);
 
 	private:
 		Camera* camera;
