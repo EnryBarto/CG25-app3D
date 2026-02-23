@@ -51,5 +51,5 @@ void PointLight::render(const mat4& viewMatrix, const mat4& projectionMatrix) {
 }
 
 void PointLight::updateSphereColor() {
-	this->gpuBuffer->updateColor(this->color * pow((this->power - MIN_LIGHT_POWER) / (MAX_LIGHT_POWER - MIN_LIGHT_POWER), 0.45f));
+	this->gpuBuffer->updateColor(this->color * pow((this->power - MIN_LIGHT_POWER) / (MAX_LIGHT_POWER - MIN_LIGHT_POWER), 0.3f));
 }

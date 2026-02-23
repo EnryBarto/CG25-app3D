@@ -3,6 +3,7 @@
 #include "GpuBuffers.h"
 #include "../lighting/Material.h"
 #include "../lighting/PointLight.h"
+#include "../../settings.h"
 #include <vector>
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
@@ -21,13 +22,15 @@ class RenderableObject: public GpuBuffers {
         GLint uniform_Model = -1;
         GLint uniform_View = -1;
         GLint uniform_ViewPos = -1;
-        GLint uniform_LightPosition = -1;
-        GLint uniform_LightColor = -1;
-        GLint uniform_LightPower = -1;
+        GLint uniform_NumLights = -1;
+        GLint uniform_LightPosition[MAX_LIGHTS];
+        GLint uniform_LightColor[MAX_LIGHTS];
+        GLint uniform_LightPower[MAX_LIGHTS];
         GLint uniform_MaterialAmbient = -1;
         GLint uniform_MaterialDiffuse = -1;
         GLint uniform_MaterialSpecular = -1;
         GLint uniform_MaterialShininess = -1;
         GLint uniform_Texture = -1;
         GLint uniform_UsingTexture = -1;
+        GLint uniform_Time = -1;
 };  

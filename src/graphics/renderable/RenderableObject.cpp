@@ -5,15 +5,20 @@ void RenderableObject::getUniforms() {
 	this->uniform_Projection = glGetUniformLocation(shader->getProgramId(), "Projection");
 	this->uniform_View = glGetUniformLocation(shader->getProgramId(), "View");
 	this->uniform_ViewPos = glGetUniformLocation(shader->getProgramId(), "ViewPos");
-	this->uniform_LightPosition = glGetUniformLocation(shader->getProgramId(), "light.position");
-	this->uniform_LightColor = glGetUniformLocation(shader->getProgramId(), "light.color");
-	this->uniform_LightPower = glGetUniformLocation(shader->getProgramId(), "light.power");
+	this->uniform_NumLights = glGetUniformLocation(shader->getProgramId(), "numLights");
+	for (int i = 0; i < MAX_LIGHTS; i++) {
+		string base = "lights[" + to_string(i) + "].";
+		this->uniform_LightPosition[i] = glGetUniformLocation(shader->getProgramId(), (base + "position").c_str());
+		this->uniform_LightColor[i] = glGetUniformLocation(shader->getProgramId(), (base + "color").c_str());
+		this->uniform_LightPower[i] = glGetUniformLocation(shader->getProgramId(), (base + "power").c_str());
+	}
 	this->uniform_MaterialAmbient = glGetUniformLocation(shader->getProgramId(), "material.ambient");
 	this->uniform_MaterialDiffuse = glGetUniformLocation(shader->getProgramId(), "material.diffuse");
 	this->uniform_MaterialSpecular = glGetUniformLocation(shader->getProgramId(), "material.specular");
 	this->uniform_MaterialShininess = glGetUniformLocation(shader->getProgramId(), "material.shininess");
 	this->uniform_Texture = glGetUniformLocation(shader->getProgramId(), "uTexture");
 	this->uniform_UsingTexture = glGetUniformLocation(shader->getProgramId(), "uUseTexture");
+	this->uniform_Time = glGetUniformLocation(shader->getProgramId(), "time");
 }
 
 void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, Material* material, const vector<PointLight*>* lights) {
@@ -50,9 +55,13 @@ void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, c
 	if (this->uniform_MaterialDiffuse != -1) glUniform3fv(this->uniform_MaterialDiffuse, 1, glm::value_ptr(material->getDiffuse()));
 	if (this->uniform_MaterialSpecular != -1) glUniform3fv(this->uniform_MaterialSpecular, 1, glm::value_ptr(material->getSpecular()));
 	if (this->uniform_MaterialShininess != -1) glUniform1f(this->uniform_MaterialShininess, material->getShininess());
-	if (this->uniform_LightColor != -1) glUniform3f(this->uniform_LightColor, lights->at(0)->getColor().x, lights->at(0)->getColor().y, lights->at(0)->getColor().z);
-	if (this->uniform_LightPosition != -1) glUniform3f(this->uniform_LightPosition, lights->at(0)->getPosition().x, lights->at(0)->getPosition().y, lights->at(0)->getPosition().z);
-	if (this->uniform_LightPower != -1) glUniform1f(this->uniform_LightPower, lights->at(0)->getPower());
+	if (this->uniform_NumLights != -1) glUniform1i(this->uniform_NumLights, (GLint)lights->size());
+	for (int i = 0; i < std::min((int)lights->size(), MAX_LIGHTS); i++) {
+		if (this->uniform_LightColor[i] != -1) glUniform3f(this->uniform_LightColor[i], lights->at(i)->getColor().x, lights->at(i)->getColor().y, lights->at(i)->getColor().z);
+		if (this->uniform_LightPosition[i] != -1) glUniform3f(this->uniform_LightPosition[i], lights->at(i)->getPosition().x, lights->at(i)->getPosition().y, lights->at(i)->getPosition().z);
+		if (this->uniform_LightPower[i] != -1) glUniform1f(this->uniform_LightPower[i], lights->at(i)->getPower());
+	}
+	if (this->uniform_Time != -1) glUniform1f(this->uniform_Time, (float)glfwGetTime());
 
 	// RENDER!
 	glBindVertexArray(this->vao);

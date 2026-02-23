@@ -17,7 +17,12 @@ Scene::Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader*
 	this->objects.push_back(this->objectFactory->createSimpleCone(vec3(8, 0, -2)));
 	this->objects.push_back(this->objectFactory->createSimpleTorus(vec3(-6, 0, -3)));
 	this->objects.push_back(this->objectFactory->createSimpleCylinder(vec3(3, 0, 2)));
-	this->lights.push_back(new PointLight(lightShader));
+	this->lightShader = lightShader;
+	this->lights.push_back(new PointLight(vec3(-500, 200, -1000), vec4(1), 2, this->lightShader));
+	this->lights.push_back(new PointLight(vec3(15, 20, 15), vec4(1), 0.7f, this->lightShader));
+	this->lights.push_back(new PointLight(vec3(-15, 20, 15), vec4(1), 0.7f, this->lightShader));
+	this->lights.push_back(new PointLight(vec3(15, 20, -15), vec4(1), 0.7f, this->lightShader));
+	this->lights.push_back(new PointLight(vec3(-15, 20, -15), vec4(1), 0.7f, this->lightShader));
 }
 
 Scene::~Scene() {
@@ -174,4 +179,14 @@ PhysicalObject* Scene::loadObjectFromFile(const char* path) {
 	PhysicalObject* loaded = this->objectFactory->createFromFile(path);
 	if (loaded != nullptr) this->objects.push_back(loaded);
 	return loaded;
+}
+
+void Scene::createLight() {
+	if (this->lights.size() < MAX_LIGHTS) this->lights.push_back(new PointLight(this->lightShader));
+}
+
+void Scene::removeLight(int i) {
+	if (i < this->lights.size()) {
+		lights.erase(lights.begin() + i);
+	}
 }

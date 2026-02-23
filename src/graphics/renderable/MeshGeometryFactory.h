@@ -6,9 +6,10 @@
 class MeshGeometryFactory {
 
 	public:
-		static MeshGeometry* createCube();
-		static MeshGeometry* createPyramid();
+		static MeshGeometry* createCube(vec4 color);
+		static MeshGeometry* createPyramid(vec4 color);
 		static MeshGeometry* createPlane(vec4 color);
+		static MeshGeometry* createTriangulatedPlane(int n, vec4 color);
 		static MeshGeometry* createSphere(vec4 color);
 		static MeshGeometry* createTorus(vec4 color);
 		static MeshGeometry* createCone(vec4 color);

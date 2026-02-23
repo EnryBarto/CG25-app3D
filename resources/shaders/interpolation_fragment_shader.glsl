@@ -7,14 +7,12 @@ uniform bool uUseTexture;
 
 out vec4 FragColor;
 
-void main()
-{
+void main() {
     vec4 baseColor = ourColor;
  
     if (uUseTexture) {
         baseColor *= texture(uTexture, vTexCoord);
     }
-  
 
     FragColor = baseColor;
 }

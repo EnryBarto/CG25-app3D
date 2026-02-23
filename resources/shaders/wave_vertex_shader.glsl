@@ -3,9 +3,10 @@ layout (location = 0) in vec3 aPos;   // the position variable has attribute pos
 layout (location = 1) in vec4 aColor; // the color variable has attribute position 1
 layout(location = 2) in vec3 vertexNormal;  //Attributo normale 2
 layout(location = 3) in vec2 coord_st; // Attributo texture
-  
+#define MAX_LIGHTS 10
+
 out vec4 ourColor; // output a color to the fragment shader
-out vec2, vTexCoord;
+out vec2 vTexCoord;
 uniform mat4 Projection;  //vARIABILE DI TIPO uniform, rimane la stessa per ogni vertice della primitiva e viene passata dall'esterno
 uniform mat4 Model;
 uniform mat4 View;
@@ -18,10 +19,10 @@ struct PointLight {
 	float power;
 };
 //definizione di una variabile uniform che ha la struttura PointLight
-uniform PointLight light;
+uniform PointLight lights[MAX_LIGHTS];
+uniform int numLights;
 
 //Struttura per la gestione di un materiale
-
 struct Material {
     vec3 ambient;
     vec3 diffuse;
@@ -32,52 +33,53 @@ struct Material {
 //Variabile uniforme
 uniform Material material;
 
-float strenght = 0.1;
-uniform float time=0.5;
-void main()
-{
-//Trasformazione dei vertici dalle coordinate nel sistema di riferimento dell'oggetto (apos), al sistema di riferimento del mondo (premoltiplicazione 
-// per Model) e successivamente proiettate nel cubo di centro l'origine e lato lungo 2, con x,y,z che variano tra -1 ed 1- (premoltiplicazione 
-//per la matrice Projection)
+float strenght = 3;
+uniform float time = 0.5;
 
- 
-         vec4 v = vec4(aPos, 1);
-         v.y = sin(80.0 * v.x + time) * cos(8.5*v.y+time) * 0.5;
+void main() {
+    //Trasformazione dei vertici dalle coordinate nel sistema di riferimento dell'oggetto (apos), al sistema di riferimento del mondo (premoltiplicazione 
+    // per Model) e successivamente proiettate nel cubo di centro l'origine e lato lungo 2, con x,y,z che variano tra -1 ed 1- (premoltiplicazione 
+    //per la matrice Projection)
+    vec4 v = vec4(aPos, 1.0);
+    // Displace the vertex in Y using a time-dependent function
+    v.y = sin(80.0 * v.x + time) * cos(8.5 * aPos.y + time) * 0.5;
 
-        //Modello di illuminazione di  Phong con shading interpolativo
-
-        gl_Position = Projection * View * Model * v;
+    //Modello di illuminazione di  Phong con shading interpolativo
+    gl_Position = Projection * View * Model * v;
         
-        //Trasformare le coordinate del vertice da elaborare (aPos) in coordinate di vista
-        vec4 eyePosition = View * Model * vec4(aPos, 1.0);
+    // Transform the displaced vertex position into view space (use the modified position `v`)
+    vec4 eyePosition = View * Model * v;
 
+    ourColor = vec4(0, 0, 0, 1);
+
+    //trasformare le normali nel vertice in esame nel sistema di coordinate di vista
+    vec3 N = normalize(transpose(inverse(mat3(View * Model))) * vertexNormal);
+
+    for (int i = 0; i < numLights; i++) {
         //Trasformiamo la posizione della luce nelle coordinate di vista
+        vec4 eyeLightPos = View * vec4(lights[i].position, 1.0);
 
-        vec4 eyeLightPos = View * vec4(light.position, 1.0);
-
-        //trasformare le normali nel vertice in esame nel sistema di coordinate di vista
-
-        vec3 N = normalize(transpose(inverse(mat3(View * Model))) * vertexNormal);
         //Calcoliamo la direzione della luce L, la direzione riflessione R e di vista
-
         vec3 V = normalize(ViewPos - eyePosition.xyz);
         vec3 L = normalize((eyeLightPos - eyePosition).xyz);
         vec3 R = reflect(-L, N);  //Costruisce la direzione riflessa di L rispesso alla normale
 
         //ambientale
-        vec3 ambient = strenght * light.power * material.ambient;
+        vec3 ambient = strenght * lights[i].power * material.ambient;
 
         //diffuse
         float coseno_angolo_theta = max(dot(L, N), 0);
 
-        vec3 diffuse = light.power * light.color * coseno_angolo_theta * material.diffuse;
+        vec3 diffuse = lights[i].power * lights[i].color * coseno_angolo_theta * material.diffuse;
 
         //speculare
         float coseno_angolo_alfa = pow(max(dot(V, R), 0), material.shininess);
 
-        vec3 specular = light.power * light.color * coseno_angolo_alfa * material.specular;
+        vec3 specular = lights[i].power * lights[i].color * coseno_angolo_alfa * material.specular;
 
-        ourColor = vec4(ambient + diffuse + specular, 1.0);
-        vTexCoord = coord_st;
+        ourColor += vec4(ambient + diffuse + specular, 1.0);
+    }
+
+    vTexCoord = coord_st;
 }  
 

@@ -6,7 +6,7 @@
 #define HEIGHT_RESIZE_FACTOR 0.8f
 #define FONT_RESIZE_FACTOR 2.0f
 #define MAX_FPS 100
-#define SKYBOX_CUBEMAP_DIRECTORY "resources/skyboxes/clouds/"
+#define SKYBOX_CUBEMAP_DIRECTORY "resources/skyboxes/icebergs/"
 #define ANCHOR_SIZE 15
 #define ANCHOR_SPERE_RADIUS 0.5f
 #define GUI_WINDOWS_PADDING 10
@@ -14,14 +14,14 @@
 #define NO_MATERIAL_NAME "No Material"
 
 // LIGHT SETTINGS
-#define MAX_LIGHTS 10
-#define MAX_LIGHT_POWER 20
+#define MAX_LIGHTS 10 // It's important to keep the costant updated also in the shader files
+#define MAX_LIGHT_POWER 5
 #define MIN_LIGHT_POWER 0
 
 // CAMERA AND PROJECTION SETTINGS
-#define CAMERA_SPEED_DEFAULT 5.0f
+#define CAMERA_SPEED_DEFAULT 8.0f
 #define CAMERA_SPEED_MIN 1.5f
-#define CAMERA_SPEED_MAX 25.0f
+#define CAMERA_SPEED_MAX 40.0f
 #define PROJ_FOVY_DEFAULT 80.0f
 #define PROJ_FOVY_MAX 115.0f
 #define PROJ_FOVY_MIN 45.0f

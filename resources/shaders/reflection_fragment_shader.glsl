@@ -1,12 +1,9 @@
 #version 330 core
 
- uniform vec3 ViewPos;
-  
-
+uniform vec3 ViewPos;
 
 in vec3 Normal;
 in vec3 Position;
-
  
 uniform samplerCube cubemap;
 out vec4 FragColor;

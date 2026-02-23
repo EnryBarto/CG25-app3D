@@ -1,6 +1,6 @@
 #include "MeshGeometryFactory.h"
 
-MeshGeometry* MeshGeometryFactory::createCube() {
+MeshGeometry* MeshGeometryFactory::createCube(vec4 color) {
 	vector<vec3> vertices;
 	vector<vec4> colors;
 	vector<GLuint> indices;
@@ -9,29 +9,23 @@ MeshGeometry* MeshGeometryFactory::createCube() {
 
 	vertices.push_back(vec3(-1.0, -1.0, 1.0));
 	texCoords.push_back(glm::vec2(0.0f, 0.0f));
-	colors.push_back(vec4(1.0, 0.0, 0.0, 0.5));
 	vertices.push_back(vec3(1.0, -1.0, 1.0));
 	texCoords.push_back(glm::vec2(1.0f, 0.0f));
-	colors.push_back(vec4(0.0, 1.0, 0.0, 0.5));
 	vertices.push_back(vec3(1.0, 1.0, 1.0));
 	texCoords.push_back(glm::vec2(1.0f, 1.0f));
-	colors.push_back(vec4(0.0, 0.0, 1.0, 0.5));
 	vertices.push_back(vec3(-1.0, 1.0, 1.0));
 	texCoords.push_back(glm::vec2(0.0f, 1.0f));
-	colors.push_back(vec4(1.0, 0.0, 1.0, 0.5));
 
 	vertices.push_back(vec3(-1.0, -1.0, -1.0));
 	texCoords.push_back(glm::vec2(0.0f, 0.0f));
-	colors.push_back(vec4(1.0, 1.0, 1.0, 0.5));
 	vertices.push_back(vec3(1.0, -1.0, -1.0));
 	texCoords.push_back(glm::vec2(1.0f, 0.0f));
-	colors.push_back(vec4(1.0, 1.0, 1.0, 0.5));
 	vertices.push_back(vec3(1.0, 1.0, -1.0));
 	texCoords.push_back(glm::vec2(1.0f, 1.0f));
-	colors.push_back(vec4(1.0, 1.0, 1.0, 0.5));
 	vertices.push_back(vec3(-1.0, 1.0, -1.0));
 	texCoords.push_back(glm::vec2(0.0f, 1.0f));
-	colors.push_back(vec4(1.0, 1.0, 1.0, 0.5));
+
+	for (int i = 0; i < vertices.size(); i++) colors.push_back(color);
 
 	indices.push_back(0); indices.push_back(1); indices.push_back(2);
 	indices.push_back(2); indices.push_back(3); indices.push_back(0);
@@ -58,7 +52,7 @@ MeshGeometry* MeshGeometryFactory::createCube() {
 	return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords);
 }
 
-MeshGeometry* MeshGeometryFactory::createPyramid() {
+MeshGeometry* MeshGeometryFactory::createPyramid(vec4 color) {
 	vector<vec3> vertices;
 	vector<vec4> colors;
 	vector<GLuint> indices;
@@ -66,15 +60,12 @@ MeshGeometry* MeshGeometryFactory::createPyramid() {
 	vector<vec2> texCoords;
 
 	vertices.push_back(vec3(-1.0, 0.0, 1.0));
-	colors.push_back(vec4(1.0, 0.0, 0.0, 0.5));
 	vertices.push_back(vec3(1.0, 0.0, 1.0));
-	colors.push_back(vec4(0.0, 1.0, 0.0, 0.5));
 	vertices.push_back(vec3(1.0, 0.0, -1.0));
-	colors.push_back(vec4(0.0, 0.0, 1.0, 0.5));
 	vertices.push_back(vec3(-1.0, 0.0, -1.0));
-	colors.push_back(vec4(1.0, 1.0, 0.0, 0.5));
 	vertices.push_back(vec3(0.0, 1.0, 0.0));
-	colors.push_back(vec4(1.0, 1.0, 1.0, 1.0));
+
+	for (int i = 0; i < vertices.size(); i++) colors.push_back(color);
 
     // Texture coordinates per vertex
     texCoords.push_back(vec2(0.0f, 0.0f)); // base - bottom-left
@@ -92,9 +83,28 @@ MeshGeometry* MeshGeometryFactory::createPyramid() {
 	indices.push_back(3); indices.push_back(2); indices.push_back(4);
 	indices.push_back(1); indices.push_back(2); indices.push_back(4);
 
-	for (int i = 0; i < vertices.size(); i++) normals.push_back(vec3(0.0));
+    normals.assign(vertices.size(), vec3(0.0f));
+    for (size_t i = 0; i + 2 < indices.size(); i += 3) {
+        GLuint ia = indices[i];
+        GLuint ib = indices[i + 1];
+        GLuint ic = indices[i + 2];
 
-	return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords, vec3(0, 1, 0), vec4(1));
+        vec3 v0 = vertices[ia];
+        vec3 v1 = vertices[ib];
+        vec3 v2 = vertices[ic];
+
+        vec3 faceNormal = normalize(cross(v1 - v0, v2 - v0));
+
+        normals[ia] += faceNormal;
+        normals[ib] += faceNormal;
+        normals[ic] += faceNormal;
+    }
+
+    for (size_t i = 0; i < normals.size(); ++i) {
+        normals[i] = normalize(normals[i]);
+    }
+
+    return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords, vec3(0, 1, 0), vec4(1));
 }
 
 MeshGeometry* MeshGeometryFactory::createPlane(vec4 color) {
@@ -129,6 +139,50 @@ MeshGeometry* MeshGeometryFactory::createPlane(vec4 color) {
 	return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords);
 }
 
+MeshGeometry* MeshGeometryFactory::createTriangulatedPlane(int n, vec4 color) {
+	vector<vec3> vertices;
+	vector<vec4> colors;
+	vector<GLuint> indices;
+	vector<vec3> normals;
+	vector<vec2> texCoords;
+
+	float x, y, s, t;
+	int i, j;
+
+	for (i = 0; i < n; i++) {
+		x = -0.5f + (float)i / n;
+		for (j = 0; j < n; j++) {
+			y = -0.5f + (float)j / n;
+			vertices.push_back(vec3(x, 0.0, y));
+			colors.push_back(color);
+			normals.push_back(vec3(0.0, 1.0, 0.0));
+			
+			//Coordinate di texture
+			s = x;
+			t = y;
+			texCoords.push_back(vec2(s, t));
+		}
+	}
+	int cont = -1;
+
+	for (i = 0; i <= pow(n, 2) - (n + 1); i++) {
+
+		j = i % (n);
+
+		if (j != n - 1) {
+			indices.push_back(i);
+			indices.push_back(i + 1);
+			indices.push_back(i + n);
+
+			indices.push_back(i + n + 1);
+			indices.push_back(i + 1);
+			indices.push_back(i + n);
+		}
+	}
+
+	return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords);
+}
+
 MeshGeometry* MeshGeometryFactory::createSphere(vec4 color) {
 	vector<vec3> vertices;
 	vector<vec4> colors;
@@ -140,8 +194,8 @@ MeshGeometry* MeshGeometryFactory::createSphere(vec4 color) {
     vec3 center = vec3(0.0, 0.0, 0.0);
     vec3 radius = vec3(1.0, 1.0, 1.0);
 
-    int stacks = 20;  // Number of subdivisions along the Y axis
-    int slices = 20;  // Number of subdivisions along the X axis
+    int stacks = 50;  // Number of subdivisions along the Y axis
+    int slices = 50;  // Number of subdivisions along the X axis
 
     // Calc The Vertices
     for (int i = 0; i <= stacks; ++i) {
@@ -221,8 +275,8 @@ MeshGeometry* MeshGeometryFactory::createTorus(vec4 color) {
 			// Push Back Vertex Data
 			vertices.push_back(vec3(x, y, z));
 			colors.push_back(color);
-			// Vertex normal
-			normals.push_back(vec3(normalize(vec3(sin(phi) * cos(theta), cos(phi), sin(theta) * sin(phi)))));
+            // Vertex normal
+            normals.push_back(vec3(normalize(vec3(cosf(phi) * cosf(theta), sinf(phi), cosf(phi) * sinf(theta)))));
 
 			// Texture coordinate
 			s = U;
@@ -298,6 +352,22 @@ MeshGeometry* MeshGeometryFactory::createCone(vec4 color) {
 		indices.push_back(i + 1);
 	}
 
+	// Add base cap (circle) at h = 1 (last ring)
+	int ringVertexCount = slices + 1; // vertices per ring
+	// base center (y = 1)
+	GLuint baseCenterIndex = (GLuint)vertices.size();
+	vertices.push_back(vec3(0.0f, 1.0f, 0.0f));
+	colors.push_back(color);
+	normals.push_back(vec3(0.0f, 1.0f, 0.0f));
+	texCoords.push_back(vec2(0.5f, 0.5f));
+
+	int baseStart = stacks * ringVertexCount; // last ring
+	for (int j = 0; j < slices; ++j) {
+		indices.push_back(baseCenterIndex);
+		indices.push_back((GLuint)(baseStart + j));
+		indices.push_back((GLuint)(baseStart + j + 1));
+	}
+
 	return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords);
 }
 
@@ -351,6 +421,38 @@ MeshGeometry* MeshGeometryFactory::createCylinder(vec4 color) {
 		indices.push_back(i + slices + 1);
 		indices.push_back(i);
 		indices.push_back(i + 1);
+	}
+
+	// Add caps (bottom and top)
+	int ringVertexCount = slices + 1; // vertices per ring
+	// bottom center
+	GLuint bottomCenterIndex = (GLuint)vertices.size();
+	vertices.push_back(vec3(0.0f, 0.0f, 0.0f));
+	colors.push_back(color);
+	normals.push_back(vec3(0.0f, -1.0f, 0.0f));
+	texCoords.push_back(vec2(0.5f, 0.5f));
+
+	// top center
+	GLuint topCenterIndex = (GLuint)vertices.size();
+	vertices.push_back(vec3(0.0f, 1.0f, 0.0f));
+	colors.push_back(color);
+	normals.push_back(vec3(0.0f, 1.0f, 0.0f));
+	texCoords.push_back(vec2(0.5f, 0.5f));
+
+	// Bottom cap
+	int bottomStart = 0; // first ring
+	for (int j = 0; j < slices; ++j) {
+		indices.push_back(bottomCenterIndex);
+		indices.push_back((GLuint)(bottomStart + j + 1));
+		indices.push_back((GLuint)(bottomStart + j));
+	}
+
+	// Top cap
+	int topStart = stacks * ringVertexCount;
+	for (int j = 0; j < slices; ++j) {
+		indices.push_back(topCenterIndex);
+		indices.push_back((GLuint)(topStart + j));
+		indices.push_back((GLuint)(topStart + j + 1));
 	}
 
 	return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords);

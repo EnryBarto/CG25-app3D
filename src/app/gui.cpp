@@ -353,13 +353,36 @@ void show_light_settings() {
         | ImGuiWindowFlags_NoMove
     );
 
-    vec3 pos = app.getScene()->getLights()->at(0)->getPosition();
-    vec3 color = app.getScene()->getLights()->at(0)->getColor();
-    float power = app.getScene()->getLights()->at(0)->getPower();
-    if (ImGui::DragFloat3(" Position", glm::value_ptr(pos), 0.1f)) app.getScene()->getLights()->at(0)->setPosition(pos);
-    if (ImGui::ColorEdit3(" Color", glm::value_ptr(color))) app.getScene()->getLights()->at(0)->setColor(color);
-    if (ImGui::SliderFloat(" Power", &power, MIN_LIGHT_POWER, MAX_LIGHT_POWER)) app.getScene()->getLights()->at(0)->setPower(power);
-    
+
+    vector<PointLight*>* lights = app.getScene()->getLights();
+
+    for (int i = 0; i < lights->size(); i++) {
+        char buffer[100];
+        sprintf_s(buffer, "Light #%d", i);
+        if (ImGui::CollapsingHeader(buffer)) {
+            vec3 pos = lights->at(i)->getPosition();
+            vec3 color = lights->at(i)->getColor();
+            float power = lights->at(i)->getPower();
+            sprintf_s(buffer, " Position##%d", i);
+            if (ImGui::DragFloat3(buffer, glm::value_ptr(pos), 0.1f)) lights->at(i)->setPosition(pos);
+            sprintf_s(buffer, " Color##%d", i);
+            if (ImGui::ColorEdit3(buffer, glm::value_ptr(color))) lights->at(i)->setColor(color);
+            sprintf_s(buffer, " Power##%d", i);
+            if (ImGui::SliderFloat(buffer, &power, MIN_LIGHT_POWER, MAX_LIGHT_POWER)) lights->at(i)->setPower(power);
+            sprintf_s(buffer, "Remove##%d", i);
+            if (ImGui::Button(buffer)) app.getScene()->removeLight(i);
+            ImGui::NewLine();
+        }
+    }
+
+    ImGui::NewLine();
+    if (lights->size() < MAX_LIGHTS) {
+        if (ImGui::Button("Add point light")) app.getScene()->createLight();
+    } else {
+        ImGui::Text("Max lights reached");
+    }
+    ImGui::NewLine();
+
     ImGui::NewLine();
     if (ImGui::Button("Close")) app.toggleLightSettings();
     ImGui::NewLine();

@@ -28,6 +28,8 @@ class Scene {
 		void update(float deltaTime, AppState currentState);
 		void render();
 		vector<PointLight*>* getLights();
+		void createLight();
+		void removeLight(int i);
 
 		// Object and mesh selection
 		tuple<PhysicalObject*, string> mousePicked(vec2 clickPosition);
@@ -46,6 +48,7 @@ class Scene {
 		Camera* camera;
 		Projection* projection;
 		Skybox* skybox;
+		Shader* lightShader;
 		vector<PhysicalObject*> objects;
 		PhysicalObjectFactory* objectFactory;
 		WindowManager* windowManager;

@@ -7,7 +7,7 @@ PhysicalObjectFactory::PhysicalObjectFactory(Shader* defaultShader, Material* de
 
 PhysicalObject* PhysicalObjectFactory::createSimpleCube(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple Cube", spawnPoint, vec3(0), 0, vec3(2));
-	MeshGeometry* cubeGeometry = MeshGeometryFactory::createCube();
+	MeshGeometry* cubeGeometry = MeshGeometryFactory::createCube(vec4(0.196078f, 0.568627f, 0.658824f, 1));
     Mesh* cube = new Mesh(cubeGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 1, 0), vec3(0), 0, vec3(1));
 	toReturn->addMesh(cube, "Cube");
 	return toReturn;
@@ -24,7 +24,7 @@ PhysicalObject* PhysicalObjectFactory::createSimpleSphere(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createSimpleTorus(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple torus", spawnPoint, vec3(0), 0, vec3(2));
 	MeshGeometry* torusGeometry = MeshGeometryFactory::createTorus(vec4(0.9f, 0.2f, 0.7f, 1));
-    Mesh* torus = new Mesh(torusGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 0.5f, 0), vec3(0, 0, 0), 0, vec3(1));
+    Mesh* torus = new Mesh(torusGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 0.5f, 0), vec3(0), 0, vec3(1));
 	toReturn->addMesh(torus, "Torus");
 	return toReturn;
 }
@@ -32,7 +32,7 @@ PhysicalObject* PhysicalObjectFactory::createSimpleTorus(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createSimpleCone(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple cone", spawnPoint, vec3(1, 0, 0), 180, vec3(2));
 	MeshGeometry* coneGeometry = MeshGeometryFactory::createCone(vec4(0.9f, 0.7f, 0.15f, 1));
-    Mesh* cone = new Mesh(coneGeometry, this->defaultShader, this->defaultMaterial, vec3(0, -1, 0), vec3(0, 1, 0), 180, vec3(1));
+    Mesh* cone = new Mesh(coneGeometry, this->defaultShader, this->defaultMaterial, vec3(0, -1, 0), vec3(0), 0, vec3(1));
 	toReturn->addMesh(cone, "Cone");
 	return toReturn;
 }
@@ -47,19 +47,19 @@ PhysicalObject* PhysicalObjectFactory::createSimpleCylinder(vec3 spawnPoint) {
 
 PhysicalObject* PhysicalObjectFactory::createBase() {
 	PhysicalObject* toReturn = new PhysicalObject("Floor", vec3(0), vec3(0), 0, vec3(2));
-	MeshGeometry* planeGeometry = MeshGeometryFactory::createPlane(vec4(0.196078f, 0.568627f, 0.658824f, 1));
-    Mesh* cube = new Mesh(planeGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 0, 0), vec3(0), 0, vec3(5000, 0, 5000));
+	MeshGeometry* planeGeometry = MeshGeometryFactory::createTriangulatedPlane(512, vec4(0.196078f, 0.568627f, 0.658824f, 1));
+    Mesh* cube = new Mesh(planeGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 0, 0), vec3(0), 0, vec3(1000, 0.1f, 1000));
 	toReturn->addMesh(cube, "Plane");
 	return toReturn;
 }
 
 PhysicalObject* PhysicalObjectFactory::createHouse(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("House", spawnPoint, vec3(0), 0, vec3(2));
-	MeshGeometry* geometry = MeshGeometryFactory::createCube();
-    Mesh* mesh = new Mesh(geometry, this->defaultShader, this->defaultMaterial, vec3(0, 1, 0), vec3(0, 1, 0), 180, vec3(1));
+	MeshGeometry* geometry = MeshGeometryFactory::createCube(vec4(0.196078f, 0.568627f, 0.658824f, 1));
+    Mesh* mesh = new Mesh(geometry, this->defaultShader, this->defaultMaterial, vec3(0, 1, 0), vec3(0), 0, vec3(1));
 	toReturn->addMesh(mesh, "Cube");
-	geometry = MeshGeometryFactory::createPyramid();
-    mesh = new Mesh(geometry, this->defaultShader, this->defaultMaterial, vec3(0, 2, 0), vec3(0, 1, 0), 180, vec3(1));
+	geometry = MeshGeometryFactory::createPyramid(vec4(0.196078f, 0.568627f, 0.658824f, 1));
+    mesh = new Mesh(geometry, this->defaultShader, this->defaultMaterial, vec3(0, 2, 0), vec3(0), 0, vec3(1));
 	toReturn->addMesh(mesh, "Pyramid");
 	return toReturn;
 }
