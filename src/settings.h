@@ -13,6 +13,11 @@
 #define MAX_LENGTH_OBJ_NAME 25
 #define NO_MATERIAL_NAME "No Material"
 
+// LIGHT SETTINGS
+#define MAX_LIGHTS 10
+#define MAX_LIGHT_POWER 20
+#define MIN_LIGHT_POWER 0
+
 // CAMERA AND PROJECTION SETTINGS
 #define CAMERA_SPEED_DEFAULT 5.0f
 #define CAMERA_SPEED_MIN 1.5f
@@ -31,6 +36,7 @@
 // SHADERS
 #define SHADER_FOLDER "resources/shaders/"
 #define BASIC_SHADER_NAME "Basic"
+#define INTERPOLATION_SHADER_NAME "Interpolation"
 #define PHONG_SHADER_NAME "Phong"
 #define CUBEMAP_SHADER_NAME "Cubemap"
 #define REFLECTION_SHADER_NAME "Reflection"

@@ -2,7 +2,7 @@
 #include <limits>
 #include <algorithm>
 
-Scene::Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Material* defaultMaterial, Shader* skyboxShader, string skyboxCubemapDirectory) {
+Scene::Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Shader* lightShader, Material* defaultMaterial, Shader* skyboxShader, string skyboxCubemapDirectory) {
 	this->windowManager = windowManager;
 	this->window = windowManager->getWindow();
 	this->currentSettings = currentSettings;
@@ -17,6 +17,7 @@ Scene::Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader*
 	this->objects.push_back(this->objectFactory->createSimpleCone(vec3(8, 0, -2)));
 	this->objects.push_back(this->objectFactory->createSimpleTorus(vec3(-6, 0, -3)));
 	this->objects.push_back(this->objectFactory->createSimpleCylinder(vec3(3, 0, 2)));
+	this->lights.push_back(new PointLight(lightShader));
 }
 
 Scene::~Scene() {
@@ -63,9 +64,16 @@ void Scene::render() {
 
 	// Actual rendering phase
 	this->skybox->render(v, p);
-	for (PhysicalObject* o : this->objects) {
-		o->render(v, p, c, anchor);
+	for (PointLight* l : this->lights) {
+		l->render(v, p);
 	}
+	for (PhysicalObject* o : this->objects) {
+		o->render(v, p, c, anchor, &this->lights);
+	}
+}
+
+vector<PointLight*>* Scene::getLights() {
+	return &this->lights;
 }
 
 vec3 Scene::getRayFromMouseClick(vec2 clickPosition) {

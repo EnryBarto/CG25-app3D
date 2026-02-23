@@ -25,7 +25,7 @@ App::App() {
 	this->materials = init_materials();
 
 	this->currentSettings = new AppSettings();
-	this->scene = new Scene(windowManager, currentSettings, shaders->at(BASIC_SHADER_NAME), materials->at(NO_MATERIAL_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
+	this->scene = new Scene(windowManager, currentSettings, shaders->at(INTERPOLATION_SHADER_NAME), shaders->at(BASIC_SHADER_NAME), materials->at(NO_MATERIAL_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
 
     // Assign random materials
     std::vector<Material*> matList;
@@ -102,6 +102,7 @@ void App::render() {
 		case AppState::WAIT_FILE_CONFIRM: show_file_uploaded(this->filesToLoad.front().c_str(), this->scene->getSelectedObject(), this->stringBuffer); break;
 		case AppState::EDITING_OBJ: show_object_inspector(); break;
 		case AppState::EDITING_MESH: show_mesh_inspector(); break;
+		case AppState::LIGHT_SETTINGS: show_light_settings(); break;
 	}
 	show_status_bar();
 	if (this->currentSettings->isShowingCommands()) show_commands();
@@ -127,8 +128,7 @@ void App::togglePause() {
 			// Do nothing: The user is using the keyboard to write the object name
 			break;
 		case AppState::PAUSED:
-			this->nextState = this->statesHistory.top();
-			this->statesHistory.pop();
+			this->setNextStateFromHistory();
 			break;
 		default:
 			this->nextState = AppState::PAUSED;
@@ -171,6 +171,21 @@ map<string, Shader*>* App::getShaders() {
 
 map<string, Material*>* App::getMaterials() {
 	return this->materials;
+}
+
+void App::toggleLightSettings() {
+	switch (this->currentState) {
+		case AppState::PAUSED:
+			// Do nothing
+			break;
+		case AppState::LIGHT_SETTINGS:
+			this->setNextStateFromHistory();
+			break;
+		default:
+			this->nextState = AppState::LIGHT_SETTINGS;
+			this->statesHistory.push(this->currentState);
+			break;
+	}
 }
 
 void App::loadObjectsFromFile(const char* paths[], int numFiles) {

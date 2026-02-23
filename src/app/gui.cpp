@@ -13,6 +13,7 @@ void show_commands() {
     ImGui::Text("Space bar: Toggle Picking / Navigation modes");
     ImGui::Text("ESC: Go back to previous mode");
     ImGui::Text("Drag & Drop: Upload obj file");
+    ImGui::Text("L: Open light settings");
     ImGui::NewLine();
     ImGui::Text("----- CAMERA COMMANDS -----");
     ImGui::Text("W: Move forward");
@@ -337,6 +338,31 @@ void show_file_uploaded(const char* path, PhysicalObject* uploadedObject, char* 
         uploadedObject->setName(nameBuffer);
         app.confirmFileUploadSuccess();
     }
+
+    ImGui::End();
+}
+
+void show_light_settings() {
+
+    ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
+
+    ImGui::Begin("LIGHT SETTINGS", NULL,
+        ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoCollapse
+        | ImGuiWindowFlags_AlwaysAutoResize
+        | ImGuiWindowFlags_NoMove
+    );
+
+    vec3 pos = app.getScene()->getLights()->at(0)->getPosition();
+    vec3 color = app.getScene()->getLights()->at(0)->getColor();
+    float power = app.getScene()->getLights()->at(0)->getPower();
+    if (ImGui::DragFloat3(" Position", glm::value_ptr(pos), 0.1f)) app.getScene()->getLights()->at(0)->setPosition(pos);
+    if (ImGui::ColorEdit3(" Color", glm::value_ptr(color))) app.getScene()->getLights()->at(0)->setColor(color);
+    if (ImGui::SliderFloat(" Power", &power, MIN_LIGHT_POWER, MAX_LIGHT_POWER)) app.getScene()->getLights()->at(0)->setPower(power);
+    
+    ImGui::NewLine();
+    if (ImGui::Button("Close")) app.toggleLightSettings();
+    ImGui::NewLine();
 
     ImGui::End();
 }

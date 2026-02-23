@@ -15,5 +15,6 @@ void close_gui();
 void show_start_file_loading(const char* path);
 void show_file_error(const char* path, const char* error);
 void show_file_uploaded(const char* path, PhysicalObject* uploadedObject, char* nameBuffer);
+void show_light_settings();
 
 #endif

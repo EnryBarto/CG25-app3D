@@ -4,12 +4,14 @@
 
 // Avoid circular declarations since these classes are declared as friends
 class GpuBuffers;
+class RenderablePointLight;
 class AbstractMesh;
 class PhysicalObjectFactory;
 
 class MeshGeometry {
 
     friend class GpuBuffers;    // Needs access to vertices and colors to copy them into GPU buffers
+    friend class RenderablePointLight; // As GpuBuffers
     friend class AbstractMesh;  // Needs access to vertices to compute the bounding box
     friend class PhysicalObjectFactory; // Needs access to normalize geometry
 

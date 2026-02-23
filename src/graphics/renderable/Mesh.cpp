@@ -25,9 +25,9 @@ void Mesh::updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, v
 	this->modelMatrix = scale(this->modelMatrix, this->scaleVector);
 }
 
-void Mesh::render(const mat4& globalModelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor) {
+void Mesh::render(const mat4& globalModelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, const vector<PointLight*>* lights) {
 	mat4 modelMatrix = globalModelMatrix * this->modelMatrix; // Apply first the local transform, next the global
-	this->gpuObject->render(modelMatrix, viewMatrix, projectionMatrix, camPos, showAnchor, this->material);
+	this->gpuObject->render(modelMatrix, viewMatrix, projectionMatrix, camPos, showAnchor, this->material, lights);
 }
 
 float Mesh::distanceFromAnchor(vec3 point, vec3 direction, mat4 worldModelMatrix) {

@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <tuple>
+#include "../lighting/PointLight.h"
 
 using namespace std;
 
@@ -14,7 +15,7 @@ class PhysicalObject {
 		~PhysicalObject();
 		void addMesh(Mesh* toAdd, string name);
 		void updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
-		void render(const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor);
+		void render(const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, const vector<PointLight*>* lights);
 		tuple<string, float> selectNearestMesh(vec3 point, vec3 direction);
 		string getName();
 		map<string, Mesh*>* getMeshes();

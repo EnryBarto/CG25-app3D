@@ -16,7 +16,7 @@ void RenderableObject::getUniforms() {
 	this->uniform_UsingTexture = glGetUniformLocation(shader->getProgramId(), "uUseTexture");
 }
 
-void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, Material* material) {
+void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, Material* material, const vector<PointLight*>* lights) {
 	
 	if (this->vao == 0) {
 		cerr << "ATTENTION!!! VAO not initialized" << endl;
@@ -50,9 +50,9 @@ void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, c
 	if (this->uniform_MaterialDiffuse != -1) glUniform3fv(this->uniform_MaterialDiffuse, 1, glm::value_ptr(material->getDiffuse()));
 	if (this->uniform_MaterialSpecular != -1) glUniform3fv(this->uniform_MaterialSpecular, 1, glm::value_ptr(material->getSpecular()));
 	if (this->uniform_MaterialShininess != -1) glUniform1f(this->uniform_MaterialShininess, material->getShininess());
-	if (this->uniform_LightColor != -1) glUniform3f(this->uniform_LightColor, 1, 0.95f, 0.8f);
-	if (this->uniform_LightPosition != -1) glUniform3f(this->uniform_LightPosition, 0, 6, 0);
-	if (this->uniform_LightPower != -1) glUniform1f(this->uniform_LightPower, 5);
+	if (this->uniform_LightColor != -1) glUniform3f(this->uniform_LightColor, lights->at(0)->getColor().x, lights->at(0)->getColor().y, lights->at(0)->getColor().z);
+	if (this->uniform_LightPosition != -1) glUniform3f(this->uniform_LightPosition, lights->at(0)->getPosition().x, lights->at(0)->getPosition().y, lights->at(0)->getPosition().z);
+	if (this->uniform_LightPower != -1) glUniform1f(this->uniform_LightPower, lights->at(0)->getPower());
 
 	// RENDER!
 	glBindVertexArray(this->vao);

@@ -10,8 +10,10 @@
 #include "../app/AppSettings.h"
 #include "../app/AppState.h"
 #include <tuple>
-#include "light/Material.h"
+#include "lighting/Material.h"
 #include "shader/Shader.h"
+#include "lighting/PointLight.h"
+#include <vector>
 
 class App; // Avoid recursive declaration
 
@@ -20,11 +22,12 @@ class Scene {
 	friend class App; // The app must be able to access protected methods
 
 	public:
-		Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Material* defaultMaterial, Shader* skyboxShader, string skyboxCubemapDirectory);
+		Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Shader*lightShader, Material* defaultMaterial, Shader* skyboxShader, string skyboxCubemapDirectory);
 		~Scene();
 		Camera* getCamera();
 		void update(float deltaTime, AppState currentState);
 		void render();
+		vector<PointLight*>* getLights();
 
 		// Object and mesh selection
 		tuple<PhysicalObject*, string> mousePicked(vec2 clickPosition);
@@ -48,6 +51,7 @@ class Scene {
 		WindowManager* windowManager;
 		GLFWwindow* window;
 		AppSettings* currentSettings;
+		vector<PointLight*> lights;
 		
 		vec3 getRayFromMouseClick(vec2 clickPosition);
 		PhysicalObject* selectedObject = nullptr;

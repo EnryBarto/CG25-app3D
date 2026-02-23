@@ -11,7 +11,7 @@ class GpuBuffers {
 	public:
         virtual ~GpuBuffers();
         void setModes(GLenum renderMode);
-        void initVao(MeshGeometry* geometry);
+        virtual void initVao(MeshGeometry* geometry);
         void setShader(Shader* shader);
         void setTexture(Texture* texture);
         void unsetTexture();

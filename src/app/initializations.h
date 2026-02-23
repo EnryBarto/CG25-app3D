@@ -11,7 +11,7 @@
 #include "callbacks.h"
 #include <map>
 #include "../graphics/shader/Shader.h"
-#include "../graphics/light/Material.h"
+#include "../graphics/lighting/Material.h"
 
 int init_gl_glfw();
 GLFWwindow* init_window_context_events();

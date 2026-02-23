@@ -145,7 +145,8 @@
     <ClCompile Include="src\app\gui.cpp" />
     <ClCompile Include="src\app\initializations.cpp" />
     <ClCompile Include="src\graphics\Camera.cpp" />
-    <ClCompile Include="src\graphics\light\Material.cpp" />
+    <ClCompile Include="src\graphics\lighting\Material.cpp" />
+    <ClCompile Include="src\graphics\lighting\PointLight.cpp" />
     <ClCompile Include="src\graphics\Projection.cpp" />
     <ClCompile Include="src\graphics\renderable\Mesh.cpp" />
     <ClCompile Include="src\graphics\renderable\GpuBuffers.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="src\graphics\renderable\RenderableObject.cpp" />
     <ClCompile Include="src\graphics\renderable\MeshGeometry.cpp" />
     <ClCompile Include="src\graphics\renderable\RenderableBackground.cpp" />
+    <ClCompile Include="src\graphics\renderable\RenderablePointLight.cpp" />
     <ClCompile Include="src\graphics\renderable\Skybox.cpp" />
     <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\shader\Shader.cpp" />
@@ -165,6 +167,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="resources\shaders\basic_fragment_shader.glsl" />
+    <None Include="resources\shaders\basic_vertex_shader.glsl" />
     <None Include="resources\shaders\cubemap_fragment_shader.glsl" />
     <None Include="resources\shaders\cubemap_vertex_shader.glsl" />
     <None Include="resources\shaders\interpolation_fragment_shader.glsl" />
@@ -192,7 +196,8 @@
     <ClInclude Include="src\app\gui.h" />
     <ClInclude Include="src\app\initializations.h" />
     <ClInclude Include="src\graphics\Camera.h" />
-    <ClInclude Include="src\graphics\light\Material.h" />
+    <ClInclude Include="src\graphics\lighting\Material.h" />
+    <ClInclude Include="src\graphics\lighting\PointLight.h" />
     <ClInclude Include="src\graphics\Projection.h" />
     <ClInclude Include="src\graphics\renderable\Mesh.h" />
     <ClInclude Include="src\graphics\renderable\GpuBuffers.h" />
@@ -202,6 +207,7 @@
     <ClInclude Include="src\graphics\renderable\RenderableObject.h" />
     <ClInclude Include="src\graphics\renderable\MeshGeometry.h" />
     <ClInclude Include="src\graphics\renderable\RenderableBackground.h" />
+    <ClInclude Include="src\graphics\renderable\RenderablePointLight.h" />
     <ClInclude Include="src\graphics\renderable\Skybox.h" />
     <ClInclude Include="src\graphics\Scene.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />

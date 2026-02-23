@@ -32,9 +32,9 @@ void PhysicalObject::updateModelMatrix(vec3 translation, vec3 rotationAxis, floa
 	this->modelMatrix = scale(this->modelMatrix, this->scaleVector);
 }
 
-void PhysicalObject::render(const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor) {
+void PhysicalObject::render(const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, const vector<PointLight*>* lights) {
 	for (auto m : this->meshes) {
-		m.second->render(this->modelMatrix, viewMatrix, projectionMatrix, camPos, showAnchor);
+		m.second->render(this->modelMatrix, viewMatrix, projectionMatrix, camPos, showAnchor, lights);
 	}
 }
 

@@ -3,14 +3,15 @@
 #include "RenderableObject.h"
 #include "MeshGeometry.h"
 #include "../shader/Shader.h"
-#include "../light/Material.h"
+#include "../lighting/Material.h"
+#include "../lighting/PointLight.h"
 
 class Mesh {
 	public:
 		Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMaterial, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
 		~Mesh();
 		void updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
-		void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor);
+		void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, const vector<PointLight*>* lights);
 		float distanceFromAnchor(vec3 point, vec3 direction, mat4 worldModelMatrix);
 		vec3 getTranslationVector();
 		vec3 getRotationAxis();

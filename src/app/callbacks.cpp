@@ -27,6 +27,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             app.toggleMode();
             break;
 
+        case GLFW_KEY_L:
+            app.toggleLightSettings();
+            break;
+
         case GLFW_KEY_UP:
             app.getScene()->getCamera()->changeDirection(app.getAppSettings()->getCurrentCameraSpeed() * ARROW_KEY_CAMERA_SPEED_FACTOR, 0);
             break;

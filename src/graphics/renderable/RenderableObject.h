@@ -1,14 +1,16 @@
 #pragma once
 
 #include "GpuBuffers.h"
-#include "../light/Material.h"
+#include "../lighting/Material.h"
+#include "../lighting/PointLight.h"
+#include <vector>
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 class RenderableObject: public GpuBuffers {
 
     public:
-        void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, Material* material);
+        void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, Material* material, const vector<PointLight*>* lights);
 
     protected:
         void getUniforms() override;

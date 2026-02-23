@@ -12,6 +12,7 @@ enum class AppState {
     WAIT_FILE_CONFIRM,
     WAIT_FILE_ABORT,
     PAUSED,
+    LIGHT_SETTINGS,
     CLOSED
 };
 
@@ -26,6 +27,7 @@ inline std::string appStateToString(AppState state) {
         case AppState::WAIT_FILE_CONFIRM: return "File loaded";
         case AppState::WAIT_FILE_ABORT: return "File error";
         case AppState::PAUSED:          return "Paused";
+        case AppState::LIGHT_SETTINGS:  return "Light settings";
         case AppState::CLOSED:          return "Closing";
         default:                        return "Unknown";
     }
