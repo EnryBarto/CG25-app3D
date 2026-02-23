@@ -3,10 +3,11 @@
 #include "RenderableObject.h"
 #include "MeshGeometry.h"
 #include "../shader/Shader.h"
+#include "../light/Material.h"
 
 class Mesh {
 	public:
-		Mesh(MeshGeometry* geometry, Shader* basicShader, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
+		Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMaterial, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
 		~Mesh();
 		void updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
 		void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor);
@@ -17,10 +18,18 @@ class Mesh {
 		vec3 getScaleVector();
 		void setShader(Shader* shader);
 		Shader* getCurrentShader();
+		Material* getCurrentMaterial();
+		void setMaterial(Material* material);
+		void setFileLoadedMaterial(Material* material);
+		Material* getFileLoadedMaterial();
+		Material* getCustomMaterial();
 
 	private:
 		RenderableObject* gpuObject;
 		MeshGeometry* geometry;
+		Material* material;
+		Material* fileLoadedMaterial = nullptr;
+		Material* customMaterial;
 
 		mat4 modelMatrix;
 		vec3 translation;

@@ -10,6 +10,7 @@
 #include <string>
 #include <stack>
 #include <queue>
+#include "../graphics/light/Material.h"
 
 class App {
 	public:
@@ -26,6 +27,7 @@ class App {
 		AppSettings* getAppSettings();
 		void escPressed();
 		map<string, Shader*>* getShaders();
+		map<string, Material*>* getMaterials();
 
 		// Object and mesh selection
 		void pick(vec2 clickPosition);
@@ -41,6 +43,7 @@ class App {
 
 	private:
 		map<string, Shader*>* shaders;
+		map<string, Material*>* materials;
 		AppSettings* currentSettings;
 		WindowManager* windowManager;
 		Scene* scene;

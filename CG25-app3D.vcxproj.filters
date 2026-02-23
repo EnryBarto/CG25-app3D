@@ -52,6 +52,12 @@
     <Filter Include="Header Files\Graphics\Texture">
       <UniqueIdentifier>{2f15ed48-7f79-468a-8c65-44eb72424ce3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Graphics\Material">
+      <UniqueIdentifier>{b1449ea7-dbd0-4833-b412-c0dab531cd46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Light">
+      <UniqueIdentifier>{b6bd974f-ce5a-4905-ba1f-cb70839538cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -177,6 +183,9 @@
     <ClCompile Include="src\app\App.cpp">
       <Filter>Source Files\App</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\light\Material.cpp">
+      <Filter>Source Files\Graphics\Material</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\ImGui\imgui_impl_glfw.h">
@@ -280,6 +289,9 @@
     </ClInclude>
     <ClInclude Include="src\app\AppState.h">
       <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\light\Material.h">
+      <Filter>Header Files\Graphics\Light</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

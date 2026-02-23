@@ -11,11 +11,13 @@
 #include "callbacks.h"
 #include <map>
 #include "../graphics/shader/Shader.h"
+#include "../graphics/light/Material.h"
 
 int init_gl_glfw();
 GLFWwindow* init_window_context_events();
 void init_callbacks(GLFWwindow* window);
 void init_imgui(GLFWwindow* window);
 std::map<std::string, Shader*>* init_shaders();
+std::map<std::string, Material*>* init_materials();
 
 #endif

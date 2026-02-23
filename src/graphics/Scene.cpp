@@ -2,14 +2,14 @@
 #include <limits>
 #include <algorithm>
 
-Scene::Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory) {
+Scene::Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Material* defaultMaterial, Shader* skyboxShader, string skyboxCubemapDirectory) {
 	this->windowManager = windowManager;
 	this->window = windowManager->getWindow();
 	this->currentSettings = currentSettings;
 	this->camera = new Camera(vec3(0, 6, -10), vec3(0, 0, 20), this->currentSettings->getCurrentCameraSpeed());
 	this->projection = new Projection(windowManager->getAspectRatio(), this->currentSettings->getCurrentFov());
 	this->skybox = new Skybox(skyboxShader, skyboxCubemapDirectory);
-	this->objectFactory = new PhysicalObjectFactory(defaultShader);
+	this->objectFactory = new PhysicalObjectFactory(defaultShader, defaultMaterial);
 	this->objects.push_back(this->objectFactory->createBase());
 	this->objects.push_back(this->objectFactory->createSimpleCube(vec3(2, 0, 8)));
 	this->objects.push_back(this->objectFactory->createSimpleSphere(vec3(9, 0, 3)));

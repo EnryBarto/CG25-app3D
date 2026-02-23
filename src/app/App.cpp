@@ -4,6 +4,8 @@
 #include "initializations.h"
 #include "gui.h"
 #include "../settings.h"
+#include <cstdlib>
+#include <ctime>
 
 App::App() {
 	this->windowManager = new WindowManager();
@@ -20,8 +22,22 @@ App::App() {
 		cout << "Shaders initialized" << endl;
 	}
 
+	this->materials = init_materials();
+
 	this->currentSettings = new AppSettings();
-	this->scene = new Scene(windowManager, currentSettings, shaders->at(BASIC_SHADER_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
+	this->scene = new Scene(windowManager, currentSettings, shaders->at(BASIC_SHADER_NAME), materials->at(NO_MATERIAL_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
+
+    // Assign random materials
+    std::vector<Material*> matList;
+    for (auto const& p : *this->materials) if (p.first != NO_MATERIAL_NAME) matList.push_back(p.second);
+    if (!matList.empty()) {
+        std::srand((unsigned)std::time(nullptr));
+        for (PhysicalObject* obj : this->scene->objects) {
+            for (auto &me : *obj->getMeshes()) {
+                me.second->setMaterial(matList[std::rand() % matList.size()]);
+            }
+        }
+    }
 
 	this->nextState = AppState::PAUSED;
 	this->currentState = AppState::NAVIGATION;
@@ -32,10 +48,15 @@ App::~App() {
     close_gui();
     delete scene;
 
-    for (auto const& s : *shaders) {
-        delete s.second;
-    }
-    delete shaders;
+	for (auto const& s : *shaders) {
+		delete s.second;
+	}
+	delete shaders;
+	
+	for (auto const& m : *materials) {
+		delete m.second;
+	}
+	delete materials;
 
     delete currentSettings;
 
@@ -146,6 +167,10 @@ void App::escPressed() {
 
 map<string, Shader*>* App::getShaders() {
 	return this->shaders;
+}
+
+map<string, Material*>* App::getMaterials() {
+	return this->materials;
 }
 
 void App::loadObjectsFromFile(const char* paths[], int numFiles) {

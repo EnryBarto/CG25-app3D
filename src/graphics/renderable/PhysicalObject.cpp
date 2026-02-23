@@ -75,6 +75,5 @@ vec3 PhysicalObject::getScaleVector() {
 }
 
 void PhysicalObject::setName(const char* newName) {
-	cout << newName << endl;
 	this->name = newName;
 }

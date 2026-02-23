@@ -1,13 +1,14 @@
 #include "PhysicalObjectFactory.h"
 
-PhysicalObjectFactory::PhysicalObjectFactory(Shader* defaultShader) {
+PhysicalObjectFactory::PhysicalObjectFactory(Shader* defaultShader, Material* defaultMaterial) {
 	this->defaultShader = defaultShader;
+	this->defaultMaterial = defaultMaterial;
 }
 
 PhysicalObject* PhysicalObjectFactory::createSimpleCube(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple Cube", spawnPoint, vec3(0), 0, vec3(2));
 	MeshGeometry* cubeGeometry = MeshGeometryFactory::createCube();
-	Mesh* cube = new Mesh(cubeGeometry, this->defaultShader, vec3(0, 1, 0), vec3(0), 0, vec3(1));
+    Mesh* cube = new Mesh(cubeGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 1, 0), vec3(0), 0, vec3(1));
 	toReturn->addMesh(cube, "Cube");
 	return toReturn;
 }
@@ -15,7 +16,7 @@ PhysicalObject* PhysicalObjectFactory::createSimpleCube(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createSimpleSphere(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple sphere", spawnPoint, vec3(0), 0, vec3(2));
 	MeshGeometry* sphereGeometry = MeshGeometryFactory::createSphere(vec4(0.5f, 0.8f, 1, 1));
-	Mesh* sphere = new Mesh(sphereGeometry, this->defaultShader, vec3(0, 1, 0), vec3(0), 0, vec3(1));
+    Mesh* sphere = new Mesh(sphereGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 1, 0), vec3(0), 0, vec3(1));
 	toReturn->addMesh(sphere, "Sphere");
 	return toReturn;
 }
@@ -23,7 +24,7 @@ PhysicalObject* PhysicalObjectFactory::createSimpleSphere(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createSimpleTorus(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple torus", spawnPoint, vec3(0), 0, vec3(2));
 	MeshGeometry* torusGeometry = MeshGeometryFactory::createTorus(vec4(0.9f, 0.2f, 0.7f, 1));
-	Mesh* torus = new Mesh(torusGeometry, this->defaultShader, vec3(0, 0.5f, 0), vec3(0, 0, 0), 0, vec3(1));
+    Mesh* torus = new Mesh(torusGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 0.5f, 0), vec3(0, 0, 0), 0, vec3(1));
 	toReturn->addMesh(torus, "Torus");
 	return toReturn;
 }
@@ -31,7 +32,7 @@ PhysicalObject* PhysicalObjectFactory::createSimpleTorus(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createSimpleCone(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple cone", spawnPoint, vec3(1, 0, 0), 180, vec3(2));
 	MeshGeometry* coneGeometry = MeshGeometryFactory::createCone(vec4(0.9f, 0.7f, 0.15f, 1));
-	Mesh* cone = new Mesh(coneGeometry, this->defaultShader, vec3(0, -1, 0), vec3(0, 1, 0), 180, vec3(1));
+    Mesh* cone = new Mesh(coneGeometry, this->defaultShader, this->defaultMaterial, vec3(0, -1, 0), vec3(0, 1, 0), 180, vec3(1));
 	toReturn->addMesh(cone, "Cone");
 	return toReturn;
 }
@@ -39,7 +40,7 @@ PhysicalObject* PhysicalObjectFactory::createSimpleCone(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createSimpleCylinder(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple cylinder", spawnPoint, vec3(0), 0, vec3(2));
 	MeshGeometry* cylinderGeometry = MeshGeometryFactory::createCylinder(vec4(0.2f, 0.8f, 0.1f, 1));
-	Mesh* cylinder = new Mesh(cylinderGeometry, this->defaultShader, vec3(0), vec3(0), 0, vec3(1));
+    Mesh* cylinder = new Mesh(cylinderGeometry, this->defaultShader, this->defaultMaterial, vec3(0), vec3(0), 0, vec3(1));
 	toReturn->addMesh(cylinder, "Cylinder");
 	return toReturn;
 }
@@ -47,7 +48,7 @@ PhysicalObject* PhysicalObjectFactory::createSimpleCylinder(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createBase() {
 	PhysicalObject* toReturn = new PhysicalObject("Floor", vec3(0), vec3(0), 0, vec3(2));
 	MeshGeometry* planeGeometry = MeshGeometryFactory::createPlane(vec4(0.196078f, 0.568627f, 0.658824f, 1));
-	Mesh* cube = new Mesh(planeGeometry, this->defaultShader, vec3(0, 0, 0), vec3(0), 0, vec3(5000, 0, 5000));
+    Mesh* cube = new Mesh(planeGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 0, 0), vec3(0), 0, vec3(5000, 0, 5000));
 	toReturn->addMesh(cube, "Plane");
 	return toReturn;
 }
@@ -55,16 +56,18 @@ PhysicalObject* PhysicalObjectFactory::createBase() {
 PhysicalObject* PhysicalObjectFactory::createHouse(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("House", spawnPoint, vec3(0), 0, vec3(2));
 	MeshGeometry* geometry = MeshGeometryFactory::createCube();
-	Mesh* mesh = new Mesh(geometry, this->defaultShader, vec3(0, 1, 0), vec3(0, 1, 0), 180, vec3(1));
+    Mesh* mesh = new Mesh(geometry, this->defaultShader, this->defaultMaterial, vec3(0, 1, 0), vec3(0, 1, 0), 180, vec3(1));
 	toReturn->addMesh(mesh, "Cube");
 	geometry = MeshGeometryFactory::createPyramid();
-	mesh = new Mesh(geometry, this->defaultShader, vec3(0, 2, 0), vec3(0, 1, 0), 180, vec3(1));
+    mesh = new Mesh(geometry, this->defaultShader, this->defaultMaterial, vec3(0, 2, 0), vec3(0, 1, 0), 180, vec3(1));
 	toReturn->addMesh(mesh, "Pyramid");
 	return toReturn;
 }
 
 PhysicalObject* PhysicalObjectFactory::createFromFile(const char* path) {
 	vector<pair<MeshGeometry*, string>> models;
+	map<MeshGeometry*, Material*> materials;
+
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FlipUVs);
 	if (!scene) {
@@ -75,20 +78,34 @@ PhysicalObject* PhysicalObjectFactory::createFromFile(const char* path) {
 	PhysicalObject* toReturn = new PhysicalObject("File loaded", vec3(0), vec3(0), 0, vec3(1));
 	
 	const aiMesh* assimpMesh;
+	const aiMaterial* assimpMaterial;
 
 	for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
 		assimpMesh = scene->mMeshes[i];
+
 		MeshGeometry* geometry = MeshGeometryFactory::createFromAssimpMesh(assimpMesh);
 		if (geometry != nullptr) {
 			models.push_back({geometry, assimpMesh->mName.C_Str() });
 		}
+
+		assimpMaterial = scene->mMaterials[assimpMesh->mMaterialIndex];
+		Material* loadedMaterial = nullptr;
+		try {
+			loadedMaterial = new Material(assimpMaterial);
+		} catch (const std::runtime_error& e) {
+			cerr << "Warning: Material load failed for mesh " << assimpMesh->mName.C_Str() << ". Error: " << e.what() << ". Using default material." << endl;
+			loadedMaterial = this->defaultMaterial;
+		}
+		materials.insert({geometry, loadedMaterial});
 	}
 
 	PhysicalObjectFactory::normalizeModel(models);
 
-	for (auto m : models) {
-		Mesh* mesh = new Mesh(m.first, this->defaultShader, vec3(0), vec3(0), 0, vec3(1));
-		toReturn->addMesh(mesh, m.second);
+	for (auto [ geometry, name ] : models) {
+		Material* material = materials.at(geometry);
+        Mesh* mesh = new Mesh(geometry, this->defaultShader, material, vec3(0), vec3(0), 0, vec3(1));
+		if (material != this->defaultMaterial) mesh->setFileLoadedMaterial(material);
+		toReturn->addMesh(mesh, name);
 	}
 
 	return toReturn;

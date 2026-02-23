@@ -1,13 +1,14 @@
 #pragma once
 
 #include "GpuBuffers.h"
+#include "../light/Material.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 class RenderableObject: public GpuBuffers {
 
     public:
-        void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor);
+        void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, Material* material);
 
     protected:
         void getUniforms() override;
@@ -18,8 +19,13 @@ class RenderableObject: public GpuBuffers {
         GLint uniform_Model = -1;
         GLint uniform_View = -1;
         GLint uniform_ViewPos = -1;
-        GLint uniform_Light = -1;
-        GLint uniform_Material = -1;
+        GLint uniform_LightPosition = -1;
+        GLint uniform_LightColor = -1;
+        GLint uniform_LightPower = -1;
+        GLint uniform_MaterialAmbient = -1;
+        GLint uniform_MaterialDiffuse = -1;
+        GLint uniform_MaterialSpecular = -1;
+        GLint uniform_MaterialShininess = -1;
         GLint uniform_Texture = -1;
         GLint uniform_UsingTexture = -1;
 };  

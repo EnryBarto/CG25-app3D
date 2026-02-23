@@ -165,9 +165,10 @@ void show_mesh_inspector() {
     ImGui::TextWrapped(get<0>(app.getScene()->getSelectedMesh()).c_str());
     ImGui::NewLine();
 
+    // Shader selector
     map<string, Shader*>* shaders = app.getShaders();
     Shader* currentShader = selectedMesh->getCurrentShader();
-    const char* previewName = "(None)";
+    const char* previewName = "-----";
 
     if (shaders != nullptr) {
         for (const auto& s : *shaders) {
@@ -184,6 +185,49 @@ void show_mesh_inspector() {
             if (isSelected) ImGui::SetItemDefaultFocus();
         }
         ImGui::EndCombo();
+    }
+    ImGui::NewLine();
+
+    // Material selector
+    map<string, Material*>* materials = app.getMaterials();
+    Material* currentMaterial = selectedMesh->getCurrentMaterial();
+    Material* fileLoadedMaterial = selectedMesh->getFileLoadedMaterial();
+    Material* customMaterial = selectedMesh->getCustomMaterial();
+    bool isCustomSelected = currentMaterial == customMaterial;
+    previewName = "-----";
+    if (materials != nullptr) {
+        for (const auto& m : *materials) {
+            if (m.second == currentMaterial) {
+                previewName = m.first.c_str();
+                break;
+            }
+        }
+    }
+    if (isCustomSelected) previewName = "Custom";
+    if (ImGui::BeginCombo(" Material", currentMaterial == fileLoadedMaterial ? fileLoadedMaterial->getName().c_str() : previewName) && materials != NULL) {
+        for (const auto& m : *materials) {
+            bool isSelected = (currentMaterial == m.second);
+            if (ImGui::Selectable(m.first.c_str(), isSelected)) selectedMesh->setMaterial(m.second);
+            if (isSelected) ImGui::SetItemDefaultFocus();
+        }
+        if (fileLoadedMaterial != nullptr) {
+            bool isSelected = (currentMaterial == fileLoadedMaterial);
+            if (ImGui::Selectable(fileLoadedMaterial->getName().c_str(), isSelected)) selectedMesh->setMaterial(fileLoadedMaterial);
+            if (isSelected) ImGui::SetItemDefaultFocus();
+        }
+        if (ImGui::Selectable(customMaterial->getName().c_str(), isCustomSelected)) selectedMesh->setMaterial(customMaterial);
+        if (isCustomSelected) ImGui::SetItemDefaultFocus();
+        ImGui::EndCombo();
+    }
+
+    if (isCustomSelected) {
+        vec3 ambient = customMaterial->getAmbient(), diffuse = customMaterial->getDiffuse(), specular = customMaterial->getSpecular();
+        float shininess = customMaterial->getShininess();
+        ImGui::ColorEdit3(" Ambient", glm::value_ptr(ambient));
+        ImGui::ColorEdit3(" Diffuse", glm::value_ptr(diffuse));
+        ImGui::ColorEdit3(" Specular", glm::value_ptr(specular));
+        ImGui::DragFloat(" Shininess", &shininess, 1, 1, 512);
+        customMaterial->updateValues(ambient, diffuse, specular, shininess);
     }
 
     vec3 translation = selectedMesh->getTranslationVector();

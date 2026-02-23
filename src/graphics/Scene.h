@@ -10,6 +10,8 @@
 #include "../app/AppSettings.h"
 #include "../app/AppState.h"
 #include <tuple>
+#include "light/Material.h"
+#include "shader/Shader.h"
 
 class App; // Avoid recursive declaration
 
@@ -18,7 +20,7 @@ class Scene {
 	friend class App; // The app must be able to access protected methods
 
 	public:
-		Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Shader* skyboxShader, string skyboxCubemapDirectory);
+		Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Material* defaultMaterial, Shader* skyboxShader, string skyboxCubemapDirectory);
 		~Scene();
 		Camera* getCamera();
 		void update(float deltaTime, AppState currentState);

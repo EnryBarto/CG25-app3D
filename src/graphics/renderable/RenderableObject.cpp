@@ -5,13 +5,18 @@ void RenderableObject::getUniforms() {
 	this->uniform_Projection = glGetUniformLocation(shader->getProgramId(), "Projection");
 	this->uniform_View = glGetUniformLocation(shader->getProgramId(), "View");
 	this->uniform_ViewPos = glGetUniformLocation(shader->getProgramId(), "ViewPos");
-	this->uniform_Light = glGetUniformLocation(shader->getProgramId(), "light");
-	this->uniform_Material = glGetUniformLocation(shader->getProgramId(), "material");
+	this->uniform_LightPosition = glGetUniformLocation(shader->getProgramId(), "light.position");
+	this->uniform_LightColor = glGetUniformLocation(shader->getProgramId(), "light.color");
+	this->uniform_LightPower = glGetUniformLocation(shader->getProgramId(), "light.power");
+	this->uniform_MaterialAmbient = glGetUniformLocation(shader->getProgramId(), "material.ambient");
+	this->uniform_MaterialDiffuse = glGetUniformLocation(shader->getProgramId(), "material.diffuse");
+	this->uniform_MaterialSpecular = glGetUniformLocation(shader->getProgramId(), "material.specular");
+	this->uniform_MaterialShininess = glGetUniformLocation(shader->getProgramId(), "material.shininess");
 	this->uniform_Texture = glGetUniformLocation(shader->getProgramId(), "uTexture");
 	this->uniform_UsingTexture = glGetUniformLocation(shader->getProgramId(), "uUseTexture");
 }
 
-void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor) {
+void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, Material* material) {
 	
 	if (this->vao == 0) {
 		cerr << "ATTENTION!!! VAO not initialized" << endl;
@@ -41,8 +46,13 @@ void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, c
 	if (this->uniform_Projection != -1) glUniformMatrix4fv(this->uniform_Projection, 1, GL_FALSE, value_ptr(projectionMatrix));
 	if (this->uniform_View != -1) glUniformMatrix4fv(this->uniform_View, 1, GL_FALSE, value_ptr(viewMatrix));
 	if (this->uniform_ViewPos != -1) glUniform3f(this->uniform_ViewPos, camPos.x, camPos.y, camPos.z);
-
-	// TODO: Set all uniforms
+	if (this->uniform_MaterialAmbient != -1) glUniform3fv(this->uniform_MaterialAmbient, 1, glm::value_ptr(material->getAmbient()));
+	if (this->uniform_MaterialDiffuse != -1) glUniform3fv(this->uniform_MaterialDiffuse, 1, glm::value_ptr(material->getDiffuse()));
+	if (this->uniform_MaterialSpecular != -1) glUniform3fv(this->uniform_MaterialSpecular, 1, glm::value_ptr(material->getSpecular()));
+	if (this->uniform_MaterialShininess != -1) glUniform1f(this->uniform_MaterialShininess, material->getShininess());
+	if (this->uniform_LightColor != -1) glUniform3f(this->uniform_LightColor, 1, 0.95f, 0.8f);
+	if (this->uniform_LightPosition != -1) glUniform3f(this->uniform_LightPosition, 0, 6, 0);
+	if (this->uniform_LightPower != -1) glUniform1f(this->uniform_LightPower, 5);
 
 	// RENDER!
 	glBindVertexArray(this->vao);

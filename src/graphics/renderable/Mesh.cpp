@@ -1,11 +1,13 @@
 #include "Mesh.h"
 
-Mesh::Mesh(MeshGeometry* geometry, Shader* basicShader, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector) {
+Mesh::Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMaterial, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector) {
     this->geometry = geometry;
 	this->gpuObject = new RenderableObject();
 	this->gpuObject->initVao(geometry);
 	this->gpuObject->setShader(basicShader);
 	this->updateModelMatrix(translation, rotationAxis, angle, scaleVector);
+    this->material = defaultMaterial;
+    this->customMaterial = new Material("Custom", vec3(0.1f), vec3(1.0f, 0.2f, 0.1f), vec3(0.5f), 50);
 }
 
 Mesh::~Mesh() {
@@ -25,7 +27,7 @@ void Mesh::updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, v
 
 void Mesh::render(const mat4& globalModelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor) {
 	mat4 modelMatrix = globalModelMatrix * this->modelMatrix; // Apply first the local transform, next the global
-	this->gpuObject->render(modelMatrix, viewMatrix, projectionMatrix, camPos, showAnchor);
+	this->gpuObject->render(modelMatrix, viewMatrix, projectionMatrix, camPos, showAnchor, this->material);
 }
 
 float Mesh::distanceFromAnchor(vec3 point, vec3 direction, mat4 worldModelMatrix) {
@@ -89,4 +91,24 @@ void Mesh::setShader(Shader* shader) {
 
 Shader* Mesh::getCurrentShader() {
     return this->gpuObject->getCurrentShader();
+}
+
+Material* Mesh::getCurrentMaterial() {
+    return this->material;
+}
+
+void Mesh::setMaterial(Material* material) {
+    this->material = material;
+}
+
+void Mesh::setFileLoadedMaterial(Material* material) {
+    this->fileLoadedMaterial = material;
+}
+
+Material* Mesh::getFileLoadedMaterial() {
+    return this->fileLoadedMaterial;
+}
+
+Material* Mesh::getCustomMaterial() {
+    return this->customMaterial;
 }
