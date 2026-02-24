@@ -1,12 +1,14 @@
 #include "PhysicalObject.h"
 
-PhysicalObject::PhysicalObject(string name, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector) {
+PhysicalObject::PhysicalObject(string name, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector, Shader* boundingBoxShader) {
 	this->name = name;
 	this->updateModelMatrix(translation, rotationAxis, angle, scaleVector);
+	this->boundingBoxShader = boundingBoxShader;
 }
 
 PhysicalObject::~PhysicalObject() {
 	for (auto m : this->meshes) delete m.second;
+	delete this->boundingBox;
 }
 
 void PhysicalObject::addMesh(Mesh* toAdd, string name) {
@@ -20,6 +22,7 @@ void PhysicalObject::addMesh(Mesh* toAdd, string name) {
 	}
 
 	this->meshes[finalName] = toAdd;
+	this->computeGlobalBoundingBox();
 }
 
 void PhysicalObject::removeMesh(Mesh* toRemove) {
@@ -29,6 +32,7 @@ void PhysicalObject::removeMesh(Mesh* toRemove) {
 			break;
 		}
 	}
+	this->computeGlobalBoundingBox();
 }
 
 void PhysicalObject::updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector) {
@@ -41,10 +45,11 @@ void PhysicalObject::updateModelMatrix(vec3 translation, vec3 rotationAxis, floa
 	this->modelMatrix = scale(this->modelMatrix, this->scaleVector);
 }
 
-void PhysicalObject::render(const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, const vector<PointLight*>* lights) {
+void PhysicalObject::render(const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, const vector<PointLight*>* lights, bool showBoundingBox) {
 	for (auto m : this->meshes) {
-		m.second->render(this->modelMatrix, viewMatrix, projectionMatrix, camPos, showAnchor, lights);
+		m.second->render(this->modelMatrix, viewMatrix, projectionMatrix, camPos, showAnchor, lights, showBoundingBox);
 	}
+	if (showBoundingBox) this->boundingBox->render(this->modelMatrix, viewMatrix, projectionMatrix, camPos);
 }
 
 tuple<string, float> PhysicalObject::selectNearestMesh(vec3 point, vec3 direction) {
@@ -85,4 +90,25 @@ vec3 PhysicalObject::getScaleVector() {
 
 void PhysicalObject::setName(const char* newName) {
 	this->name = newName;
+}
+
+void PhysicalObject::computeGlobalBoundingBox() {
+    // Delete the old bounding box if it exists
+    if (this->boundingBox != nullptr) {
+        delete this->boundingBox;
+        this->boundingBox = nullptr;
+    }
+
+	// Retrieve all the bounding boxes
+	vector<pair<vec3, vec3>> meshBoxes;
+	for (auto [name, mesh] : this->meshes) {
+		meshBoxes.push_back(mesh->getBoundingBox());
+	}
+
+	this->boundingBox = new BoundingBox(meshBoxes, this->boundingBoxShader);
+}
+
+void PhysicalObject::updateMeshModelMatrix(string name, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector) {
+	this->meshes.at(name)->updateModelMatrix(translation, rotationAxis, angle, scaleVector);
+	this->computeGlobalBoundingBox();
 }

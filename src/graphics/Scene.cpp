@@ -2,14 +2,14 @@
 #include <limits>
 #include <algorithm>
 
-Scene::Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Shader* lightShader, Material* defaultMaterial, Shader* skyboxShader, string skyboxCubemapDirectory) {
+Scene::Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Shader* basicShader, Material* defaultMaterial, Shader* skyboxShader, string skyboxCubemapDirectory) {
 	this->windowManager = windowManager;
 	this->window = windowManager->getWindow();
 	this->currentSettings = currentSettings;
 	this->camera = new Camera(vec3(0, 6, -10), vec3(0, 0, 20), this->currentSettings->getCurrentCameraSpeed());
 	this->projection = new Projection(windowManager->getAspectRatio(), this->currentSettings->getCurrentFov());
 	this->skybox = new Skybox(skyboxShader, skyboxCubemapDirectory);
-	this->objectFactory = new PhysicalObjectFactory(defaultShader, defaultMaterial);
+	this->objectFactory = new PhysicalObjectFactory(defaultShader, defaultMaterial, basicShader);
 	this->objects.push_back(this->objectFactory->createBase());
 	this->objects.push_back(this->objectFactory->createSimpleCube(vec3(2, 0, 8)));
 	this->objects.push_back(this->objectFactory->createSimpleSphere(vec3(9, 0, 3)));
@@ -17,12 +17,12 @@ Scene::Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader*
 	this->objects.push_back(this->objectFactory->createSimpleCone(vec3(8, 0, -2)));
 	this->objects.push_back(this->objectFactory->createSimpleTorus(vec3(-6, 0, -3)));
 	this->objects.push_back(this->objectFactory->createSimpleCylinder(vec3(3, 0, 2)));
-	this->lightShader = lightShader;
-	this->lights.push_back(new PointLight(vec3(-500, 200, -1000), vec4(1), 1.7f, this->lightShader));
-	this->lights.push_back(new PointLight(vec3(15, 20, 15), vec4(1), 0.25f, this->lightShader));
-	this->lights.push_back(new PointLight(vec3(-15, 20, 15), vec4(1), 0.25f, this->lightShader));
-	this->lights.push_back(new PointLight(vec3(15, 20, -15), vec4(1), 0.25f, this->lightShader));
-	this->lights.push_back(new PointLight(vec3(-15, 20, -15), vec4(1), 0.25f, this->lightShader));
+	this->basicShader = basicShader;
+	this->lights.push_back(new PointLight(vec3(-500, 200, -1000), vec4(1), 1.7f, this->basicShader));
+	this->lights.push_back(new PointLight(vec3(15, 20, 15), vec4(1), 0.25f, this->basicShader));
+	this->lights.push_back(new PointLight(vec3(-15, 20, 15), vec4(1), 0.25f, this->basicShader));
+	this->lights.push_back(new PointLight(vec3(15, 20, -15), vec4(1), 0.25f, this->basicShader));
+	this->lights.push_back(new PointLight(vec3(-15, 20, -15), vec4(1), 0.25f, this->basicShader));
 }
 
 Scene::~Scene() {
@@ -58,7 +58,8 @@ void Scene::render() {
 	const mat4& v = this->camera->getViewMatrix();
 	const mat4& p = this->projection->getProjectionMatrix();
 	const vec3& c = this->camera->getPosition();
-	bool anchor	  = this->currentSettings->isAnchorActive();
+	bool anchor = this->currentSettings->isAnchorActive();
+	bool boundingBox = this->currentSettings->isBoundingBoxActive();
 
 	// Set the polygon mode if it was changed
 	if (this->currentSettings->isWireframeActiveChanged()) {
@@ -73,7 +74,7 @@ void Scene::render() {
 		l->render(v, p);
 	}
 	for (PhysicalObject* o : this->objects) {
-		o->render(v, p, c, anchor, &this->lights);
+		o->render(v, p, c, anchor, &this->lights, boundingBox);
 	}
 }
 
@@ -182,7 +183,7 @@ PhysicalObject* Scene::loadObjectFromFile(const char* path) {
 }
 
 void Scene::createLight() {
-	if (this->lights.size() < MAX_LIGHTS) this->lights.push_back(new PointLight(this->lightShader));
+	if (this->lights.size() < MAX_LIGHTS) this->lights.push_back(new PointLight(this->basicShader));
 }
 
 void Scene::removeLight(int i) {

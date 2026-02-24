@@ -520,3 +520,40 @@ MeshGeometry* MeshGeometryFactory::createFromAssimpMesh(const aiMesh* mesh) {
 
 	return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords, vertices.back(), vec4(1));
 }
+
+MeshGeometry* MeshGeometryFactory::createBoundingBox(vec3 min, vec3 max) {
+	vector<vec3> vertices;
+	vector<vec4> colors;
+	vector<GLuint> indices;
+
+	vertices.push_back(vec3(min.x, min.y, max.z)); // 0
+	vertices.push_back(vec3(max.x, min.y, max.z)); // 1
+	vertices.push_back(vec3(max.x, max.y, max.z)); // 2
+	vertices.push_back(vec3(min.x, max.y, max.z)); // 3
+	vertices.push_back(vec3(min.x, min.y, min.z)); // 4
+	vertices.push_back(vec3(max.x, min.y, min.z)); // 5
+	vertices.push_back(vec3(max.x, max.y, min.z)); // 6
+	vertices.push_back(vec3(min.x, max.y, min.z)); // 7
+
+	for (int i = 0; i < vertices.size(); i++) colors.push_back(vec4(0, 1, 0, 1));
+
+	indices.push_back(5);
+	indices.push_back(1);
+	indices.push_back(2);
+	indices.push_back(6);
+	indices.push_back(5);
+	indices.push_back(4);
+	indices.push_back(7);
+	indices.push_back(6);
+	indices.push_back(2);
+	indices.push_back(3);
+	indices.push_back(7);
+	indices.push_back(4);
+	indices.push_back(0);
+	indices.push_back(3);
+	indices.push_back(2);
+	indices.push_back(1);
+	indices.push_back(0);
+
+	return new MeshGeometry(&vertices, &colors, &indices, nullptr, nullptr);
+}

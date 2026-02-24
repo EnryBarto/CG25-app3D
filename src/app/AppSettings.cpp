@@ -38,6 +38,10 @@ bool AppSettings::isAnchorActive() {
 	return this->_anchor;
 }
 
+bool AppSettings::isBoundingBoxActive() {
+	return this->_boundingBox;
+}
+
 void AppSettings::toggleWireframe() {
 	this->_wireframeActiveChanged = true;
 	this->_wireframeActive = !this->_wireframeActive;
@@ -70,4 +74,8 @@ void AppSettings::setMouseSensitivity(float newMouseSensitivity) {
 
 void AppSettings::toggleAnchor() {
 	this->_anchor = !this->_anchor;
+}
+
+void AppSettings::toggleBoundingBox() {
+	this->_boundingBox = !this->_boundingBox;
 }

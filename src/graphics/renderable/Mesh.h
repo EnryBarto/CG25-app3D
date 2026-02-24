@@ -5,13 +5,14 @@
 #include "../shader/Shader.h"
 #include "../lighting/Material.h"
 #include "../lighting/PointLight.h"
+#include "BoundingBox.h"
 
 class Mesh {
 	public:
-		Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMaterial, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
+		Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMaterial, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector, Shader* boundingBoxShader);
 		~Mesh();
 		void updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
-		void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, const vector<PointLight*>* lights);
+		void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, const vector<PointLight*>* lights, bool showBoundingBox);
 		float distanceFromAnchor(vec3 point, vec3 direction, mat4 worldModelMatrix);
 		vec3 getTranslationVector();
 		vec3 getRotationAxis();
@@ -26,6 +27,7 @@ class Mesh {
 		Material* getCustomMaterial();;
 		Texture* getCurrentTexture();
 		void setTexture(Texture* texture);
+		pair<vec3, vec3> getBoundingBox();
 
 	private:
 		RenderableObject* gpuObject;
@@ -33,6 +35,7 @@ class Mesh {
 		Material* material;
 		Material* fileLoadedMaterial = nullptr;
 		Material* customMaterial;
+		BoundingBox* boundingBox;
 
 		mat4 modelMatrix;
 		vec3 translation;

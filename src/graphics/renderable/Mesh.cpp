@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-Mesh::Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMaterial, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector) {
+Mesh::Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMaterial, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector, Shader* boundingBoxShader) {
     this->geometry = geometry;
 	this->gpuObject = new RenderableObject();
 	this->gpuObject->initVao(geometry);
@@ -8,11 +8,13 @@ Mesh::Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMateria
 	this->updateModelMatrix(translation, rotationAxis, angle, scaleVector);
     this->material = defaultMaterial;
     this->customMaterial = new Material("Custom", vec3(0.1f), vec3(1.0f, 0.2f, 0.1f), vec3(0.5f), 50);
+    this->boundingBox = new BoundingBox(geometry, boundingBoxShader);
 }
 
 Mesh::~Mesh() {
     delete this->gpuObject;
     delete this->geometry;
+    delete this->boundingBox;
 }
 
 void Mesh::updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector) {
@@ -25,9 +27,10 @@ void Mesh::updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, v
 	this->modelMatrix = scale(this->modelMatrix, this->scaleVector);
 }
 
-void Mesh::render(const mat4& globalModelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, const vector<PointLight*>* lights) {
+void Mesh::render(const mat4& globalModelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, const vector<PointLight*>* lights, bool showBoundingBox) {
 	mat4 modelMatrix = globalModelMatrix * this->modelMatrix; // Apply first the local transform, next the global
 	this->gpuObject->render(modelMatrix, viewMatrix, projectionMatrix, camPos, showAnchor, this->material, lights);
+    if (showBoundingBox) this->boundingBox->render(modelMatrix, viewMatrix, projectionMatrix, camPos);
 }
 
 float Mesh::distanceFromAnchor(vec3 point, vec3 direction, mat4 worldModelMatrix) {
@@ -105,6 +108,34 @@ void Mesh::setTexture(Texture* texture) {
     this->gpuObject->setTexture(texture);
 }
 
+pair<vec3, vec3> Mesh::getBoundingBox() {
+    vec3 localMin = this->boundingBox->getMin();
+    vec3 localMax = this->boundingBox->getMax();
+    
+    vec3 corners[8] = {
+        localMin,
+        vec3(localMin.x, localMin.y, localMax.z),
+        vec3(localMin.x, localMax.y, localMin.z),
+        vec3(localMin.x, localMax.y, localMax.z),
+        vec3(localMax.x, localMin.y, localMin.z),
+        vec3(localMax.x, localMin.y, localMax.z),
+        vec3(localMax.x, localMax.y, localMin.z),
+        localMax
+    };
+
+    vec3 globalMin(std::numeric_limits<float>::max());
+    vec3 globalMax(-std::numeric_limits<float>::max());
+
+    // Because the mesh can be scaled and rotated we have to consider all the vertices to find the corners
+    for (int i = 0; i < 8; i++) {
+        vec3 worldPos = vec3(this->modelMatrix * vec4(corners[i], 1.0f));
+        globalMin = glm::min(globalMin, worldPos);
+        globalMax = glm::max(globalMax, worldPos);
+    }
+
+    return { globalMin, globalMax };
+}
+
 void Mesh::setMaterial(Material* material) {
     this->material = material;
 }
@@ -120,3 +151,4 @@ Material* Mesh::getFileLoadedMaterial() {
 Material* Mesh::getCustomMaterial() {
     return this->customMaterial;
 }
+

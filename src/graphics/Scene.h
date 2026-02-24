@@ -22,7 +22,7 @@ class Scene {
 	friend class App; // The app must be able to access protected methods
 
 	public:
-		Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Shader*lightShader, Material* defaultMaterial, Shader* skyboxShader, string skyboxCubemapDirectory);
+		Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader* defaultShader, Shader* basicShader, Material* defaultMaterial, Shader* skyboxShader, string skyboxCubemapDirectory);
 		~Scene();
 		Camera* getCamera();
 		void update(float deltaTime, AppState currentState);
@@ -50,7 +50,7 @@ class Scene {
 		Camera* camera;
 		Projection* projection;
 		Skybox* skybox;
-		Shader* lightShader;
+		Shader* basicShader; // Used to render bounding boxes and point lights
 		vector<PhysicalObject*> objects;
 		PhysicalObjectFactory* objectFactory;
 		WindowManager* windowManager;

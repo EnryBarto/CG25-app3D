@@ -14,6 +14,7 @@ class AppSettings {
 		bool isCameraSpeedChanged();
 		float getCurrentMouseSensitivity();
 		bool isAnchorActive();
+		bool isBoundingBoxActive();
 
 		void toggleWireframe();
 		void setWireframeUnchanged();
@@ -22,6 +23,7 @@ class AppSettings {
 		void setCameraSpeed(float newCameraSpeed);
 		void setMouseSensitivity(float newMouseSensitivity);
 		void toggleAnchor();
+		void toggleBoundingBox();
 
 	private:
 		bool _wireframeActive = false;
@@ -33,4 +35,5 @@ class AppSettings {
 		bool _cameraSpeedChanged = false;
 		float _mouseSensitivity = MOUSE_SENSITIVITY_DEFAULT;
 		bool _anchor = false;
+		bool _boundingBox = false;
 };

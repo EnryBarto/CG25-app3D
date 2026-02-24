@@ -41,13 +41,23 @@ void show_settings() {
         | ImGuiWindowFlags_AlwaysAutoResize
         | ImGuiWindowFlags_NoMove
     );
+    ImGui::Text("MESH SETTINGS");
     ImGui::NewLine();
 
-    bool isActive = app.getAppSettings()->isWireframeActive();
-    if (ImGui::Checkbox("Wireframe", &isActive)) app.getAppSettings()->toggleWireframe();
+    bool boundingBox = app.getAppSettings()->isBoundingBoxActive();
+    if (ImGui::Checkbox("Bounding Box", &boundingBox)) app.getAppSettings()->toggleBoundingBox();
+
+    bool wireframe = app.getAppSettings()->isWireframeActive();
+    if (ImGui::Checkbox("Wireframe", &wireframe)) app.getAppSettings()->toggleWireframe();
 
     bool anchor = app.getAppSettings()->isAnchorActive();
     if (ImGui::Checkbox("Anchor", &anchor)) app.getAppSettings()->toggleAnchor();
+
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+    ImGui::Text("CAMERA SETTINGS");
+    ImGui::NewLine();
 
     float tempFov = app.getAppSettings()->getCurrentFov();
     if (ImGui::SliderFloat(" FOV", &tempFov, PROJ_FOVY_MIN, PROJ_FOVY_MAX)) app.getAppSettings()->setFov(tempFov);
@@ -137,7 +147,7 @@ ImVec2 show_object_inspector() {
     ImGui::NewLine();
     ImGui::Separator();
     ImGui::NewLine();
-    ImGui::Text("Meshes:");
+    ImGui::Text("%d Meshes:", selectedObj->getMeshes()->size());
     ImGui::NewLine();
 
     for (auto m : *selectedObj->getMeshes()) {
@@ -197,7 +207,7 @@ void show_mesh_inspector() {
     changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(scaleVector), 0.1f);
 
     if (changed) {
-        selectedMesh->updateModelMatrix(translation, rotationAxis, rotationAngle, scaleVector);
+        app.getScene()->getSelectedObject()->updateMeshModelMatrix(get<0>(app.getScene()->getSelectedMesh()), translation, rotationAxis, rotationAngle, scaleVector);
     }
     ImGui::NewLine();
     ImGui::Separator();
@@ -335,7 +345,10 @@ void show_objects_list() {
     vector<PhysicalObject*>* objects = app.getScene()->getObjects();
 
     ImGui::NewLine();
-    if (objects->size() > 0) ImGui::Text("Select an object to open its inspector");
+    if (objects->size() > 0) {
+        ImGui::Text("Select an object to open its inspector");
+        ImGui::Text("Num. objects: %d", objects->size());
+    }
     else ImGui::Text("The scene contains no objects!");
     ImGui::NewLine();
 

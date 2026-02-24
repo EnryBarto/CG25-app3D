@@ -51,12 +51,12 @@ void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, c
 	if (this->uniform_Projection != -1) glUniformMatrix4fv(this->uniform_Projection, 1, GL_FALSE, value_ptr(projectionMatrix));
 	if (this->uniform_View != -1) glUniformMatrix4fv(this->uniform_View, 1, GL_FALSE, value_ptr(viewMatrix));
 	if (this->uniform_ViewPos != -1) glUniform3f(this->uniform_ViewPos, camPos.x, camPos.y, camPos.z);
-	if (this->uniform_MaterialAmbient != -1) glUniform3fv(this->uniform_MaterialAmbient, 1, glm::value_ptr(material->getAmbient()));
-	if (this->uniform_MaterialDiffuse != -1) glUniform3fv(this->uniform_MaterialDiffuse, 1, glm::value_ptr(material->getDiffuse()));
-	if (this->uniform_MaterialSpecular != -1) glUniform3fv(this->uniform_MaterialSpecular, 1, glm::value_ptr(material->getSpecular()));
-	if (this->uniform_MaterialShininess != -1) glUniform1f(this->uniform_MaterialShininess, material->getShininess());
-	if (this->uniform_NumLights != -1) glUniform1i(this->uniform_NumLights, (GLint)lights->size());
-	for (int i = 0; i < std::min((int)lights->size(), MAX_LIGHTS); i++) {
+	if (this->uniform_MaterialAmbient != -1 && material != nullptr) glUniform3fv(this->uniform_MaterialAmbient, 1, glm::value_ptr(material->getAmbient()));
+	if (this->uniform_MaterialDiffuse != -1 && material != nullptr) glUniform3fv(this->uniform_MaterialDiffuse, 1, glm::value_ptr(material->getDiffuse()));
+	if (this->uniform_MaterialSpecular != -1 && material != nullptr) glUniform3fv(this->uniform_MaterialSpecular, 1, glm::value_ptr(material->getSpecular()));
+	if (this->uniform_MaterialShininess != -1 && material != nullptr) glUniform1f(this->uniform_MaterialShininess, material->getShininess());
+	if (this->uniform_NumLights != -1 && material != nullptr) glUniform1i(this->uniform_NumLights, (GLint)lights->size());
+	for (int i = 0; lights != nullptr && i < std::min((int)lights->size(), MAX_LIGHTS); i++) {
 		if (this->uniform_LightColor[i] != -1) glUniform3f(this->uniform_LightColor[i], lights->at(i)->getColor().x, lights->at(i)->getColor().y, lights->at(i)->getColor().z);
 		if (this->uniform_LightPosition[i] != -1) glUniform3f(this->uniform_LightPosition[i], lights->at(i)->getPosition().x, lights->at(i)->getPosition().y, lights->at(i)->getPosition().z);
 		if (this->uniform_LightPower[i] != -1) glUniform1f(this->uniform_LightPower[i], lights->at(i)->getPower());

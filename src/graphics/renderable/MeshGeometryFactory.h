@@ -15,4 +15,5 @@ class MeshGeometryFactory {
 		static MeshGeometry* createCone(vec4 color);
 		static MeshGeometry* createCylinder(vec4 color);
 		static MeshGeometry* createFromAssimpMesh(const aiMesh* mesh);
+		static MeshGeometry* createBoundingBox(vec3 min, vec3 max);
 };

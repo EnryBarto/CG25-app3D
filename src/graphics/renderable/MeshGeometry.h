@@ -7,6 +7,8 @@ class GpuBuffers;
 class RenderablePointLight;
 class AbstractMesh;
 class PhysicalObjectFactory;
+class BoundingBox;
+class Mesh;
 
 class MeshGeometry {
 
@@ -14,6 +16,8 @@ class MeshGeometry {
     friend class RenderablePointLight; // As GpuBuffers
     friend class AbstractMesh;  // Needs access to vertices to compute the bounding box
     friend class PhysicalObjectFactory; // Needs access to normalize geometry
+    friend class BoundingBox; // Needs access to compute bounding box
+    friend class Mesh; // Needs access to recompute bounding box if the mesh is scaled / rotated
 
     public:
         MeshGeometry(vector<vec3>* vertices, vector<vec4>* colors, vector<uint32_t>* indexes, vector<vec3>* normals, vector<vec2>* textureCoordinates);
