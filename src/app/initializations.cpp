@@ -76,6 +76,7 @@ void init_imgui(GLFWwindow* window) {
     // Get ImGui IO object to configure options
     ImGuiIO& io = ImGui::GetIO();
     io.FontGlobalScale = FONT_RESIZE_FACTOR;
+    io.IniFilename = NULL; // Deactivate ini file
 
     ImGui::StyleColorsDark(); // Set ImGUI dark theme
 

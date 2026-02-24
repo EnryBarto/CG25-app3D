@@ -3,6 +3,7 @@
 #include "App.h"
 
 extern App app;
+int status_bar_height = 0;
 
 void show_commands() {
     ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_FirstUseEver);
@@ -33,6 +34,11 @@ void show_commands() {
 }
 
 void show_settings() {
+
+    ImGui::SetNextWindowSizeConstraints(
+        ImVec2(0.0f, 0.0f), // No min size
+        ImVec2(app.getWindowManager()->getCurrentResolution().x - 2 * GUI_WINDOWS_PADDING, app.getWindowManager()->getCurrentResolution().y - status_bar_height - 3 * GUI_WINDOWS_PADDING)
+    );
     ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
 
     ImGui::Begin("PAUSE - Settings", NULL,
@@ -102,6 +108,8 @@ void show_status_bar() {
         cameraPos.x, cameraPos.y, cameraPos.z,
         appStateToString(app.getCurrentAppState()),
         ImGui::GetIO().Framerate);
+
+    status_bar_height = (int)ImGui::GetWindowSize().y;
     ImGui::End();
 }
 
@@ -110,12 +118,15 @@ ImVec2 show_object_inspector() {
     PhysicalObject* selectedObj = app.getScene()->getSelectedObject();
     
     if (selectedObj == nullptr) return ImVec2(0, 0);
-
+    
+    ImGui::SetNextWindowSizeConstraints(
+        ImVec2(0.0f, 0.0f), // No min size
+        ImVec2(app.getWindowManager()->getCurrentResolution().x / 2, app.getWindowManager()->getCurrentResolution().y - status_bar_height - 3 * GUI_WINDOWS_PADDING)
+    );
     ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
 
     ImGui::Begin("OBJECT INSPECTOR", NULL,
         ImGuiWindowFlags_NoResize
-        | ImGuiWindowFlags_NoCollapse
         | ImGuiWindowFlags_AlwaysAutoResize
         | ImGuiWindowFlags_NoMove
     );
@@ -131,17 +142,18 @@ ImVec2 show_object_inspector() {
     float rotationAngle = selectedObj->getRotationAngle();
     vec3 scaleVector = selectedObj->getScaleVector();
 
-    ImGui::Text("Edit model matrix:");
-    ImGui::NewLine();
-    bool changed = false;
+    if (ImGui::CollapsingHeader("Edit model matrix  ")) {
+        ImGui::NewLine();
+        bool changed = false;
 
-    changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
-    changed |= ImGui::DragFloat3(" Rotation axis", glm::value_ptr(rotationAxis), 0.1f);
-    changed |= ImGui::DragFloat(" Rotation °", &rotationAngle, 0.1f);
-    changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(scaleVector), 0.1f);
+        changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
+        changed |= ImGui::DragFloat3(" Rotation axis", glm::value_ptr(rotationAxis), 0.1f);
+        changed |= ImGui::DragFloat(" Rotation °", &rotationAngle, 0.1f);
+        changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(scaleVector), 0.1f);
 
-    if (changed) {
-        selectedObj->updateModelMatrix(translation, rotationAxis, rotationAngle, scaleVector);
+        if (changed) {
+            selectedObj->updateModelMatrix(translation, rotationAxis, rotationAngle, scaleVector);
+        }
     }
 
     ImGui::NewLine();
@@ -177,11 +189,14 @@ void show_mesh_inspector() {
     Mesh* selectedMesh = get<1>(app.getScene()->getSelectedMesh());
     if (selectedMesh == nullptr) return;
 
+    ImGui::SetNextWindowSizeConstraints(
+        ImVec2(0.0f, 0.0f), // No min size
+        ImVec2(app.getWindowManager()->getCurrentResolution().x - objectInspectorSize.x - 3 * GUI_WINDOWS_PADDING, app.getWindowManager()->getCurrentResolution().y - status_bar_height - 3 * GUI_WINDOWS_PADDING)
+    );
     ImGui::SetNextWindowPos(ImVec2(objectInspectorSize.x + 2 * GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
 
     ImGui::Begin("MESH INSPECTOR", NULL,
         ImGuiWindowFlags_NoResize
-        | ImGuiWindowFlags_NoCollapse
         | ImGuiWindowFlags_AlwaysAutoResize
         | ImGuiWindowFlags_NoMove
     );
@@ -197,17 +212,18 @@ void show_mesh_inspector() {
     vec3 scaleVector = selectedMesh->getScaleVector();
 
     ImGui::NewLine();
-    ImGui::Text("Edit model matrix:");
-    ImGui::NewLine();
-    bool changed = false;
+    if (ImGui::CollapsingHeader("Edit model matrix  ")) {
+        ImGui::NewLine();
+        bool changed = false;
 
-    changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
-    changed |= ImGui::DragFloat3(" Rotation axis", glm::value_ptr(rotationAxis), 0.1f);
-    changed |= ImGui::DragFloat(" Rotation °", &rotationAngle, 0.1f);
-    changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(scaleVector), 0.1f);
+        changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
+        changed |= ImGui::DragFloat3(" Rotation axis", glm::value_ptr(rotationAxis), 0.1f);
+        changed |= ImGui::DragFloat(" Rotation °", &rotationAngle, 0.1f);
+        changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(scaleVector), 0.1f);
 
-    if (changed) {
-        app.getScene()->getSelectedObject()->updateMeshModelMatrix(get<0>(app.getScene()->getSelectedMesh()), translation, rotationAxis, rotationAngle, scaleVector);
+        if (changed) {
+            app.getScene()->getSelectedObject()->updateMeshModelMatrix(get<0>(app.getScene()->getSelectedMesh()), translation, rotationAxis, rotationAngle, scaleVector);
+        }
     }
     ImGui::NewLine();
     ImGui::Separator();
@@ -331,7 +347,11 @@ void show_mesh_inspector() {
 }
 
 void show_objects_list() {
-    
+
+    ImGui::SetNextWindowSizeConstraints(
+        ImVec2(0.0f, 0.0f), // No min size
+        ImVec2(app.getWindowManager()->getCurrentResolution().x - 2 * GUI_WINDOWS_PADDING, app.getWindowManager()->getCurrentResolution().y - status_bar_height - 3 * GUI_WINDOWS_PADDING)
+    );
     ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
 
     ImGui::Begin("OBJECTS LIST", NULL,
@@ -368,6 +388,10 @@ void show_objects_list() {
 }
 
 void show_start_file_loading(const char* path) {
+    ImGui::SetNextWindowSizeConstraints(
+        ImVec2(0.0f, 0.0f), // No min size
+        ImVec2(INFINITY, app.getWindowManager()->getCurrentResolution().y - status_bar_height - 3 * GUI_WINDOWS_PADDING)
+    );
     ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
     ImGui::SetNextWindowSize(ImVec2(app.getWindowManager()->getCurrentResolution().x - GUI_WINDOWS_PADDING * 2, 0.0f));
 
@@ -386,6 +410,11 @@ void show_start_file_loading(const char* path) {
 }
 
 void show_file_error(const char* path, const char* error) {
+
+    ImGui::SetNextWindowSizeConstraints(
+        ImVec2(0.0f, 0.0f), // No min size
+        ImVec2(INFINITY, app.getWindowManager()->getCurrentResolution().y - status_bar_height - 3 * GUI_WINDOWS_PADDING)
+    );
     ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
     ImGui::SetNextWindowSize(ImVec2(app.getWindowManager()->getCurrentResolution().x - GUI_WINDOWS_PADDING * 2, 0.0f));
 
@@ -410,6 +439,11 @@ void show_file_error(const char* path, const char* error) {
 }
 
 void show_mesh_file_uploaded(const char* path, PhysicalObject* uploadedObject, char* nameBuffer) {
+
+    ImGui::SetNextWindowSizeConstraints(
+        ImVec2(0.0f, 0.0f), // No min size
+        ImVec2(INFINITY, app.getWindowManager()->getCurrentResolution().y - status_bar_height - 3 * GUI_WINDOWS_PADDING)
+    );
     ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
     ImGui::SetNextWindowSize(ImVec2(app.getWindowManager()->getCurrentResolution().x - GUI_WINDOWS_PADDING * 2, 0.0f));
 
@@ -464,6 +498,11 @@ void show_mesh_file_uploaded(const char* path, PhysicalObject* uploadedObject, c
 }
 
 void show_texture_file_uploaded(const char* path, Texture* uploadedTexture, char* nameBuffer) {
+
+    ImGui::SetNextWindowSizeConstraints(
+        ImVec2(0.0f, 0.0f), // No min size
+        ImVec2(INFINITY, app.getWindowManager()->getCurrentResolution().y - status_bar_height - 3 * GUI_WINDOWS_PADDING)
+    );
     ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
     ImGui::SetNextWindowSize(ImVec2(app.getWindowManager()->getCurrentResolution().x - GUI_WINDOWS_PADDING * 2, 0.0f));
 
@@ -513,6 +552,10 @@ void show_texture_file_uploaded(const char* path, Texture* uploadedTexture, char
 
 void show_light_settings() {
 
+    ImGui::SetNextWindowSizeConstraints(
+        ImVec2(350.0f, 0.0f), // No min y size
+        ImVec2(app.getWindowManager()->getCurrentResolution().x - 2 * GUI_WINDOWS_PADDING, app.getWindowManager()->getCurrentResolution().y - status_bar_height - 3 * GUI_WINDOWS_PADDING)
+    );
     ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
 
     ImGui::Begin("LIGHT SETTINGS", NULL,
