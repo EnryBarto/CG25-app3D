@@ -21,6 +21,7 @@ class App {
 		void close();
 		AppState getCurrentAppState();
 		void togglePause();
+		void toggleObjectList();
 		void toggleMode();
 		WindowManager* getWindowManager();
 		Scene* getScene();
@@ -57,4 +58,5 @@ class App {
 		char stringBuffer[100];
 		void setNextStateFromHistory();
 		void loopFileUpload();
+		static bool compareStrings(string str1, string str2);
 };

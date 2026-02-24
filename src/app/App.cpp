@@ -109,6 +109,7 @@ void App::render() {
 		case AppState::WAIT_TEXTURE_FILE_CONFIRM: show_texture_file_uploaded(this->filesToLoad.front().c_str(), this->textures->at("NewNewNewTextureNewNewNewTexture"), this->stringBuffer); break;
 		case AppState::EDITING_OBJ: show_object_inspector(); break;
 		case AppState::EDITING_MESH: show_mesh_inspector(); break;
+		case AppState::OBJECTS_LIST: show_objects_list(); break;
 		case AppState::LIGHT_SETTINGS: show_light_settings(); break;
 	}
 	show_status_bar();
@@ -140,6 +141,25 @@ void App::togglePause() {
 		default:
 			this->nextState = AppState::PAUSED;
 			this->statesHistory.push(this->currentState);
+			break;
+	}
+}
+
+void App::toggleObjectList() {
+	switch (this->currentState) {
+		case AppState::NAVIGATION:
+		case AppState::PICKING:
+		case AppState::LIGHT_SETTINGS:
+		case AppState::EDITING_OBJ:
+		case AppState::EDITING_MESH:
+			this->nextState = AppState::OBJECTS_LIST;
+			this->statesHistory.push(this->currentState);
+			break;
+		case AppState::OBJECTS_LIST:
+			this->nextState = AppState::NAVIGATION;
+			this->setNextStateFromHistory();
+			break;
+		default:
 			break;
 	}
 }
@@ -204,10 +224,16 @@ void App::toggleLightSettings() {
 }
 
 void App::loadObjectsFromFile(const char* paths[], int numFiles) {
-	if (this->currentState == AppState::NAVIGATION || this->currentState == AppState::PICKING) {
-		for (int i = 0; i < numFiles; i++) {
-			this->filesToLoad.push(paths[i]);
-		}
+	switch (this->currentState) {
+		case AppState::NAVIGATION:
+		case AppState::PICKING:
+		case AppState::OBJECTS_LIST:
+			for (int i = 0; i < numFiles; i++) {
+				this->filesToLoad.push(paths[i]);
+			}
+			break;
+		default:
+			break;
 	}
 }
 
@@ -282,49 +308,71 @@ void App::setNextStateFromHistory() {
 }
 
 void App::loopFileUpload() {
-	if (this->currentState == AppState::NAVIGATION || this->currentState == AppState::PICKING) {
-		if (this->filesToLoad.size() > 0) {
-			this->nextState = AppState::LOADING_FILES;
-			this->statesHistory.push(this->currentState);
-		}
-	}
-	if (currentState == AppState::LOADING_FILES) {
-		if (this->filesToLoad.size() == 0) {
-			this->setNextStateFromHistory();
-		} else {
-			this->nextState = AppState::FILE_LOAD;
-		}
-	}
-	if (this->currentState == AppState::FILE_LOAD) {
-		string file = this->filesToLoad.front();
-		if (file.substr(file.size() - 4) == ".obj") { // Load obj file
-			PhysicalObject* loaded = this->scene->loadObjectFromFile(file.c_str());
-			if (loaded != nullptr) {
-				this->nextState = AppState::WAIT_OBJ_FILE_CONFIRM;
-				this->scene->setSelectedObject(loaded);
-				strcpy_s(this->stringBuffer, loaded->getName().c_str());
+	string file;
+	switch (this->currentState) {
+		case AppState::NAVIGATION:
+		case AppState::PICKING:
+		case AppState::OBJECTS_LIST:
+			if (this->filesToLoad.size() > 0) {
+				this->nextState = AppState::LOADING_FILES;
+				this->statesHistory.push(this->currentState);
+			}
+			break;
+
+		case AppState::LOADING_FILES:
+			if (this->filesToLoad.size() == 0) this->setNextStateFromHistory();
+			else this->nextState = AppState::FILE_LOAD;
+			break;
+
+		case AppState::FILE_LOAD:
+			file = this->filesToLoad.front();
+			if (compareStrings(file.substr(file.size() - 4), ".obj")) { // Load obj file
+				PhysicalObject* loaded = this->scene->loadObjectFromFile(file.c_str());
+				if (loaded != nullptr) {
+					this->nextState = AppState::WAIT_OBJ_FILE_CONFIRM;
+					this->scene->setSelectedObject(loaded);
+					strcpy_s(this->stringBuffer, loaded->getName().c_str());
+				} else {
+					this->nextState = AppState::WAIT_FILE_ABORT;
+					strcpy_s(this->stringBuffer, "Error creating object");
+				}
+			} else if (
+				compareStrings(file.substr(file.size() - 4), ".jpg") ||
+				compareStrings(file.substr(file.size() - 5), ".jpeg") ||
+				compareStrings(file.substr(file.size() - 4), ".png"))
+			{ // Load texture file
+				Texture* loaded = new Texture("File loaded", file.c_str());
+				if (loaded != nullptr) {
+					this->nextState = AppState::WAIT_TEXTURE_FILE_CONFIRM;
+					this->textures->insert({ "NewNewNewTextureNewNewNewTexture", loaded });
+					strcpy_s(this->stringBuffer, loaded->getName().c_str());
+				}
+				else {
+					this->nextState = AppState::WAIT_FILE_ABORT;
+					strcpy_s(this->stringBuffer, "Error creating texture");
+				}
+			} else if (file.substr(file.size() - 4) == ".mtl") { // Ignore mtl files
+				this->filesToLoad.pop();
+				this->nextState = AppState::LOADING_FILES;
 			} else {
 				this->nextState = AppState::WAIT_FILE_ABORT;
-				strcpy_s(this->stringBuffer, "Error creating object");
+				strcpy_s(this->stringBuffer, "The file is not .obj, .jpg, .jpeg, or .png");
 			}
-		} else if (file.substr(file.size() - 4) == ".jpg" || file.substr(file.size() - 5) == ".jpeg" || file.substr(file.size() - 4) == ".png") { // Load texture file
-			Texture* loaded = new Texture("File loaded", file.c_str());
-			if (loaded != nullptr) {
-				this->nextState = AppState::WAIT_TEXTURE_FILE_CONFIRM;
-				this->textures->insert({"NewNewNewTextureNewNewNewTexture", loaded});
-				strcpy_s(this->stringBuffer, loaded->getName().c_str());
-			}
-			else {
-				this->nextState = AppState::WAIT_FILE_ABORT;
-				strcpy_s(this->stringBuffer, "Error creating texture");
-			}
-		} else if (file.substr(file.size() - 4) == ".mtl") { // Ignore mtl files
-			this->filesToLoad.pop();
-			this->nextState = AppState::LOADING_FILES;
-		} else {
-			this->nextState = AppState::WAIT_FILE_ABORT;
-			strcpy_s(this->stringBuffer, "The file is not .obj, .jpg, .jpeg, or .png");
-		}
+			break;
+
+		default:
+			break;
 	}
 }
 
+bool App::compareStrings(string str1, string str2) {
+	if (str1.length() != str2.length())
+		return false;
+
+	for (int i = 0; i < str1.length(); ++i) {
+		if (tolower(str1[i]) != tolower(str2[i]))
+			return false;
+	}
+
+	return true;
+}

@@ -5,6 +5,7 @@
 enum class AppState {
     NAVIGATION,
     PICKING,
+    OBJECTS_LIST,
     EDITING_OBJ,
     EDITING_MESH,
     LOADING_FILES,
@@ -21,6 +22,7 @@ inline std::string appStateToString(AppState state) {
     switch (state) {
         case AppState::NAVIGATION:      return "Navigation mode";
         case AppState::PICKING:         return "Picking";
+        case AppState::OBJECTS_LIST:    return "Objects list";
         case AppState::EDITING_OBJ:     return "Editing object";
         case AppState::EDITING_MESH:    return "Editing mesh";
         case AppState::LOADING_FILES:   return "Started file loading";

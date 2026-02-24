@@ -10,10 +10,14 @@ void show_commands() {
     ImGui::Begin("Commands", NULL, ImGuiWindowFlags_AlwaysAutoResize);
 
     ImGui::Text("----- COMMANDS -----");
-    ImGui::Text("Space bar: Toggle Picking / Navigation modes");
+    ImGui::Text("O: Toggle objects list");
+    ImGui::Text("L: Toggle light settings");
+    ImGui::Text("P: Toggle pause and open / close settings");
+    ImGui::Text("F1: Toggle commands window");
+    ImGui::Text("F11: Toggle fullscreen mode");
     ImGui::Text("ESC: Go back to previous mode");
+    ImGui::Text("Space bar: Toggle Picking / Navigation modes");
     ImGui::Text("Drag & Drop: Upload obj or texture file");
-    ImGui::Text("L: Open light settings");
     ImGui::NewLine();
     ImGui::Text("----- CAMERA COMMANDS -----");
     ImGui::Text("W: Move forward");
@@ -23,11 +27,6 @@ void show_commands() {
     ImGui::Text("U: Move up");
     ImGui::Text("Y: Move down");
     ImGui::Text("Arrows: Rotate camera");
-    ImGui::NewLine();
-    ImGui::Text("----- WINDOW COMMANDS -----");
-    ImGui::Text("F1: Toggle commands window");
-    ImGui::Text("F11: Toggle fullscreen mode");
-    ImGui::Text("P: Toggle pause and open / close settings");
     ImGui::NewLine();
 
     ImGui::End();
@@ -148,6 +147,10 @@ ImVec2 show_object_inspector() {
     ImGui::NewLine();
     ImGui::Separator();
     ImGui::NewLine();
+    if (ImGui::Button("Delete")) {
+        app.getScene()->removeObject(selectedObj);
+        app.resetObjectSelection();
+    }
     if (ImGui::Button("Close")) app.resetObjectSelection();
     ImGui::NewLine();
     
@@ -302,9 +305,52 @@ void show_mesh_inspector() {
     ImGui::NewLine();
     ImGui::Separator();
     ImGui::NewLine();
+    if (ImGui::Button("Delete")) {
+        auto selectedObj = app.getScene()->getSelectedObject();
+        selectedObj->removeMesh(selectedMesh);
+        app.resetMeshSelection();
+        if (selectedObj->getMeshes()->size() == 0) {
+            app.getScene()->removeObject(selectedObj);
+            app.escPressed();
+        }
+    }
     if (ImGui::Button("Close")) app.resetMeshSelection();
     ImGui::NewLine();
     
+    ImGui::End();
+}
+
+void show_objects_list() {
+    
+    ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
+
+    ImGui::Begin("OBJECTS LIST", NULL,
+        ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoCollapse
+        | ImGuiWindowFlags_AlwaysAutoResize
+        | ImGuiWindowFlags_NoMove
+    );
+    
+
+    vector<PhysicalObject*>* objects = app.getScene()->getObjects();
+
+    ImGui::NewLine();
+    if (objects->size() > 0) ImGui::Text("Select an object to open its inspector");
+    else ImGui::Text("The scene contains no objects!");
+    ImGui::NewLine();
+
+    int i = 0;
+    char buffer[100];
+    for (auto o : *objects) {
+        sprintf_s(buffer, "%s##%d", o->getName().c_str(), i);
+        if (ImGui::Button(buffer)) app.setSelectedObject(o);
+        i++;
+    }
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+    if (ImGui::Button("Close")) app.toggleObjectList();
+    ImGui::NewLine();
     ImGui::End();
 }
 

@@ -23,6 +23,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             app.togglePause();
             break;
 
+        case GLFW_KEY_O:
+            app.toggleObjectList();
+            break;
+
         case GLFW_KEY_SPACE:
             app.toggleMode();
             break;

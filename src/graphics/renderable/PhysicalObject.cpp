@@ -22,6 +22,15 @@ void PhysicalObject::addMesh(Mesh* toAdd, string name) {
 	this->meshes[finalName] = toAdd;
 }
 
+void PhysicalObject::removeMesh(Mesh* toRemove) {
+	for (auto [id, mesh] : this->meshes) {
+		if (mesh == toRemove) {
+			this->meshes.erase(id);
+			break;
+		}
+	}
+}
+
 void PhysicalObject::updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector) {
 	this->translation = translation;
 	this->rotationAxis = rotationAxis;

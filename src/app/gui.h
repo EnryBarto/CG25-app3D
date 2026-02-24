@@ -11,6 +11,7 @@ void show_settings();
 void show_status_bar();
 ImVec2 show_object_inspector();
 void show_mesh_inspector();
+void show_objects_list();
 void close_gui();
 void show_start_file_loading(const char* path);
 void show_file_error(const char* path, const char* error);

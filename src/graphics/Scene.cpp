@@ -190,3 +190,12 @@ void Scene::removeLight(int i) {
 		lights.erase(lights.begin() + i);
 	}
 }
+
+vector<PhysicalObject*>* Scene::getObjects() {
+	return &this->objects;
+}
+
+void Scene::removeObject(PhysicalObject* o) {
+	this->objects.erase(find(this->objects.begin(), this->objects.end(), o));
+	delete o;
+}

@@ -30,6 +30,8 @@ class Scene {
 		vector<PointLight*>* getLights();
 		void createLight();
 		void removeLight(int i);
+		vector<PhysicalObject*>* getObjects();
+		void removeObject(PhysicalObject* o);
 
 		// Object and mesh selection
 		tuple<PhysicalObject*, string> mousePicked(vec2 clickPosition);
