@@ -42,6 +42,7 @@ void show_settings() {
         | ImGuiWindowFlags_AlwaysAutoResize
         | ImGuiWindowFlags_NoMove
     );
+    ImGui::NewLine();
 
     bool isActive = app.getAppSettings()->isWireframeActive();
     if (ImGui::Checkbox("Wireframe", &isActive)) app.getAppSettings()->toggleWireframe();
@@ -58,6 +59,8 @@ void show_settings() {
     float tempMouseSensitivity = app.getAppSettings()->getCurrentMouseSensitivity();
     if (ImGui::SliderFloat(" Mouse Sensitivity", &tempMouseSensitivity, MOUSE_SENSITIVITY_MIN, MOUSE_SENSITIVITY_MAX)) app.getAppSettings()->setMouseSensitivity(tempMouseSensitivity);
 
+    ImGui::NewLine();
+    ImGui::Separator();
     ImGui::NewLine();
     ImGui::Text("Press F1 to show the helper"); 
     ImGui::NewLine();
@@ -108,8 +111,10 @@ ImVec2 show_object_inspector() {
         | ImGuiWindowFlags_NoMove
     );
 
-    ImGui::Text("Selected object:");
+    ImGui::Text("SELECTED OBJECT:");
     ImGui::TextWrapped(selectedObj->getName().c_str());
+    ImGui::NewLine();
+    ImGui::Separator();
     ImGui::NewLine();
 
     vec3 translation = selectedObj->getTranslationVector();
@@ -118,6 +123,7 @@ ImVec2 show_object_inspector() {
     vec3 scaleVector = selectedObj->getScaleVector();
 
     ImGui::Text("Edit model matrix:");
+    ImGui::NewLine();
     bool changed = false;
 
     changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
@@ -130,12 +136,17 @@ ImVec2 show_object_inspector() {
     }
 
     ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
     ImGui::Text("Meshes:");
+    ImGui::NewLine();
 
     for (auto m : *selectedObj->getMeshes()) {
         if (ImGui::Button((m.first + " ->").c_str())) app.setSelectedMesh(selectedObj, m.first);
     }
 
+    ImGui::NewLine();
+    ImGui::Separator();
     ImGui::NewLine();
     if (ImGui::Button("Close")) app.resetObjectSelection();
     ImGui::NewLine();
@@ -162,8 +173,31 @@ void show_mesh_inspector() {
         | ImGuiWindowFlags_NoMove
     );
 
-    ImGui::Text("Selected mesh:");
+    ImGui::Text("SELECTED MESH:");
     ImGui::TextWrapped(get<0>(app.getScene()->getSelectedMesh()).c_str());
+    ImGui::NewLine();
+    ImGui::Separator();
+
+    vec3 translation = selectedMesh->getTranslationVector();
+    vec3 rotationAxis = selectedMesh->getRotationAxis();
+    float rotationAngle = selectedMesh->getRotationAngle();
+    vec3 scaleVector = selectedMesh->getScaleVector();
+
+    ImGui::NewLine();
+    ImGui::Text("Edit model matrix:");
+    ImGui::NewLine();
+    bool changed = false;
+
+    changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
+    changed |= ImGui::DragFloat3(" Rotation axis", glm::value_ptr(rotationAxis), 0.1f);
+    changed |= ImGui::DragFloat(" Rotation °", &rotationAngle, 0.1f);
+    changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(scaleVector), 0.1f);
+
+    if (changed) {
+        selectedMesh->updateModelMatrix(translation, rotationAxis, rotationAngle, scaleVector);
+    }
+    ImGui::NewLine();
+    ImGui::Separator();
     ImGui::NewLine();
 
     // Shader selector
@@ -230,25 +264,43 @@ void show_mesh_inspector() {
         ImGui::DragFloat(" Shininess", &shininess, 1, 1, 512);
         customMaterial->updateValues(ambient, diffuse, specular, shininess);
     }
-
-    vec3 translation = selectedMesh->getTranslationVector();
-    vec3 rotationAxis = selectedMesh->getRotationAxis();
-    float rotationAngle = selectedMesh->getRotationAngle();
-    vec3 scaleVector = selectedMesh->getScaleVector();
-
     ImGui::NewLine();
-    ImGui::Text("Edit model matrix:");
-    bool changed = false;
 
-    changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
-    changed |= ImGui::DragFloat3(" Rotation axis", glm::value_ptr(rotationAxis), 0.1f);
-    changed |= ImGui::DragFloat(" Rotation °", &rotationAngle, 0.1f);
-    changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(scaleVector), 0.1f);
+    // Texture selector
+    map<string, Texture*>* textures = app.getTextures();
+    Texture* currentTexture = selectedMesh->getCurrentTexture();
+    previewName = "None";
 
-    if (changed) {
-        selectedMesh->updateModelMatrix(translation, rotationAxis, rotationAngle, scaleVector);
+    if (shaders != nullptr) {
+        for (const auto& t : *textures) {
+            if (t.second == currentTexture) {
+                previewName = t.first.c_str();
+                break;
+            }
+        }
+    }
+    if (ImGui::BeginCombo(" Texture", previewName) && shaders != NULL) {
+        bool isNone = (currentTexture == nullptr);
+        if (ImGui::Selectable("None", isNone)) selectedMesh->setTexture(nullptr);
+        if (isNone) ImGui::SetItemDefaultFocus();
+        
+        for (const auto& t : *textures) {
+            bool isSelected = (currentTexture == t.second);
+            if (ImGui::Selectable(t.first.c_str(), isSelected)) selectedMesh->setTexture(t.second);
+            if (isSelected) ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+    }
+    if (currentTexture != nullptr) {
+        ImGui::NewLine();
+        ImGui::Text("Texture preview:");
+        ImTextureID imguiTexID = (ImTextureID)(intptr_t)currentTexture->getProgramId();
+        ImVec2 previewSize(100, 100);
+        ImGui::Image(imguiTexID, previewSize);
     }
 
+    ImGui::NewLine();
+    ImGui::Separator();
     ImGui::NewLine();
     if (ImGui::Button("Close")) app.resetMeshSelection();
     ImGui::NewLine();
@@ -285,11 +337,13 @@ void show_file_error(const char* path, const char* error) {
         | ImGuiWindowFlags_NoMove
     );
 
-    ImGui::Text("Error loading file!");
+    ImGui::Text("ERROR LOADING FILE!");
     ImGui::NewLine();
     ImGui::TextWrapped("Error:\n%s", error);
     ImGui::NewLine();
     ImGui::TextWrapped("Path:\n%s", path);
+    ImGui::NewLine();
+    ImGui::Separator();
     ImGui::NewLine();
     if (ImGui::Button("Ok")) app.confirmFileUploadError();
 
@@ -307,12 +361,15 @@ void show_file_uploaded(const char* path, PhysicalObject* uploadedObject, char* 
         | ImGuiWindowFlags_NoMove
     );
 
-    ImGui::Text("File uploaded!");
+    ImGui::Text("FILE UPLOADED!");
     ImGui::NewLine();
     ImGui::TextWrapped("Path:\n%s", path);
 
     ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
     ImGui::Text("Enter object name:");
+    ImGui::NewLine();
     ImGui::InputText("", nameBuffer, MAX_LENGTH_OBJ_NAME);
 
     vec3 translation = uploadedObject->getTranslationVector();
@@ -321,7 +378,10 @@ void show_file_uploaded(const char* path, PhysicalObject* uploadedObject, char* 
     vec3 scaleVector = uploadedObject->getScaleVector();
 
     ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
     ImGui::Text("Edit model matrix:");
+    ImGui::NewLine();
     bool changed = false;
 
     changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
@@ -332,7 +392,9 @@ void show_file_uploaded(const char* path, PhysicalObject* uploadedObject, char* 
     if (changed) {
         uploadedObject->updateModelMatrix(translation, rotationAxis, rotationAngle, scaleVector);
     }
-    
+
+    ImGui::NewLine();
+    ImGui::Separator();
     ImGui::NewLine();
     if (ImGui::Button("Ok")) {
         uploadedObject->setName(nameBuffer);
@@ -352,9 +414,20 @@ void show_light_settings() {
         | ImGuiWindowFlags_AlwaysAutoResize
         | ImGuiWindowFlags_NoMove
     );
-
-
+    
+    ImGui::NewLine();
     vector<PointLight*>* lights = app.getScene()->getLights();
+
+    if (lights->size() < MAX_LIGHTS) {
+        if (ImGui::Button("Add point light")) app.getScene()->createLight();
+    }
+    else {
+        ImGui::Text("Max lights reached");
+    }
+
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
 
     for (int i = 0; i < lights->size(); i++) {
         char buffer[100];
@@ -376,13 +449,7 @@ void show_light_settings() {
     }
 
     ImGui::NewLine();
-    if (lights->size() < MAX_LIGHTS) {
-        if (ImGui::Button("Add point light")) app.getScene()->createLight();
-    } else {
-        ImGui::Text("Max lights reached");
-    }
-    ImGui::NewLine();
-
+    ImGui::Separator();
     ImGui::NewLine();
     if (ImGui::Button("Close")) app.toggleLightSettings();
     ImGui::NewLine();

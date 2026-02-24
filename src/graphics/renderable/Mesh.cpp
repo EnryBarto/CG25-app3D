@@ -97,6 +97,14 @@ Material* Mesh::getCurrentMaterial() {
     return this->material;
 }
 
+Texture* Mesh::getCurrentTexture() {
+    return this->gpuObject->getCurrentTexture();
+}
+
+void Mesh::setTexture(Texture* texture) {
+    this->gpuObject->setTexture(texture);
+}
+
 void Mesh::setMaterial(Material* material) {
     this->material = material;
 }

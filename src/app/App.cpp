@@ -22,6 +22,13 @@ App::App() {
 		cout << "Shaders initialized" << endl;
 	}
 
+	this->textures = init_textures();
+	if (this->textures == NULL) {
+		throw std::runtime_error("Textures initialization failed!");
+	} else {
+		cout << "Textures initialized" << endl;
+	}
+
 	this->materials = init_materials();
 
 	this->currentSettings = new AppSettings();
@@ -48,15 +55,14 @@ App::~App() {
     close_gui();
     delete scene;
 
-	for (auto const& s : *shaders) {
-		delete s.second;
-	}
+	for (auto const& s : *shaders) delete s.second;
 	delete shaders;
 	
-	for (auto const& m : *materials) {
-		delete m.second;
-	}
+	for (auto const& m : *materials) delete m.second;
 	delete materials;
+
+	for (auto const& t : *textures)	delete t.second;
+	delete textures;
 
     delete currentSettings;
 
@@ -171,6 +177,10 @@ map<string, Shader*>* App::getShaders() {
 
 map<string, Material*>* App::getMaterials() {
 	return this->materials;
+}
+
+map<string, Texture*>* App::getTextures() {
+	return this->textures;
 }
 
 void App::toggleLightSettings() {

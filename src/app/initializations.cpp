@@ -95,6 +95,18 @@ std::map<std::string, Shader*>* init_shaders() {
     return shaders;
 }
 
+std::map<std::string, Texture*>* init_textures() {
+    std::map<std::string, Texture*>* textures = new std::map<std::string, Texture*>();
+    textures->insert({ "Cement", new Texture("Cement", (std::string(TEXTURES_PATH) + std::string("grey_cement.jpg")).c_str())});
+    textures->insert({ "Italian flag", new Texture("Italian flag", (std::string(TEXTURES_PATH) + std::string("italian_flag.jpg")).c_str())});
+    textures->insert({ "Sea", new Texture("Sea", (std::string(TEXTURES_PATH) + std::string("sea.jpg")).c_str())});
+    textures->insert({ "Mickey Mouse", new Texture("Mickey Mouse", (std::string(TEXTURES_PATH) + std::string("mickey_mouse.jpg")).c_str())});
+    textures->insert({ "Brick Wall", new Texture("Brick Wall", (std::string(TEXTURES_PATH) + std::string("brick_wall.jpg")).c_str())});
+    textures->insert({ "Steve", new Texture("Steve", (std::string(TEXTURES_PATH) + std::string("steve.jpg")).c_str()) });
+    textures->insert({ "Horse", new Texture("Horse", (std::string(TEXTURES_PATH) + std::string("horse.jpg")).c_str()) });
+    return textures;
+}
+
 std::map<std::string, Material*>* init_materials() {
     std::map<std::string, Material*>* materials = new std::map<std::string, Material*>();
 

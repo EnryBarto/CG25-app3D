@@ -12,6 +12,7 @@
 #define GUI_WINDOWS_PADDING 10
 #define MAX_LENGTH_OBJ_NAME 25
 #define NO_MATERIAL_NAME "No Material"
+#define TEXTURES_PATH "resources/textures/"
 
 // LIGHT SETTINGS
 #define MAX_LIGHTS 10 // It's important to keep the costant updated also in the shader files

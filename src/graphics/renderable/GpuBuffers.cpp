@@ -114,10 +114,10 @@ void GpuBuffers::setTexture(Texture* texture) {
 	this->texture = texture;
 }
 
-void GpuBuffers::unsetTexture() {
-	this->texture = nullptr;
-}
-
 Shader* GpuBuffers::getCurrentShader() {
 	return this->shader;
+}
+
+Texture* GpuBuffers::getCurrentTexture() {
+	return this->texture;
 }

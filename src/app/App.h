@@ -28,6 +28,7 @@ class App {
 		void escPressed();
 		map<string, Shader*>* getShaders();
 		map<string, Material*>* getMaterials();
+		map<string, Texture*>* getTextures();
 		void toggleLightSettings();
 
 		// Object and mesh selection
@@ -45,6 +46,7 @@ class App {
 	private:
 		map<string, Shader*>* shaders;
 		map<string, Material*>* materials;
+		map<string, Texture*>* textures;
 		AppSettings* currentSettings;
 		WindowManager* windowManager;
 		Scene* scene;

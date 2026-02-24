@@ -12,12 +12,14 @@
 #include <map>
 #include "../graphics/shader/Shader.h"
 #include "../graphics/lighting/Material.h"
+#include "../graphics/texture/Texture.h"
 
 int init_gl_glfw();
 GLFWwindow* init_window_context_events();
 void init_callbacks(GLFWwindow* window);
 void init_imgui(GLFWwindow* window);
 std::map<std::string, Shader*>* init_shaders();
+std::map<std::string, Texture*>* init_textures();
 std::map<std::string, Material*>* init_materials();
 
 #endif

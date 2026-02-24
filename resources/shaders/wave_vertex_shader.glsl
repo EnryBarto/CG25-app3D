@@ -33,7 +33,7 @@ struct Material {
 //Variabile uniforme
 uniform Material material;
 
-float strenght = 3;
+float strenght = 0.1f;
 uniform float time = 0.5;
 
 void main() {
@@ -42,11 +42,11 @@ void main() {
     //per la matrice Projection)
     vec4 v = vec4(aPos, 1.0);
     // Displace the vertex in Y using a time-dependent function
-    v.y = sin(80.0 * v.x + time) * cos(8.5 * aPos.y + time) * 0.5;
+    v.y = sin(80.0 * v.x + time) * cos(8.5 * aPos.y + time);
 
     //Modello di illuminazione di  Phong con shading interpolativo
     gl_Position = Projection * View * Model * v;
-        
+
     // Transform the displaced vertex position into view space (use the modified position `v`)
     vec4 eyePosition = View * Model * v;
 

@@ -23,7 +23,9 @@ class Mesh {
 		void setMaterial(Material* material);
 		void setFileLoadedMaterial(Material* material);
 		Material* getFileLoadedMaterial();
-		Material* getCustomMaterial();
+		Material* getCustomMaterial();;
+		Texture* getCurrentTexture();
+		void setTexture(Texture* texture);
 
 	private:
 		RenderableObject* gpuObject;

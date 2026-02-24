@@ -14,8 +14,8 @@ class GpuBuffers {
         virtual void initVao(MeshGeometry* geometry);
         void setShader(Shader* shader);
         void setTexture(Texture* texture);
-        void unsetTexture();
         Shader* getCurrentShader();
+        Texture* getCurrentTexture();
 
     protected:
 
