@@ -18,6 +18,10 @@ std::string Texture::getName() {
 	return name;
 }
 
+void Texture::setName(std::string name) {
+	this->name = name;
+}
+
 GLuint Texture::getProgramId() {
 	return programId;
 }

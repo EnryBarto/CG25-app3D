@@ -9,7 +9,8 @@ enum class AppState {
     EDITING_MESH,
     LOADING_FILES,
     FILE_LOAD,
-    WAIT_FILE_CONFIRM,
+    WAIT_OBJ_FILE_CONFIRM,
+    WAIT_TEXTURE_FILE_CONFIRM,
     WAIT_FILE_ABORT,
     PAUSED,
     LIGHT_SETTINGS,
@@ -24,7 +25,8 @@ inline std::string appStateToString(AppState state) {
         case AppState::EDITING_MESH:    return "Editing mesh";
         case AppState::LOADING_FILES:   return "Started file loading";
         case AppState::FILE_LOAD:       return "Loading file";
-        case AppState::WAIT_FILE_CONFIRM: return "File loaded";
+        case AppState::WAIT_OBJ_FILE_CONFIRM:     return "Meshes loaded";
+        case AppState::WAIT_TEXTURE_FILE_CONFIRM: return "Texture loaded";
         case AppState::WAIT_FILE_ABORT: return "File error";
         case AppState::PAUSED:          return "Paused";
         case AppState::LIGHT_SETTINGS:  return "Light settings";

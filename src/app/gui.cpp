@@ -12,7 +12,7 @@ void show_commands() {
     ImGui::Text("----- COMMANDS -----");
     ImGui::Text("Space bar: Toggle Picking / Navigation modes");
     ImGui::Text("ESC: Go back to previous mode");
-    ImGui::Text("Drag & Drop: Upload obj file");
+    ImGui::Text("Drag & Drop: Upload obj or texture file");
     ImGui::Text("L: Open light settings");
     ImGui::NewLine();
     ImGui::Text("----- CAMERA COMMANDS -----");
@@ -350,7 +350,7 @@ void show_file_error(const char* path, const char* error) {
     ImGui::End();
 }
 
-void show_file_uploaded(const char* path, PhysicalObject* uploadedObject, char* nameBuffer) {
+void show_mesh_file_uploaded(const char* path, PhysicalObject* uploadedObject, char* nameBuffer) {
     ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
     ImGui::SetNextWindowSize(ImVec2(app.getWindowManager()->getCurrentResolution().x - GUI_WINDOWS_PADDING * 2, 0.0f));
 
@@ -401,6 +401,54 @@ void show_file_uploaded(const char* path, PhysicalObject* uploadedObject, char* 
         app.confirmFileUploadSuccess();
     }
 
+    ImGui::End();
+}
+
+void show_texture_file_uploaded(const char* path, Texture* uploadedTexture, char* nameBuffer) {
+    ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(app.getWindowManager()->getCurrentResolution().x - GUI_WINDOWS_PADDING * 2, 0.0f));
+
+    ImGui::Begin("FILE LOADER", NULL,
+        ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoCollapse
+        | ImGuiWindowFlags_AlwaysAutoResize
+        | ImGuiWindowFlags_NoMove
+    );
+
+    ImGui::Text("TEXTURE UPLOADED!");
+    ImGui::NewLine();
+    ImGui::TextWrapped("Path:\n%s", path);
+
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+    ImGui::Text("Enter texture name:");
+    ImGui::NewLine();
+    ImGui::InputText("", nameBuffer, MAX_LENGTH_OBJ_NAME);
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+    ImGui::Text("Preview:");
+    ImGui::NewLine();
+    ImTextureID imguiTexID = (ImTextureID)(intptr_t)uploadedTexture->getProgramId();
+    ImVec2 previewSize(100, 100);
+    ImGui::Image(imguiTexID, previewSize);
+
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+    if (ImGui::Button("Ok")) {
+        string finalName = nameBuffer;
+        int counter = 1;
+
+        // Check for duplicate names and increment the counter
+        while (app.getTextures()->find(finalName) != app.getTextures()->end()) {
+            finalName = string(nameBuffer) + "#" + to_string(counter);
+            counter++;
+        }
+        uploadedTexture->setName(finalName);
+        app.confirmFileUploadSuccess();
+    }
     ImGui::End();
 }
 

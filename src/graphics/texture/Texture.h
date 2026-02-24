@@ -10,6 +10,7 @@ class Texture {
 		Texture(const char* name, vector<string> facesPath);
 		~Texture();
 		std::string getName();
+		void setName(std::string name);
 		GLuint getProgramId();
 
 	private:

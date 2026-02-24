@@ -478,6 +478,7 @@ MeshGeometry* MeshGeometryFactory::createFromAssimpMesh(const aiMesh* mesh) {
 			texCoords.push_back(vec2(uv.x, uv.y));
 		}
 	} else {
+		cerr << "Texture coordinates missing - Using vec2(0)" << endl;
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 			texCoords.push_back(vec2(0));
 		}
@@ -490,6 +491,7 @@ MeshGeometry* MeshGeometryFactory::createFromAssimpMesh(const aiMesh* mesh) {
 			colors.push_back(vec4(c.r, c.g, c.b, c.a));
 		}
 	} else {
+		cerr << "Colors data missing - Using vec4(0.1f, 0.5f, 1.0f, 1.0f)" << endl;
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 			colors.push_back(vec4(0.1f, 0.5f, 1.0f, 1.0f));
 		}
@@ -502,6 +504,7 @@ MeshGeometry* MeshGeometryFactory::createFromAssimpMesh(const aiMesh* mesh) {
 			normals.push_back(vec3(n.x, n.y, n.z));
 		}
 	} else {
+		cerr << "Normals data missing - Using vec3(0)" << endl;
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 			normals.push_back(vec3(0));
 		}

@@ -14,7 +14,8 @@ void show_mesh_inspector();
 void close_gui();
 void show_start_file_loading(const char* path);
 void show_file_error(const char* path, const char* error);
-void show_file_uploaded(const char* path, PhysicalObject* uploadedObject, char* nameBuffer);
+void show_mesh_file_uploaded(const char* path, PhysicalObject* uploadedObject, char* nameBuffer);
+void show_texture_file_uploaded(const char* path, Texture* uploadedTexture, char* nameBuffer);
 void show_light_settings();
 
 #endif

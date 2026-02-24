@@ -67,7 +67,7 @@ PhysicalObject* PhysicalObjectFactory::createHouse(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createFromFile(const char* path) {
 	vector<pair<MeshGeometry*, string>> models;
 	map<MeshGeometry*, Material*> materials;
-
+	cout << "Started loading " << path << endl;
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FlipUVs);
 	if (!scene) {

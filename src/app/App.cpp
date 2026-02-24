@@ -105,7 +105,8 @@ void App::render() {
 		case AppState::PAUSED: show_settings(); break;
 		case AppState::LOADING_FILES: case AppState::FILE_LOAD: show_start_file_loading(this->filesToLoad.front().c_str()); break;
 		case AppState::WAIT_FILE_ABORT: show_file_error(this->filesToLoad.front().c_str(), this->stringBuffer); break;
-		case AppState::WAIT_FILE_CONFIRM: show_file_uploaded(this->filesToLoad.front().c_str(), this->scene->getSelectedObject(), this->stringBuffer); break;
+		case AppState::WAIT_OBJ_FILE_CONFIRM: show_mesh_file_uploaded(this->filesToLoad.front().c_str(), this->scene->getSelectedObject(), this->stringBuffer); break;
+		case AppState::WAIT_TEXTURE_FILE_CONFIRM: show_texture_file_uploaded(this->filesToLoad.front().c_str(), this->textures->at("NewNewNewTextureNewNewNewTexture"), this->stringBuffer); break;
 		case AppState::EDITING_OBJ: show_object_inspector(); break;
 		case AppState::EDITING_MESH: show_mesh_inspector(); break;
 		case AppState::LIGHT_SETTINGS: show_light_settings(); break;
@@ -130,7 +131,7 @@ AppState App::getCurrentAppState() {
 
 void App::togglePause() {
 	switch (this->currentState) {
-		case AppState::WAIT_FILE_CONFIRM:
+		case AppState::WAIT_OBJ_FILE_CONFIRM: case AppState::WAIT_TEXTURE_FILE_CONFIRM:
 			// Do nothing: The user is using the keyboard to write the object name
 			break;
 		case AppState::PAUSED:
@@ -159,7 +160,8 @@ void App::toggleMode() {
 void App::escPressed() {
 	switch (this->currentState) {
 		case AppState::FILE_LOAD:
-		case AppState::WAIT_FILE_CONFIRM:
+		case AppState::WAIT_OBJ_FILE_CONFIRM:
+		case AppState::WAIT_TEXTURE_FILE_CONFIRM:
 			// Do nothing
 			break;
 		case AppState::WAIT_FILE_ABORT:
@@ -185,15 +187,18 @@ map<string, Texture*>* App::getTextures() {
 
 void App::toggleLightSettings() {
 	switch (this->currentState) {
-		case AppState::PAUSED:
-			// Do nothing
-			break;
 		case AppState::LIGHT_SETTINGS:
 			this->setNextStateFromHistory();
 			break;
-		default:
+		case AppState::NAVIGATION:
+		case AppState::PICKING:
+		case AppState::EDITING_OBJ:
+		case AppState::EDITING_MESH:
 			this->nextState = AppState::LIGHT_SETTINGS;
 			this->statesHistory.push(this->currentState);
+			break;
+		default:
+			// Do nothing
 			break;
 	}
 }
@@ -214,7 +219,16 @@ void App::confirmFileUploadError() {
 void App::confirmFileUploadSuccess() {
 	this->filesToLoad.pop();
 	this->nextState = AppState::LOADING_FILES;
-	this->scene->resetObjectSelection();
+	switch (this->currentState) {
+		case AppState::WAIT_OBJ_FILE_CONFIRM:
+			this->scene->resetObjectSelection();
+			break;
+		case AppState::WAIT_TEXTURE_FILE_CONFIRM:
+			Texture* newTexture = this->textures->at("NewNewNewTextureNewNewNewTexture");
+			this->textures->insert({ newTexture->getName(), newTexture });
+			this->textures->erase("NewNewNewTextureNewNewNewTexture");
+			break;
+	}
 }
 
 WindowManager* App::getWindowManager() {
@@ -283,22 +297,33 @@ void App::loopFileUpload() {
 	}
 	if (this->currentState == AppState::FILE_LOAD) {
 		string file = this->filesToLoad.front();
-		if (file.substr(file.size() - 4) == ".obj") {
+		if (file.substr(file.size() - 4) == ".obj") { // Load obj file
 			PhysicalObject* loaded = this->scene->loadObjectFromFile(file.c_str());
 			if (loaded != nullptr) {
-				this->nextState = AppState::WAIT_FILE_CONFIRM;
+				this->nextState = AppState::WAIT_OBJ_FILE_CONFIRM;
 				this->scene->setSelectedObject(loaded);
 				strcpy_s(this->stringBuffer, loaded->getName().c_str());
 			} else {
 				this->nextState = AppState::WAIT_FILE_ABORT;
 				strcpy_s(this->stringBuffer, "Error creating object");
 			}
+		} else if (file.substr(file.size() - 4) == ".jpg" || file.substr(file.size() - 5) == ".jpeg" || file.substr(file.size() - 4) == ".png") { // Load texture file
+			Texture* loaded = new Texture("File loaded", file.c_str());
+			if (loaded != nullptr) {
+				this->nextState = AppState::WAIT_TEXTURE_FILE_CONFIRM;
+				this->textures->insert({"NewNewNewTextureNewNewNewTexture", loaded});
+				strcpy_s(this->stringBuffer, loaded->getName().c_str());
+			}
+			else {
+				this->nextState = AppState::WAIT_FILE_ABORT;
+				strcpy_s(this->stringBuffer, "Error creating texture");
+			}
 		} else if (file.substr(file.size() - 4) == ".mtl") { // Ignore mtl files
 			this->filesToLoad.pop();
 			this->nextState = AppState::LOADING_FILES;
 		} else {
 			this->nextState = AppState::WAIT_FILE_ABORT;
-			strcpy_s(this->stringBuffer, "The file is not .obj");
+			strcpy_s(this->stringBuffer, "The file is not .obj, .jpg, .jpeg, or .png");
 		}
 	}
 }
