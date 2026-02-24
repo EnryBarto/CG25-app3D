@@ -58,6 +58,12 @@
     <Filter Include="Header Files\Graphics\Lighting">
       <UniqueIdentifier>{b6bd974f-ce5a-4905-ba1f-cb70839538cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graphics\Renderable\Gpu Objects">
+      <UniqueIdentifier>{d0c07bcf-4706-4983-b351-af93d15f745f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Renderable\Gpu Objects">
+      <UniqueIdentifier>{ece88845-0698-4d41-acb6-b6dbd19c0624}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -141,12 +147,6 @@
     <ClCompile Include="src\graphics\renderable\Mesh.cpp">
       <Filter>Source Files\Graphics\Renderable</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\MeshGeometry.cpp">
-      <Filter>Source Files\Graphics\Renderable</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\renderable\RenderableObject.cpp">
-      <Filter>Source Files\Graphics\Renderable</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\Camera.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
@@ -157,12 +157,6 @@
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\renderable\Skybox.cpp">
-      <Filter>Source Files\Graphics\Renderable</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\renderable\GpuBuffers.cpp">
-      <Filter>Source Files\Graphics\Renderable</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\renderable\RenderableBackground.cpp">
       <Filter>Source Files\Graphics\Renderable</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\texture\Texture.cpp">
@@ -195,7 +189,22 @@
     <ClCompile Include="src\graphics\lighting\PointLight.cpp">
       <Filter>Source Files\Graphics\Lighting</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\RenderablePointLight.cpp">
+    <ClCompile Include="src\graphics\renderable\BoundingBox.cpp">
+      <Filter>Source Files\Graphics\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\gpu_objects\GpuBuffers.cpp">
+      <Filter>Source Files\Graphics\Renderable\Gpu Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\gpu_objects\RenderablePointLight.cpp">
+      <Filter>Source Files\Graphics\Renderable\Gpu Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\gpu_objects\RenderableBackground.cpp">
+      <Filter>Source Files\Graphics\Renderable\Gpu Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\gpu_objects\RenderableObject.cpp">
+      <Filter>Source Files\Graphics\Renderable\Gpu Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderable\MeshGeometry.cpp">
       <Filter>Source Files\Graphics\Renderable</Filter>
     </ClCompile>
   </ItemGroup>
@@ -254,9 +263,6 @@
     <ClInclude Include="src\libs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\renderable\RenderableObject.h">
-      <Filter>Header Files\Graphics\Renderable</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\Camera.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -267,12 +273,6 @@
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\renderable\Skybox.h">
-      <Filter>Header Files\Graphics\Renderable</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\GpuBuffers.h">
-      <Filter>Header Files\Graphics\Renderable</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\RenderableBackground.h">
       <Filter>Header Files\Graphics\Renderable</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\texture\Texture.h">
@@ -308,8 +308,20 @@
     <ClInclude Include="src\graphics\lighting\PointLight.h">
       <Filter>Header Files\Graphics\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\renderable\RenderablePointLight.h">
+    <ClInclude Include="src\graphics\renderable\BoundingBox.h">
       <Filter>Header Files\Graphics\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\gpu_objects\GpuBuffers.h">
+      <Filter>Header Files\Graphics\Renderable\Gpu Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\gpu_objects\RenderablePointLight.h">
+      <Filter>Header Files\Graphics\Renderable\Gpu Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\gpu_objects\RenderableBackground.h">
+      <Filter>Header Files\Graphics\Renderable\Gpu Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderable\gpu_objects\RenderableObject.h">
+      <Filter>Header Files\Graphics\Renderable\Gpu Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

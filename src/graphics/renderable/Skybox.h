@@ -2,7 +2,7 @@
 
 #include "../../libs.h"
 #include "../shader/Shader.h"
-#include "RenderableBackground.h"
+#include "gpu_objects/RenderableBackground.h"
 #include "MeshGeometryFactory.h"
 
 class Skybox {

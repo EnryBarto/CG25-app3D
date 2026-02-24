@@ -16,7 +16,7 @@
 
 // LIGHT SETTINGS
 #define MAX_LIGHTS 10 // It's important to keep the costant updated also in the shader files
-#define MAX_LIGHT_POWER 5
+#define MAX_LIGHT_POWER 3.5f
 #define MIN_LIGHT_POWER 0
 
 // CAMERA AND PROJECTION SETTINGS

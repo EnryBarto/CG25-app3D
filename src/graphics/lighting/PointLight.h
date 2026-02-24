@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/fwd.hpp>
 #include <glm/ext/vector_float3.hpp>
-#include "../renderable/RenderablePointLight.h"
+#include "../renderable/gpu_objects/RenderablePointLight.h"
 
 using namespace glm;
 

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../../libs.h"
-#include "../../settings.h"
-#include "../shader/Shader.h"
-#include "../texture/Texture.h"
-#include "MeshGeometry.h"
+#include "../../../libs.h"
+#include "../../../settings.h"
+#include "../../shader/Shader.h"
+#include "../../texture/Texture.h"
+#include "../MeshGeometry.h"
 
 class GpuBuffers {
 

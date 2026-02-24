@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RenderableObject.h"
+#include "gpu_objects/RenderableObject.h"
 #include "MeshGeometry.h"
 #include "../shader/Shader.h"
 #include "../lighting/Material.h"

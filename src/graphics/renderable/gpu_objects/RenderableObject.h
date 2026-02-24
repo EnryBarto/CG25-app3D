@@ -1,9 +1,9 @@
 #pragma once
 
 #include "GpuBuffers.h"
-#include "../lighting/Material.h"
-#include "../lighting/PointLight.h"
-#include "../../settings.h"
+#include "../../lighting/Material.h"
+#include "../../lighting/PointLight.h"
+#include "../../../settings.h"
 #include <vector>
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))

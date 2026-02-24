@@ -18,11 +18,11 @@ Scene::Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader*
 	this->objects.push_back(this->objectFactory->createSimpleTorus(vec3(-6, 0, -3)));
 	this->objects.push_back(this->objectFactory->createSimpleCylinder(vec3(3, 0, 2)));
 	this->lightShader = lightShader;
-	this->lights.push_back(new PointLight(vec3(-500, 200, -1000), vec4(1), 2, this->lightShader));
-	this->lights.push_back(new PointLight(vec3(15, 20, 15), vec4(1), 0.7f, this->lightShader));
-	this->lights.push_back(new PointLight(vec3(-15, 20, 15), vec4(1), 0.7f, this->lightShader));
-	this->lights.push_back(new PointLight(vec3(15, 20, -15), vec4(1), 0.7f, this->lightShader));
-	this->lights.push_back(new PointLight(vec3(-15, 20, -15), vec4(1), 0.7f, this->lightShader));
+	this->lights.push_back(new PointLight(vec3(-500, 200, -1000), vec4(1), 1.7f, this->lightShader));
+	this->lights.push_back(new PointLight(vec3(15, 20, 15), vec4(1), 0.25f, this->lightShader));
+	this->lights.push_back(new PointLight(vec3(-15, 20, 15), vec4(1), 0.25f, this->lightShader));
+	this->lights.push_back(new PointLight(vec3(15, 20, -15), vec4(1), 0.25f, this->lightShader));
+	this->lights.push_back(new PointLight(vec3(-15, 20, -15), vec4(1), 0.25f, this->lightShader));
 }
 
 Scene::~Scene() {
