@@ -8,7 +8,7 @@ Mesh::Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMateria
 	this->updateModelMatrix(translation, rotationAxis, angle, scaleVector);
     this->material = defaultMaterial;
     this->customMaterial = new Material("Custom", vec3(0.1f), vec3(1.0f, 0.2f, 0.1f), vec3(0.5f), 50);
-    this->boundingBox = new BoundingBox(geometry, boundingBoxShader);
+    this->boundingBox = new BoundingBox(geometry, boundingBoxShader, vec4(0, 1, 0, 1));
 }
 
 Mesh::~Mesh() {
@@ -112,28 +112,38 @@ pair<vec3, vec3> Mesh::getBoundingBox() {
     vec3 localMin = this->boundingBox->getMin();
     vec3 localMax = this->boundingBox->getMax();
     
-    vec3 corners[8] = {
-        localMin,
-        vec3(localMin.x, localMin.y, localMax.z),
-        vec3(localMin.x, localMax.y, localMin.z),
-        vec3(localMin.x, localMax.y, localMax.z),
-        vec3(localMax.x, localMin.y, localMin.z),
-        vec3(localMax.x, localMin.y, localMax.z),
-        vec3(localMax.x, localMax.y, localMin.z),
-        localMax
-    };
+    const vector<vec3>& corners = this->boundingBox->getCorners();
 
     vec3 globalMin(std::numeric_limits<float>::max());
     vec3 globalMax(-std::numeric_limits<float>::max());
 
     // Because the mesh can be scaled and rotated we have to consider all the vertices to find the corners
-    for (int i = 0; i < 8; i++) {
-        vec3 worldPos = vec3(this->modelMatrix * vec4(corners[i], 1.0f));
+    for (auto c : corners) {
+        vec3 worldPos = vec3(this->modelMatrix * vec4(c, 1.0f));
         globalMin = glm::min(globalMin, worldPos);
         globalMax = glm::max(globalMax, worldPos);
     }
 
     return { globalMin, globalMax };
+}
+
+bool Mesh::isColliding(vec3 position, const mat4& objectModelMatrix, const mat4& objectInvertedModelMatrix) {
+    // Composition of the object model matrix and the mesh model matrix
+    mat4 totalModelMatrix = objectModelMatrix * this->modelMatrix;
+
+    // WCS -> OCS positioning
+    vec3 localPos = vec3(glm::inverse(this->modelMatrix) * objectInvertedModelMatrix * vec4(position, 1));
+
+    // In the OCS the bounding box is Axis-Aligned: find the nearest point with clamping
+    vec3 boundingMin = this->boundingBox->getMin();
+    vec3 boundingMax = this->boundingBox->getMax();
+    vec3 nearestPointLocal = glm::max(boundingMin, glm::min(localPos, boundingMax));
+
+    // Take back the nearest point to WCS
+    vec3 nearestPointWorld = vec3(totalModelMatrix * vec4(nearestPointLocal, 1));
+
+    vec3 difference = nearestPointWorld - position;
+    return glm::dot(difference, difference) <= (CAMERA_COLLISION_RADIUS * CAMERA_COLLISION_RADIUS);
 }
 
 void Mesh::setMaterial(Material* material) {

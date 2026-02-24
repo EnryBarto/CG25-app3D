@@ -61,4 +61,5 @@ class Scene {
 		vec3 getRayFromMouseClick(vec2 clickPosition);
 		PhysicalObject* selectedObject = nullptr;
 		string selectedMesh = "";
+		bool isColliding();
 };

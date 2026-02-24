@@ -28,6 +28,7 @@ class Mesh {
 		Texture* getCurrentTexture();
 		void setTexture(Texture* texture);
 		pair<vec3, vec3> getBoundingBox();
+		bool isColliding(vec3 position, const mat4& objectModelMatrix, const mat4& objectInvertedModelMatrix);
 
 	private:
 		RenderableObject* gpuObject;

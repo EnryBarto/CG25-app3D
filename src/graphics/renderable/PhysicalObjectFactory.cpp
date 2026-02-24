@@ -49,7 +49,7 @@ PhysicalObject* PhysicalObjectFactory::createSimpleCylinder(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createBase() {
 	PhysicalObject* toReturn = new PhysicalObject("Floor", vec3(0), vec3(0), 0, vec3(2), this->boundingBoxShader);
 	MeshGeometry* planeGeometry = MeshGeometryFactory::createTriangulatedPlane(512, vec4(0.196078f, 0.568627f, 0.658824f, 1));
-    Mesh* cube = new Mesh(planeGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 0, 0), vec3(0), 0, vec3(1000, 0.1f, 1000), this->boundingBoxShader);
+    Mesh* cube = new Mesh(planeGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 0, 0), vec3(0), 0, vec3(1000), this->boundingBoxShader);
 	toReturn->addMesh(cube, "Plane");
 	return toReturn;
 }

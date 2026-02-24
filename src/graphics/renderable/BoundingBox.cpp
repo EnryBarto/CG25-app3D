@@ -1,32 +1,26 @@
 #include "BoundingBox.h"
 #include "MeshGeometryFactory.h"
 
-BoundingBox::BoundingBox(MeshGeometry* geometry, Shader* basicShader) {
+BoundingBox::BoundingBox(MeshGeometry* geometry, Shader* basicShader, vec4 color) {
 	this->min = vec3(std::numeric_limits<float>::max());
 	this->max = vec3(-std::numeric_limits<float>::max());
 	for (vec3 v : geometry->vertices) {
 		this->min = glm::min(this->min, v);
 		this->max = glm::max(this->max, v);
 	}
-	this->geometry = MeshGeometryFactory::createBoundingBox(min, max);
-	this->gpuObject = new RenderableObject();
-	this->gpuObject->initVao(this->geometry);
-	this->gpuObject->setShader(basicShader);
-	this->gpuObject->setModes(GL_LINE_STRIP);
+	this->initGpuObject(basicShader, color);
+	this->computeCorners();
 }
 
-BoundingBox::BoundingBox(const vector<pair<vec3, vec3>>& boundingBoxes, Shader* basicShader) {
+BoundingBox::BoundingBox(const vector<pair<vec3, vec3>>& boundingBoxes, Shader* basicShader, vec4 color) {
 	this->min = vec3(std::numeric_limits<float>::max());
 	this->max = vec3(-std::numeric_limits<float>::max());
 	for (const auto& bb : boundingBoxes) {
 		this->min = glm::min(this->min, glm::min(bb.first, bb.second));
 		this->max = glm::max(this->max, glm::max(bb.first, bb.second));
 	}
-	this->geometry = MeshGeometryFactory::createBoundingBox(min, max);
-	this->gpuObject = new RenderableObject();
-	this->gpuObject->initVao(this->geometry);
-	this->gpuObject->setShader(basicShader);
-	this->gpuObject->setModes(GL_LINE_STRIP);
+	this->initGpuObject(basicShader, color);
+	this->computeCorners();
 }
 
 BoundingBox::~BoundingBox() {
@@ -44,4 +38,27 @@ vec3 BoundingBox::getMin() {
 
 vec3 BoundingBox::getMax() {
 	return this->max;
+}
+
+const vector<vec3>& BoundingBox::getCorners() {
+	return this->corners;
+}
+
+void BoundingBox::computeCorners() {
+	this->corners.push_back(this->min);
+	this->corners.push_back(vec3(this->min.x, this->min.y, this->max.z));
+	this->corners.push_back(vec3(this->min.x, this->max.y, this->min.z));
+	this->corners.push_back(vec3(this->min.x, this->max.y, this->max.z));
+	this->corners.push_back(vec3(this->max.x, this->min.y, this->min.z));
+	this->corners.push_back(vec3(this->max.x, this->min.y, this->max.z));
+	this->corners.push_back(vec3(this->max.x, this->max.y, this->min.z));
+	this->corners.push_back(this->max);
+}
+
+void BoundingBox::initGpuObject(Shader* basicShader, vec4 color) {
+	this->geometry = MeshGeometryFactory::createBoundingBox(min, max, color);
+	this->gpuObject = new RenderableObject();
+	this->gpuObject->initVao(this->geometry);
+	this->gpuObject->setShader(basicShader);
+	this->gpuObject->setModes(GL_LINE_STRIP);
 }

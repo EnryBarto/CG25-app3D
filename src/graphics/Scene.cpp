@@ -40,13 +40,32 @@ Camera* Scene::getCamera() {
 void Scene::update(float deltaTime, AppState currentState) {
 
 	// Activate camera moving only when in navigation or picking
+	// The camera is moved, and if there is a collision the position is restored before the rendering phase starts
 	if (currentState == AppState::NAVIGATION || currentState == AppState::PICKING) {
-		if (glfwGetKey(this->window, GLFW_KEY_A) == GLFW_PRESS) this->camera->moveLeft(deltaTime);
-		if (glfwGetKey(this->window, GLFW_KEY_D) == GLFW_PRESS) this->camera->moveRight(deltaTime);
-		if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_PRESS) this->camera->moveForward(deltaTime);
-		if (glfwGetKey(this->window, GLFW_KEY_S) == GLFW_PRESS) this->camera->moveBack(deltaTime);
-		if (glfwGetKey(this->window, GLFW_KEY_Y) == GLFW_PRESS) this->camera->moveDown(deltaTime);
-		if (glfwGetKey(this->window, GLFW_KEY_U) == GLFW_PRESS) this->camera->moveUp(deltaTime);
+		if (glfwGetKey(this->window, GLFW_KEY_A) == GLFW_PRESS) {
+			this->camera->moveLeft(deltaTime);
+			if (this->isColliding()) this->camera->moveLeft(-deltaTime);
+		}
+		if (glfwGetKey(this->window, GLFW_KEY_D) == GLFW_PRESS) {
+			this->camera->moveRight(deltaTime);
+			if (this->isColliding()) this->camera->moveRight(-deltaTime);
+		}
+		if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_PRESS) {
+			this->camera->moveForward(deltaTime);
+			if (this->isColliding()) this->camera->moveForward(-deltaTime);
+		}
+		if (glfwGetKey(this->window, GLFW_KEY_S) == GLFW_PRESS) {
+			this->camera->moveBack(deltaTime);
+			if (this->isColliding()) this->camera->moveBack(-deltaTime);
+		}
+		if (glfwGetKey(this->window, GLFW_KEY_Q) == GLFW_PRESS) {
+			this->camera->moveDown(deltaTime);
+			if (this->isColliding()) this->camera->moveDown(-deltaTime);
+		}
+		if (glfwGetKey(this->window, GLFW_KEY_E) == GLFW_PRESS) {
+			this->camera->moveUp(deltaTime);
+			if (this->isColliding()) this->camera->moveUp(-deltaTime);
+		}
 	}
 
     if (this->windowManager->isFrameBufferChanged()) this->projection->changeAspectRatio(this->windowManager->getAspectRatio());
@@ -106,6 +125,16 @@ vec3 Scene::getRayFromMouseClick(vec2 clickPosition) {
 
 	// The ray vector is computed by subtracting the camera position from the world-space point Pw.
 	return normalize(vec3(Pw) - this->camera->getPosition());
+}
+
+bool Scene::isColliding() {
+	bool collision = false;
+	for (auto o : this->objects) {
+		if (o->isColliding(camera->getPosition())) {
+			return true;
+		}
+	}
+	return false;
 }
 
 tuple<PhysicalObject*, string> Scene::mousePicked(vec2 clickPosition) {

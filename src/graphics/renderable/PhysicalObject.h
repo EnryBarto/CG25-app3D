@@ -28,6 +28,7 @@ class PhysicalObject {
 		void setName(const char* newName);
 		void computeGlobalBoundingBox();
 		void updateMeshModelMatrix(string name, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
+		bool isColliding(vec3 position);
 
 	private:
 		map<string, Mesh*> meshes;
@@ -40,4 +41,5 @@ class PhysicalObject {
 		vec3 rotationAxis;
 		mat4 modelMatrix;
 		Shader* boundingBoxShader;
+		bool isCollidingWithExternalBoundingBox(vec3 position);
 };

@@ -25,8 +25,8 @@ void show_commands() {
     ImGui::Text("A: Move left");
     ImGui::Text("S: Move backward");
     ImGui::Text("D: Move right");
-    ImGui::Text("U: Move up");
-    ImGui::Text("Y: Move down");
+    ImGui::Text("E: Move up");
+    ImGui::Text("Q: Move down");
     ImGui::Text("Arrows: Rotate camera");
     ImGui::NewLine();
 
