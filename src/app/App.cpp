@@ -132,8 +132,8 @@ AppState App::getCurrentAppState() {
 
 void App::togglePause() {
 	switch (this->currentState) {
-		case AppState::WAIT_OBJ_FILE_CONFIRM: case AppState::WAIT_TEXTURE_FILE_CONFIRM:
-			// Do nothing: The user is using the keyboard to write the object name
+	case AppState::WAIT_OBJ_FILE_CONFIRM: case AppState::WAIT_TEXTURE_FILE_CONFIRM: case AppState::MOVING_TRACKBALL:
+			// Do nothing: The user is using the keyboard to write the object name or the mouse is dragging something
 			break;
 		case AppState::PAUSED:
 			this->setNextStateFromHistory();
@@ -149,6 +149,7 @@ void App::toggleObjectList() {
 	switch (this->currentState) {
 		case AppState::NAVIGATION:
 		case AppState::PICKING:
+		case AppState::TRACKBALL:
 		case AppState::LIGHT_SETTINGS:
 		case AppState::EDITING_OBJ:
 		case AppState::EDITING_MESH:
@@ -167,10 +168,27 @@ void App::toggleObjectList() {
 void App::toggleMode() {
 	switch (this->currentState) {
 		case AppState::NAVIGATION:
+			this->nextState = AppState::TRACKBALL;
+			break;
+		case AppState::TRACKBALL:
 			this->nextState = AppState::PICKING;
 			break;
 		case AppState::PICKING:
 			this->nextState = AppState::NAVIGATION;
+			break;
+		default:
+			break;
+	}
+}
+
+void App::toggleMovingTrackball() {
+
+	switch (this->currentState) {
+		case AppState::TRACKBALL:
+			this->nextState = AppState::MOVING_TRACKBALL;
+			break;
+		case AppState::MOVING_TRACKBALL:
+			this->nextState = AppState::TRACKBALL;
 			break;
 		default:
 			break;
@@ -193,6 +211,25 @@ void App::escPressed() {
 	}
 }
 
+void App::toggleLightSettings() {
+	switch (this->currentState) {
+		case AppState::LIGHT_SETTINGS:
+			this->setNextStateFromHistory();
+			break;
+		case AppState::NAVIGATION:
+		case AppState::PICKING:
+		case AppState::TRACKBALL:
+		case AppState::EDITING_OBJ:
+		case AppState::EDITING_MESH:
+			this->nextState = AppState::LIGHT_SETTINGS;
+			this->statesHistory.push(this->currentState);
+			break;
+		default:
+			// Do nothing
+			break;
+	}
+}
+
 map<string, Shader*>* App::getShaders() {
 	return this->shaders;
 }
@@ -203,24 +240,6 @@ map<string, Material*>* App::getMaterials() {
 
 map<string, Texture*>* App::getTextures() {
 	return this->textures;
-}
-
-void App::toggleLightSettings() {
-	switch (this->currentState) {
-		case AppState::LIGHT_SETTINGS:
-			this->setNextStateFromHistory();
-			break;
-		case AppState::NAVIGATION:
-		case AppState::PICKING:
-		case AppState::EDITING_OBJ:
-		case AppState::EDITING_MESH:
-			this->nextState = AppState::LIGHT_SETTINGS;
-			this->statesHistory.push(this->currentState);
-			break;
-		default:
-			// Do nothing
-			break;
-	}
 }
 
 void App::loadObjectsFromFile(const char* paths[], int numFiles) {

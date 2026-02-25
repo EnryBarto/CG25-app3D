@@ -33,6 +33,35 @@ void show_commands() {
     ImGui::End();
 }
 
+void show_status_bar() {
+
+    ImGui::SetNextWindowSize(ImVec2(app.getWindowManager()->getCurrentResolution().x - GUI_WINDOWS_PADDING * 2, 0.0f));
+    ImGui::SetNextWindowPos(
+        ImVec2(GUI_WINDOWS_PADDING, app.getWindowManager()->getCurrentResolution().y - GUI_WINDOWS_PADDING),
+        ImGuiCond_Always,
+        ImVec2(0.0f, 1.0f) // Consider as Y pivot the end of the window
+    );
+
+    ImGui::Begin("Status", nullptr,
+        ImGuiWindowFlags_NoDecoration |
+        ImGuiWindowFlags_AlwaysAutoResize |
+        ImGuiWindowFlags_NoSavedSettings |
+        ImGuiWindowFlags_NoFocusOnAppearing |
+        ImGuiWindowFlags_NoNav |
+        ImGuiWindowFlags_NoMove
+    );
+
+    vec3 cameraPos = app.getScene()->getCamera()->getPosition();
+    ImGui::Text("Position: (%.1f, %.1f, %.1f) - Status: %s - FPS: %.1f",
+        cameraPos.x, cameraPos.y, cameraPos.z,
+        appStateToString(app.getCurrentAppState()),
+        ImGui::GetIO().Framerate
+    );
+
+    status_bar_height = (int)ImGui::GetWindowSize().y;
+    ImGui::End();
+}
+
 void show_settings() {
 
     ImGui::SetNextWindowSizeConstraints(
@@ -71,6 +100,9 @@ void show_settings() {
     float tempCameraSpeed = app.getAppSettings()->getCurrentCameraSpeed();
     if (ImGui::SliderFloat(" Camera Speed", &tempCameraSpeed, CAMERA_SPEED_MIN, CAMERA_SPEED_MAX)) app.getAppSettings()->setCameraSpeed(tempCameraSpeed);
 
+    float tempTrackballSpeed = app.getAppSettings()->getCurrentTrackballSpeed();
+    if (ImGui::SliderFloat(" Trackball Speed", &tempTrackballSpeed, TRACKBALL_SPEED_MIN, TRACKBALL_SPEED_MAX)) app.getAppSettings()->setTrackballSpeed(tempTrackballSpeed);
+
     float tempMouseSensitivity = app.getAppSettings()->getCurrentMouseSensitivity();
     if (ImGui::SliderFloat(" Mouse Sensitivity", &tempMouseSensitivity, MOUSE_SENSITIVITY_MIN, MOUSE_SENSITIVITY_MAX)) app.getAppSettings()->setMouseSensitivity(tempMouseSensitivity);
 
@@ -83,33 +115,6 @@ void show_settings() {
     if (ImGui::Button("Quit")) app.close();
     ImGui::NewLine();
 
-    ImGui::End();
-}
-
-void show_status_bar() {
-
-    ImGui::SetNextWindowSize(ImVec2(app.getWindowManager()->getCurrentResolution().x - GUI_WINDOWS_PADDING * 2, 0.0f));
-    ImGui::SetNextWindowPos(
-        ImVec2(GUI_WINDOWS_PADDING, app.getWindowManager()->getCurrentResolution().y - GUI_WINDOWS_PADDING),
-        ImGuiCond_Always,
-        ImVec2(0.0f, 1.0f) // Consider as Y pivot the end of the window
-    );
-
-    ImGui::Begin("Status", nullptr,
-        ImGuiWindowFlags_NoDecoration |
-        ImGuiWindowFlags_AlwaysAutoResize |
-        ImGuiWindowFlags_NoSavedSettings |
-        ImGuiWindowFlags_NoFocusOnAppearing |
-        ImGuiWindowFlags_NoNav |
-        ImGuiWindowFlags_NoMove
-    );
-    vec3 cameraPos = app.getScene()->getCamera()->getPosition();
-    ImGui::Text("Position: (%.1f, %.1f, %.1f) - Status: %s - FPS: %.1f",
-        cameraPos.x, cameraPos.y, cameraPos.z,
-        appStateToString(app.getCurrentAppState()),
-        ImGui::GetIO().Framerate);
-
-    status_bar_height = (int)ImGui::GetWindowSize().y;
     ImGui::End();
 }
 

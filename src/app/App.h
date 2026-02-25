@@ -23,6 +23,7 @@ class App {
 		void togglePause();
 		void toggleObjectList();
 		void toggleMode();
+		void toggleMovingTrackball();
 		WindowManager* getWindowManager();
 		Scene* getScene();
 		AppSettings* getAppSettings();

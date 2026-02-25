@@ -32,6 +32,7 @@ class Scene {
 		void removeLight(int i);
 		vector<PhysicalObject*>* getObjects();
 		void removeObject(PhysicalObject* o);
+		bool isCameraColliding();
 
 		// Object and mesh selection
 		tuple<PhysicalObject*, string> mousePicked(vec2 clickPosition);
@@ -61,5 +62,4 @@ class Scene {
 		vec3 getRayFromMouseClick(vec2 clickPosition);
 		PhysicalObject* selectedObject = nullptr;
 		string selectedMesh = "";
-		bool isColliding();
 };

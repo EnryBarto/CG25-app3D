@@ -30,6 +30,10 @@ bool AppSettings::isCameraSpeedChanged() {
 	return this->_cameraSpeedChanged;
 }
 
+float AppSettings::getCurrentTrackballSpeed() {
+	return this->_trackballSpeed;
+}
+
 float AppSettings::getCurrentMouseSensitivity() {
 	return this->_mouseSensitivity;
 }
@@ -65,6 +69,11 @@ void AppSettings::setCameraSpeed(float newCameraSpeed) {
 	if (newCameraSpeed == this->_cameraSpeed) return;
 	this->_cameraSpeed = glm::clamp(newCameraSpeed, CAMERA_SPEED_MIN, CAMERA_SPEED_MAX);
 	this->_cameraSpeedChanged = true;
+}
+
+void AppSettings::setTrackballSpeed(float newTrackballSpeed) {
+	if (newTrackballSpeed == this->_trackballSpeed) return;
+	this->_trackballSpeed = glm::clamp(newTrackballSpeed, TRACKBALL_SPEED_MIN, TRACKBALL_SPEED_MAX);
 }
 
 void AppSettings::setMouseSensitivity(float newMouseSensitivity) {

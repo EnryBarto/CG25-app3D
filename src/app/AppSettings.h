@@ -12,6 +12,7 @@ class AppSettings {
 		bool isFovChanged();
 		float getCurrentCameraSpeed();
 		bool isCameraSpeedChanged();
+		float getCurrentTrackballSpeed();
 		float getCurrentMouseSensitivity();
 		bool isAnchorActive();
 		bool isBoundingBoxActive();
@@ -21,6 +22,7 @@ class AppSettings {
 		void toggleShowingCommands();
 		void setFov(float newFov);
 		void setCameraSpeed(float newCameraSpeed);
+		void setTrackballSpeed(float newTrackballSpeed);
 		void setMouseSensitivity(float newMouseSensitivity);
 		void toggleAnchor();
 		void toggleBoundingBox();
@@ -36,4 +38,5 @@ class AppSettings {
 		float _mouseSensitivity = MOUSE_SENSITIVITY_DEFAULT;
 		bool _anchor = false;
 		bool _boundingBox = false;
+		float _trackballSpeed = TRACKBALL_SPEED_DEFAULT;
 };

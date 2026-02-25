@@ -41,30 +41,30 @@ void Scene::update(float deltaTime, AppState currentState) {
 
 	// Activate camera moving only when in navigation or picking
 	// The camera is moved, and if there is a collision the position is restored before the rendering phase starts
-	if (currentState == AppState::NAVIGATION || currentState == AppState::PICKING) {
+	if (currentState == AppState::NAVIGATION || currentState == AppState::PICKING || currentState == AppState::TRACKBALL) {
 		if (glfwGetKey(this->window, GLFW_KEY_A) == GLFW_PRESS) {
 			this->camera->moveLeft(deltaTime);
-			if (this->isColliding()) this->camera->moveLeft(-deltaTime);
+			if (this->isCameraColliding()) this->camera->undoLastOperation();
 		}
 		if (glfwGetKey(this->window, GLFW_KEY_D) == GLFW_PRESS) {
 			this->camera->moveRight(deltaTime);
-			if (this->isColliding()) this->camera->moveRight(-deltaTime);
+			if (this->isCameraColliding()) this->camera->undoLastOperation();
 		}
 		if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_PRESS) {
 			this->camera->moveForward(deltaTime);
-			if (this->isColliding()) this->camera->moveForward(-deltaTime);
+			if (this->isCameraColliding()) this->camera->undoLastOperation();
 		}
 		if (glfwGetKey(this->window, GLFW_KEY_S) == GLFW_PRESS) {
 			this->camera->moveBack(deltaTime);
-			if (this->isColliding()) this->camera->moveBack(-deltaTime);
+			if (this->isCameraColliding()) this->camera->undoLastOperation();
 		}
 		if (glfwGetKey(this->window, GLFW_KEY_Q) == GLFW_PRESS) {
 			this->camera->moveDown(deltaTime);
-			if (this->isColliding()) this->camera->moveDown(-deltaTime);
+			if (this->isCameraColliding()) this->camera->undoLastOperation();
 		}
 		if (glfwGetKey(this->window, GLFW_KEY_E) == GLFW_PRESS) {
 			this->camera->moveUp(deltaTime);
-			if (this->isColliding()) this->camera->moveUp(-deltaTime);
+			if (this->isCameraColliding()) this->camera->undoLastOperation();
 		}
 	}
 
@@ -127,7 +127,7 @@ vec3 Scene::getRayFromMouseClick(vec2 clickPosition) {
 	return normalize(vec3(Pw) - this->camera->getPosition());
 }
 
-bool Scene::isColliding() {
+bool Scene::isCameraColliding() {
 	bool collision = false;
 	for (auto o : this->objects) {
 		if (o->isColliding(camera->getPosition())) {
