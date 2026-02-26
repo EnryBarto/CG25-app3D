@@ -19,6 +19,7 @@ void RenderableObject::getUniforms() {
 	this->uniform_Texture = glGetUniformLocation(shader->getProgramId(), "uTexture");
 	this->uniform_UsingTexture = glGetUniformLocation(shader->getProgramId(), "uUseTexture");
 	this->uniform_Time = glGetUniformLocation(shader->getProgramId(), "time");
+	this->uniform_UsingBlinnPhong = glGetUniformLocation(shader->getProgramId(), "uUseBlinnPhong");
 }
 
 void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, Material* material, const vector<PointLight*>* lights) {
@@ -62,6 +63,7 @@ void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, c
 		if (this->uniform_LightPower[i] != -1) glUniform1f(this->uniform_LightPower[i], lights->at(i)->getPower());
 	}
 	if (this->uniform_Time != -1) glUniform1f(this->uniform_Time, (float)glfwGetTime());
+	if (this->uniform_UsingBlinnPhong != -1) glUniform1i(this->uniform_UsingBlinnPhong, this->usingBlinnPhong);
 
 	// RENDER!
 	glBindVertexArray(this->vao);
@@ -71,4 +73,24 @@ void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, c
 		glPointSize(ANCHOR_SIZE);
 		glDrawElements(GL_POINTS, 1, GL_UNSIGNED_INT, BUFFER_OFFSET(this->numIndexes * sizeof(GLuint)));
 	}
+}
+
+bool RenderableObject::canUseBlinnPhong() {
+	return this->uniform_UsingBlinnPhong != -1;
+}
+
+void RenderableObject::setBlinnPhong(bool flag) {
+	this->usingBlinnPhong = flag;
+}
+
+bool RenderableObject::isUsingBlinnPhong() {
+	return this->usingBlinnPhong;
+}
+
+bool RenderableObject::supportsTexture() {
+	return this->uniform_Texture != -1;
+}
+
+bool RenderableObject::supportsMaterial() {
+	return this->uniform_MaterialAmbient != -1 || this->uniform_MaterialDiffuse != -1 || this->uniform_MaterialShininess != -1 || this->uniform_MaterialSpecular != -1;
 }

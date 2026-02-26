@@ -5,6 +5,12 @@
 extern App app;
 int status_bar_height = 0;
 
+// Gui utility functions
+void show_shader_selector(Mesh* selectedMesh);
+void show_material_selector(Mesh* selectedMesh);
+void show_texture_selector(Mesh* selectedMesh);
+bool model_matrix_editor(vec3* translation, vec3* rotationAxis, float* rotationAngle, vec3* scaleVector);
+
 void show_commands() {
     ImGui::SetNextWindowPos(ImVec2(GUI_WINDOWS_PADDING, GUI_WINDOWS_PADDING), ImGuiCond_FirstUseEver);
 
@@ -147,18 +153,8 @@ ImVec2 show_object_inspector() {
     float rotationAngle = selectedObj->getRotationAngle();
     vec3 scaleVector = selectedObj->getScaleVector();
 
-    if (ImGui::CollapsingHeader("Edit model matrix  ")) {
-        ImGui::NewLine();
-        bool changed = false;
-
-        changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
-        changed |= ImGui::DragFloat3(" Rotation axis", glm::value_ptr(rotationAxis), 0.1f);
-        changed |= ImGui::DragFloat(" Rotation °", &rotationAngle, 0.1f);
-        changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(scaleVector), 0.1f);
-
-        if (changed) {
-            selectedObj->updateModelMatrix(translation, rotationAxis, rotationAngle, scaleVector);
-        }
+	if (model_matrix_editor(&translation, &rotationAxis, &rotationAngle, &scaleVector)) {
+        selectedObj->updateModelMatrix(translation, rotationAxis, rotationAngle, scaleVector);
     }
 
     ImGui::NewLine();
@@ -210,130 +206,25 @@ void show_mesh_inspector() {
     ImGui::TextWrapped(get<0>(app.getScene()->getSelectedMesh()).c_str());
     ImGui::NewLine();
     ImGui::Separator();
+    ImGui::NewLine();
 
     vec3 translation = selectedMesh->getTranslationVector();
     vec3 rotationAxis = selectedMesh->getRotationAxis();
     float rotationAngle = selectedMesh->getRotationAngle();
     vec3 scaleVector = selectedMesh->getScaleVector();
-
-    ImGui::NewLine();
-    if (ImGui::CollapsingHeader("Edit model matrix  ")) {
-        ImGui::NewLine();
-        bool changed = false;
-
-        changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
-        changed |= ImGui::DragFloat3(" Rotation axis", glm::value_ptr(rotationAxis), 0.1f);
-        changed |= ImGui::DragFloat(" Rotation °", &rotationAngle, 0.1f);
-        changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(scaleVector), 0.1f);
-
-        if (changed) {
-            app.getScene()->getSelectedObject()->updateMeshModelMatrix(get<0>(app.getScene()->getSelectedMesh()), translation, rotationAxis, rotationAngle, scaleVector);
-        }
+ 
+    if (model_matrix_editor(&translation, &rotationAxis, &rotationAngle, &scaleVector)) {
+        app.getScene()->getSelectedObject()->updateMeshModelMatrix(get<0>(app.getScene()->getSelectedMesh()), translation, rotationAxis, rotationAngle, scaleVector);
     }
+
     ImGui::NewLine();
     ImGui::Separator();
     ImGui::NewLine();
 
-    // Shader selector
-    map<string, Shader*>* shaders = app.getShaders();
-    Shader* currentShader = selectedMesh->getCurrentShader();
-    const char* previewName = "-----";
+	show_shader_selector(selectedMesh);
+    if (selectedMesh->getGpuObject()->supportsMaterial()) show_material_selector(selectedMesh);
+	if (selectedMesh->getGpuObject()->supportsTexture()) show_texture_selector(selectedMesh);
 
-    if (shaders != nullptr) {
-        for (const auto& s : *shaders) {
-            if (s.second == currentShader) {
-                previewName = s.first.c_str();
-                break;
-            }
-        }
-    }
-    if (ImGui::BeginCombo(" Shader", previewName) && shaders != NULL) {
-        for (const auto& s : *shaders) {
-            bool isSelected = (currentShader == s.second);
-            if (ImGui::Selectable(s.first.c_str(), isSelected)) selectedMesh->setShader(s.second);
-            if (isSelected) ImGui::SetItemDefaultFocus();
-        }
-        ImGui::EndCombo();
-    }
-    ImGui::NewLine();
-
-    // Material selector
-    map<string, Material*>* materials = app.getMaterials();
-    Material* currentMaterial = selectedMesh->getCurrentMaterial();
-    Material* fileLoadedMaterial = selectedMesh->getFileLoadedMaterial();
-    Material* customMaterial = selectedMesh->getCustomMaterial();
-    bool isCustomSelected = currentMaterial == customMaterial;
-    previewName = "-----";
-    if (materials != nullptr) {
-        for (const auto& m : *materials) {
-            if (m.second == currentMaterial) {
-                previewName = m.first.c_str();
-                break;
-            }
-        }
-    }
-    if (isCustomSelected) previewName = "Custom";
-    if (ImGui::BeginCombo(" Material", currentMaterial == fileLoadedMaterial ? fileLoadedMaterial->getName().c_str() : previewName) && materials != NULL) {
-        for (const auto& m : *materials) {
-            bool isSelected = (currentMaterial == m.second);
-            if (ImGui::Selectable(m.first.c_str(), isSelected)) selectedMesh->setMaterial(m.second);
-            if (isSelected) ImGui::SetItemDefaultFocus();
-        }
-        if (fileLoadedMaterial != nullptr) {
-            bool isSelected = (currentMaterial == fileLoadedMaterial);
-            if (ImGui::Selectable(fileLoadedMaterial->getName().c_str(), isSelected)) selectedMesh->setMaterial(fileLoadedMaterial);
-            if (isSelected) ImGui::SetItemDefaultFocus();
-        }
-        if (ImGui::Selectable(customMaterial->getName().c_str(), isCustomSelected)) selectedMesh->setMaterial(customMaterial);
-        if (isCustomSelected) ImGui::SetItemDefaultFocus();
-        ImGui::EndCombo();
-    }
-
-    if (isCustomSelected) {
-        vec3 ambient = customMaterial->getAmbient(), diffuse = customMaterial->getDiffuse(), specular = customMaterial->getSpecular();
-        float shininess = customMaterial->getShininess();
-        ImGui::ColorEdit3(" Ambient", glm::value_ptr(ambient));
-        ImGui::ColorEdit3(" Diffuse", glm::value_ptr(diffuse));
-        ImGui::ColorEdit3(" Specular", glm::value_ptr(specular));
-        ImGui::DragFloat(" Shininess", &shininess, 1, 1, 512);
-        customMaterial->updateValues(ambient, diffuse, specular, shininess);
-    }
-    ImGui::NewLine();
-
-    // Texture selector
-    map<string, Texture*>* textures = app.getTextures();
-    Texture* currentTexture = selectedMesh->getCurrentTexture();
-    previewName = "None";
-
-    if (shaders != nullptr) {
-        for (const auto& t : *textures) {
-            if (t.second == currentTexture) {
-                previewName = t.first.c_str();
-                break;
-            }
-        }
-    }
-    if (ImGui::BeginCombo(" Texture", previewName) && shaders != NULL) {
-        bool isNone = (currentTexture == nullptr);
-        if (ImGui::Selectable("None", isNone)) selectedMesh->setTexture(nullptr);
-        if (isNone) ImGui::SetItemDefaultFocus();
-        
-        for (const auto& t : *textures) {
-            bool isSelected = (currentTexture == t.second);
-            if (ImGui::Selectable(t.first.c_str(), isSelected)) selectedMesh->setTexture(t.second);
-            if (isSelected) ImGui::SetItemDefaultFocus();
-        }
-        ImGui::EndCombo();
-    }
-    if (currentTexture != nullptr) {
-        ImGui::NewLine();
-        ImGui::Text("Texture preview:");
-        ImTextureID imguiTexID = (ImTextureID)(intptr_t)currentTexture->getProgramId();
-        ImVec2 previewSize(100, 100);
-        ImGui::Image(imguiTexID, previewSize);
-    }
-
-    ImGui::NewLine();
     ImGui::Separator();
     ImGui::NewLine();
     if (ImGui::Button("Delete")) {
@@ -366,7 +257,6 @@ void show_objects_list() {
         | ImGuiWindowFlags_NoMove
     );
     
-
     vector<PhysicalObject*>* objects = app.getScene()->getObjects();
 
     ImGui::NewLine();
@@ -470,24 +360,16 @@ void show_mesh_file_uploaded(const char* path, PhysicalObject* uploadedObject, c
     ImGui::NewLine();
     ImGui::InputText("", nameBuffer, MAX_LENGTH_OBJ_NAME);
 
+    ImGui::NewLine();
+    ImGui::Separator();
+    ImGui::NewLine();
+
     vec3 translation = uploadedObject->getTranslationVector();
     vec3 rotationAxis = uploadedObject->getRotationAxis();
     float rotationAngle = uploadedObject->getRotationAngle();
     vec3 scaleVector = uploadedObject->getScaleVector();
 
-    ImGui::NewLine();
-    ImGui::Separator();
-    ImGui::NewLine();
-    ImGui::Text("Edit model matrix:");
-    ImGui::NewLine();
-    bool changed = false;
-
-    changed |= ImGui::DragFloat3(" Position", glm::value_ptr(translation), 0.1f);
-    changed |= ImGui::DragFloat3(" Rotation axis", glm::value_ptr(rotationAxis), 0.1f);
-    changed |= ImGui::DragFloat(" Rotation °", &rotationAngle, 0.1f);
-    changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(scaleVector), 0.1f);
-
-    if (changed) {
+    if (model_matrix_editor(&translation, &rotationAxis, &rotationAngle, &scaleVector)) {
         uploadedObject->updateModelMatrix(translation, rotationAxis, rotationAngle, scaleVector);
     }
 
@@ -616,4 +498,134 @@ void close_gui() {
     ImGui_ImplOpenGL3_Shutdown();   // Shut down the OpenGL integration
     ImGui_ImplGlfw_Shutdown();      // Shut down the GLFW integration
     ImGui::DestroyContext();        // Destroy the ImGui context
+}
+
+
+void show_shader_selector(Mesh* selectedMesh) {
+    map<string, Shader*>* shaders = app.getShaders();
+    Shader* currentShader = selectedMesh->getCurrentShader();
+    const char* previewName = "-----";
+
+    if (shaders != nullptr) {
+        for (const auto& s : *shaders) {
+            if (s.second == currentShader) {
+                previewName = s.first.c_str();
+                break;
+            }
+        }
+    }
+    if (ImGui::BeginCombo(" Shading", previewName) && shaders != NULL) {
+        for (const auto& s : *shaders) {
+            bool isSelected = (currentShader == s.second);
+            if (ImGui::Selectable(s.first.c_str(), isSelected)) selectedMesh->setShader(s.second);
+            if (isSelected) ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+    }
+    ImGui::NewLine();
+
+    if (selectedMesh->getGpuObject()->canUseBlinnPhong()) {
+        ImGui::Text("Illumination model:");
+        int usingBlinnPhong = selectedMesh->getGpuObject()->isUsingBlinnPhong();
+        ImGui::RadioButton("Phong", &usingBlinnPhong, false); ImGui::SameLine();
+        ImGui::RadioButton("Blinn - Phong", &usingBlinnPhong, true);
+        ImGui::NewLine();
+        selectedMesh->getGpuObject()->setBlinnPhong(usingBlinnPhong);
+    }
+}
+
+void show_material_selector(Mesh* selectedMesh) {
+    map<string, Material*>* materials = app.getMaterials();
+    Material* currentMaterial = selectedMesh->getCurrentMaterial();
+    Material* fileLoadedMaterial = selectedMesh->getFileLoadedMaterial();
+    Material* customMaterial = selectedMesh->getCustomMaterial();
+    bool isCustomSelected = currentMaterial == customMaterial;
+    const char* previewName = "-----";
+    if (materials != nullptr) {
+        for (const auto& m : *materials) {
+            if (m.second == currentMaterial) {
+                previewName = m.first.c_str();
+                break;
+            }
+        }
+    }
+    if (isCustomSelected) previewName = "Custom";
+    if (ImGui::BeginCombo(" Material", currentMaterial == fileLoadedMaterial ? fileLoadedMaterial->getName().c_str() : previewName) && materials != NULL) {
+        for (const auto& m : *materials) {
+            bool isSelected = (currentMaterial == m.second);
+            if (ImGui::Selectable(m.first.c_str(), isSelected)) selectedMesh->setMaterial(m.second);
+            if (isSelected) ImGui::SetItemDefaultFocus();
+        }
+        if (fileLoadedMaterial != nullptr) {
+            bool isSelected = (currentMaterial == fileLoadedMaterial);
+            if (ImGui::Selectable(fileLoadedMaterial->getName().c_str(), isSelected)) selectedMesh->setMaterial(fileLoadedMaterial);
+            if (isSelected) ImGui::SetItemDefaultFocus();
+        }
+        if (ImGui::Selectable(customMaterial->getName().c_str(), isCustomSelected)) selectedMesh->setMaterial(customMaterial);
+        if (isCustomSelected) ImGui::SetItemDefaultFocus();
+        ImGui::EndCombo();
+    }
+
+    if (isCustomSelected) {
+        vec3 ambient = customMaterial->getAmbient(), diffuse = customMaterial->getDiffuse(), specular = customMaterial->getSpecular();
+        float shininess = customMaterial->getShininess();
+        ImGui::ColorEdit3(" Ambient", glm::value_ptr(ambient));
+        ImGui::ColorEdit3(" Diffuse", glm::value_ptr(diffuse));
+        ImGui::ColorEdit3(" Specular", glm::value_ptr(specular));
+        ImGui::DragFloat(" Shininess", &shininess, 1, 1, 512);
+        customMaterial->updateValues(ambient, diffuse, specular, shininess);
+    }
+    ImGui::NewLine();
+
+}
+
+void show_texture_selector(Mesh* selectedMesh) {
+    map<string, Texture*>* textures = app.getTextures();
+    Texture* currentTexture = selectedMesh->getCurrentTexture();
+    const char *previewName = "None";
+
+    if (textures != nullptr) {
+        for (const auto& t : *textures) {
+            if (t.second == currentTexture) {
+                previewName = t.first.c_str();
+                break;
+            }
+        }
+    }
+    if (ImGui::BeginCombo(" Texture", previewName) && textures != NULL) {
+        bool isNone = (currentTexture == nullptr);
+        if (ImGui::Selectable("None", isNone)) selectedMesh->setTexture(nullptr);
+        if (isNone) ImGui::SetItemDefaultFocus();
+
+        for (const auto& t : *textures) {
+            bool isSelected = (currentTexture == t.second);
+            if (ImGui::Selectable(t.first.c_str(), isSelected)) selectedMesh->setTexture(t.second);
+            if (isSelected) ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+    }
+    if (currentTexture != nullptr) {
+        ImGui::NewLine();
+        ImGui::Text("Texture preview:");
+        ImTextureID imguiTexID = (ImTextureID)(intptr_t)currentTexture->getProgramId();
+        ImVec2 previewSize(100, 100);
+        ImGui::Image(imguiTexID, previewSize);
+    }
+    ImGui::NewLine();
+}
+
+bool model_matrix_editor(vec3* translation, vec3* rotationAxis, float* rotationAngle, vec3* scaleVector) {
+    if (ImGui::CollapsingHeader("Edit model matrix  ")) {
+        ImGui::NewLine();
+        bool changed = false;
+
+        changed |= ImGui::DragFloat3(" Position", glm::value_ptr(*translation), 0.1f);
+        changed |= ImGui::DragFloat3(" Rotation axis", glm::value_ptr(*rotationAxis), 0.1f);
+        changed |= ImGui::DragFloat(" Rotation °", rotationAngle, 0.1f);
+        changed |= ImGui::DragFloat3(" Scaling", glm::value_ptr(*scaleVector), 0.1f);
+
+        return changed;
+    }
+
+    return false;
 }

@@ -12,6 +12,11 @@ class RenderableObject: public GpuBuffers {
 
     public:
         void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, Material* material, const vector<PointLight*>* lights);
+        bool canUseBlinnPhong();
+        void setBlinnPhong(bool flag);
+        bool isUsingBlinnPhong();
+		bool supportsTexture();
+		bool supportsMaterial();
 
     protected:
         void getUniforms() override;
@@ -33,4 +38,7 @@ class RenderableObject: public GpuBuffers {
         GLint uniform_Texture = -1;
         GLint uniform_UsingTexture = -1;
         GLint uniform_Time = -1;
+        GLint uniform_UsingBlinnPhong = -1;
+
+        bool usingBlinnPhong = false;
 };  

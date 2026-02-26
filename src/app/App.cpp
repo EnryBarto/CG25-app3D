@@ -16,6 +16,7 @@ App::App() {
 	}
 
 	this->shaders = init_shaders();
+	this->cubemapShader = new Shader(CUBEMAP_SHADER_NAME, "cubemap_vertex_shader.glsl", "cubemap_fragment_shader.glsl");
 	if (this->shaders == NULL) {
 		throw std::runtime_error("Shaders initialization failed!");
 	} else {
@@ -32,7 +33,7 @@ App::App() {
 	this->materials = init_materials();
 
 	this->currentSettings = new AppSettings();
-	this->scene = new Scene(windowManager, currentSettings, shaders->at(INTERPOLATION_SHADER_NAME), shaders->at(BASIC_SHADER_NAME), materials->at(NO_MATERIAL_NAME), shaders->at(CUBEMAP_SHADER_NAME), SKYBOX_CUBEMAP_DIRECTORY);
+	this->scene = new Scene(windowManager, currentSettings, shaders->at(GOURAUD_SHADER_NAME), shaders->at(BASIC_SHADER_NAME), materials->at(NO_MATERIAL_NAME), this->cubemapShader, SKYBOX_CUBEMAP_DIRECTORY);
 
     // Assign random materials
     std::vector<Material*> matList;
@@ -57,7 +58,8 @@ App::~App() {
 
 	for (auto const& s : *shaders) delete s.second;
 	delete shaders;
-	
+	delete cubemapShader;
+
 	for (auto const& m : *materials) delete m.second;
 	delete materials;
 
@@ -245,8 +247,8 @@ map<string, Texture*>* App::getTextures() {
 void App::loadObjectsFromFile(const char* paths[], int numFiles) {
 	switch (this->currentState) {
 		case AppState::NAVIGATION:
+		case AppState::TRACKBALL:
 		case AppState::PICKING:
-		case AppState::OBJECTS_LIST:
 			for (int i = 0; i < numFiles; i++) {
 				this->filesToLoad.push(paths[i]);
 			}
@@ -330,8 +332,8 @@ void App::loopFileUpload() {
 	string file;
 	switch (this->currentState) {
 		case AppState::NAVIGATION:
+		case AppState::TRACKBALL:
 		case AppState::PICKING:
-		case AppState::OBJECTS_LIST:
 			if (this->filesToLoad.size() > 0) {
 				this->nextState = AppState::LOADING_FILES;
 				this->statesHistory.push(this->currentState);

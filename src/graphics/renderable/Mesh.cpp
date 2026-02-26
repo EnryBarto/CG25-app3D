@@ -146,6 +146,10 @@ bool Mesh::isColliding(vec3 position, const mat4& objectModelMatrix, const mat4&
     return glm::dot(difference, difference) <= (CAMERA_COLLISION_RADIUS * CAMERA_COLLISION_RADIUS);
 }
 
+RenderableObject* Mesh::getGpuObject() {
+    return this->gpuObject;
+}
+
 void Mesh::setMaterial(Material* material) {
     this->material = material;
 }

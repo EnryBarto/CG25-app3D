@@ -49,6 +49,7 @@ class App {
 		map<string, Shader*>* shaders;
 		map<string, Material*>* materials;
 		map<string, Texture*>* textures;
+		Shader* cubemapShader;
 		AppSettings* currentSettings;
 		WindowManager* windowManager;
 		Scene* scene;

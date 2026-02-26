@@ -42,7 +42,7 @@
 // SHADERS
 #define SHADER_FOLDER "resources/shaders/"
 #define BASIC_SHADER_NAME "Basic"
-#define INTERPOLATION_SHADER_NAME "Interpolation"
+#define GOURAUD_SHADER_NAME "Gouraud"
 #define PHONG_SHADER_NAME "Phong"
 #define CUBEMAP_SHADER_NAME "Cubemap"
 #define REFLECTION_SHADER_NAME "Reflection"

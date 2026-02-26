@@ -7,28 +7,41 @@
 #include "../lighting/PointLight.h"
 #include "BoundingBox.h"
 
+class PhysicalObject; // Forward declaration to avoid circular dependency
+
 class Mesh {
+
+	friend class PhysicalObject; // Needs access to recompute bounding box if the mesh model matrix is changed
+
 	public:
 		Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMaterial, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector, Shader* boundingBoxShader);
 		~Mesh();
-		void updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
 		void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, const vector<PointLight*>* lights, bool showBoundingBox);
 		float distanceFromAnchor(vec3 point, vec3 direction, mat4 worldModelMatrix);
+		bool isColliding(vec3 position, const mat4& objectModelMatrix, const mat4& objectInvertedModelMatrix);
+
+		// GETTERS
+		RenderableObject* getGpuObject();
+		pair<vec3, vec3> getBoundingBox();
 		vec3 getTranslationVector();
 		vec3 getRotationAxis();
 		float getRotationAngle();
 		vec3 getScaleVector();
-		void setShader(Shader* shader);
 		Shader* getCurrentShader();
 		Material* getCurrentMaterial();
-		void setMaterial(Material* material);
-		void setFileLoadedMaterial(Material* material);
 		Material* getFileLoadedMaterial();
 		Material* getCustomMaterial();;
 		Texture* getCurrentTexture();
+
+		// SETTERS
+		void setShader(Shader* shader);
+		void setMaterial(Material* material);
+		void setFileLoadedMaterial(Material* material);
 		void setTexture(Texture* texture);
-		pair<vec3, vec3> getBoundingBox();
-		bool isColliding(vec3 position, const mat4& objectModelMatrix, const mat4& objectInvertedModelMatrix);
+
+	protected:
+		// The mesh model matrix cannot be directly edited because we want to update the object model matrix as well to keep them consistent
+		void updateModelMatrix(vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector);
 
 	private:
 		RenderableObject* gpuObject;
