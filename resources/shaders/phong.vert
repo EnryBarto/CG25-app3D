@@ -1,6 +1,7 @@
 #version 330 core
 
-#define MAX_LIGHTS 10 // Keep the value updated with the cpp code
+// NB: THE VALUE CAN MAKE THE SHADER LINKING FAIL: IF SO, LOWER IT
+#define MAX_LIGHTS 5 // Keep the value updated with the cpp code and other shaders
 
 // Structure representing a point light
 struct PointLight {

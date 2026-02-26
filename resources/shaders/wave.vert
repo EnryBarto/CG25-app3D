@@ -1,28 +1,16 @@
 #version 330 core
-layout (location = 0) in vec3 aPos;   // the position variable has attribute position 0
-layout (location = 1) in vec4 aColor; // the color variable has attribute position 1
-layout(location = 2) in vec3 vertexNormal;  //Attributo normale 2
-layout(location = 3) in vec2 coord_st; // Attributo texture
-#define MAX_LIGHTS 10
 
-out vec4 ourColor; // output a color to the fragment shader
-out vec2 vTexCoord;
-uniform mat4 Projection;  //vARIABILE DI TIPO uniform, rimane la stessa per ogni vertice della primitiva e viene passata dall'esterno
-uniform mat4 Model;
-uniform mat4 View;
-uniform vec3 ViewPos;
+// NB: THE VALUE CAN MAKE THE SHADER LINKING FAIL: IF SO, LOWER IT
+#define MAX_LIGHTS 5 // Keep the value updated with the cpp code and other shaders
 
-//Struttura per la gestione di un punto luce
+// Structure representing a point light
 struct PointLight {
 	vec3 position;
 	vec3 color;
 	float power;
 };
-//definizione di una variabile uniform che ha la struttura PointLight
-uniform PointLight lights[MAX_LIGHTS];
-uniform int numLights;
 
-//Struttura per la gestione di un materiale
+// Structure holding material informations
 struct Material {
     vec3 ambient;
     vec3 diffuse;
@@ -30,56 +18,81 @@ struct Material {
     float shininess;
 };
 
-//Variabile uniforme
-uniform Material material;
+// Per-vertex data taken from VBO
+layout (location = 0) in vec3 aPos;     // Vertex position
+layout (location = 1) in vec4 aColor;   // Vertex color
+layout (location = 2) in vec3 vertexNormal; // Normal vectors
+layout (location = 3) in vec2 texCoord; // Texture coordinates
 
-float strenght = 0.1f;
+// UNIFORM VARIABLES
+uniform mat4 Projection;
+uniform mat4 Model;
+uniform mat4 View;
+uniform vec3 ViewPos;
+uniform int numLights;  // Number of lights really used
 uniform float time = 0.5;
+uniform Material material; // Material propreties
+uniform bool uUseBlinnPhong; // True if BlinnPhong model is used, false if Phong
+uniform PointLight lights[MAX_LIGHTS]; // Propreties of each light in the scene
+
+float ambientLightIntensity = 0.1;
+
+// SHADER OUTPUTS TO THE FRAGMENT
+out vec4 ourColor;
+out vec2 vTexCoord;
 
 void main() {
-    //Trasformazione dei vertici dalle coordinate nel sistema di riferimento dell'oggetto (apos), al sistema di riferimento del mondo (premoltiplicazione 
-    // per Model) e successivamente proiettate nel cubo di centro l'origine e lato lungo 2, con x,y,z che variano tra -1 ed 1- (premoltiplicazione 
-    //per la matrice Projection)
-    vec4 v = vec4(aPos, 1.0);
+    // Transform vertices from object/model space (aPos) to world/view/projection space.
+    // The vertex is first transformed by Model (object->world), then by View, and finally
+    // by Projection to produce clip space coordinates in the range [-1, 1].
+    
     // Displace the vertex in Y using a time-dependent function
+    vec4 v = vec4(aPos, 1.0);
     v.y = sin(80.0 * v.x + time) * cos(8.5 * aPos.y + time);
 
-    //Modello di illuminazione di  Phong con shading interpolativo
     gl_Position = Projection * View * Model * v;
 
     // Transform the displaced vertex position into view space (use the modified position `v`)
     vec4 eyePosition = View * Model * v;
 
+    // ----- AMBIENT COMPONENT -----
+    vec3 ambient = ambientLightIntensity * material.ambient;
+
     ourColor = vec4(0, 0, 0, 1);
 
-    //trasformare le normali nel vertice in esame nel sistema di coordinate di vista
+    // Transform the vertex normal into view space
     vec3 N = normalize(transpose(inverse(mat3(View * Model))) * vertexNormal);
 
     for (int i = 0; i < numLights; i++) {
-        //Trasformiamo la posizione della luce nelle coordinate di vista
+
+        // Transform the light position into view space
         vec4 eyeLightPos = View * vec4(lights[i].position, 1.0);
 
-        //Calcoliamo la direzione della luce L, la direzione riflessione R e di vista
+        // Compute the light direction L,  and view direction V
         vec3 V = normalize(ViewPos - eyePosition.xyz);
         vec3 L = normalize((eyeLightPos - eyePosition).xyz);
-        vec3 R = reflect(-L, N);  //Costruisce la direzione riflessa di L rispesso alla normale
 
-        //ambientale
-        vec3 ambient = strenght * lights[i].power * material.ambient;
-
-        //diffuse
-        float coseno_angolo_theta = max(dot(L, N), 0);
-
-        vec3 diffuse = lights[i].power * lights[i].color * coseno_angolo_theta * material.diffuse;
-
-        //speculare
-        float coseno_angolo_alfa = pow(max(dot(V, R), 0), material.shininess);
-
-        vec3 specular = lights[i].power * lights[i].color * coseno_angolo_alfa * material.specular;
+        // ----- DIFFUSE COMPONENT -----
+        float cos_theta = max(dot(L, N), 0);
+        vec3 diffuse = lights[i].color * cos_theta * material.diffuse;
+        
+        // ----- SPECULAR COMPONENT -----
+        float cos_alfa;
+        // Changes the calculation of specular reflection of light based on the chosen lighting model 
+        if (uUseBlinnPhong) {
+            // Compute Halfway Vector (Vector halfway between the direction of view and the direction of light)
+            vec3 H = normalize(L + V); 
+            cos_alfa = pow(max(dot(H, N), 0), material.shininess);
+        } else {
+            // Compute reflection direction R (light direction L compared to normal N)
+            vec3 R = normalize(reflect(-L, N));
+            cos_alfa = pow(max(dot(V, R), 0), material.shininess);
+        }
+        vec3 specular = lights[i].color * cos_alfa * material.specular;
 
         ourColor += vec4(ambient + diffuse + specular, 1.0);
     }
 
-    vTexCoord = coord_st;
+    vTexCoord = texCoord;
 }  
 

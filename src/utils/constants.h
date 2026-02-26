@@ -15,7 +15,8 @@
 #define TEXTURES_PATH "resources/textures/"
 
 // LIGHT SETTINGS
-#define MAX_LIGHTS 10 // It's important to keep the costant updated also in the shader files
+// NB: THE VALUE CAN MAKE THE SHADER LINKING FAIL: IF SO, LOWER IT
+#define MAX_LIGHTS 5 // It's important to keep the costant updated also in the shader files
 #define MAX_LIGHT_POWER 3.5f
 #define MIN_LIGHT_POWER 0
 
@@ -46,6 +47,6 @@
 #define PHONG_SHADER_NAME "Phong"
 #define CUBEMAP_SHADER_NAME "Cubemap"
 #define REFLECTION_SHADER_NAME "Reflection"
-#define WAVE_SHADER_NAME "Wave"
+#define WAVE_SHADER_NAME "Gouraud (Wave effect)"
 
 #endif
