@@ -73,37 +73,37 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="resources\shaders\cubemap_fragment_shader.glsl">
+    <None Include="resources\shaders\cubemap.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="resources\shaders\cubemap_vertex_shader.glsl">
+    <None Include="resources\shaders\cubemap.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="resources\shaders\interpolation_fragment_shader.glsl">
+    <None Include="resources\shaders\gouraud.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="resources\shaders\interpolation_vertex_shader.glsl">
+    <None Include="resources\shaders\gouraud.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="resources\shaders\phong_fragment_shader.glsl">
+    <None Include="resources\shaders\phong.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="resources\shaders\phong_vertex_shader.glsl">
+    <None Include="resources\shaders\phong.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="resources\shaders\reflection_fragment_shader.glsl">
+    <None Include="resources\shaders\reflection.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="resources\shaders\reflection_vertex_shader.glsl">
+    <None Include="resources\shaders\reflection.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="resources\shaders\wave_vertex_shader.glsl">
+    <None Include="resources\shaders\wave.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="resources\shaders\basic_fragment_shader.glsl">
+    <None Include="resources\shaders\flat.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="resources\shaders\basic_vertex_shader.glsl">
+    <None Include="resources\shaders\flat.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

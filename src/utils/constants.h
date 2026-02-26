@@ -41,7 +41,7 @@
 
 // SHADERS
 #define SHADER_FOLDER "resources/shaders/"
-#define BASIC_SHADER_NAME "Basic"
+#define FLAT_SHADER_NAME "Flat"
 #define GOURAUD_SHADER_NAME "Gouraud"
 #define PHONG_SHADER_NAME "Phong"
 #define CUBEMAP_SHADER_NAME "Cubemap"

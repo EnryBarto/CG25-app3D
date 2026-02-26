@@ -26,18 +26,18 @@ GLuint ShaderMaker::createProgram(char* vertexfilename, char *fragmentfilename) 
 	int success;
 	char infoLog[512];
 
-	// Creiamo gli eseguibili degli shader
-	//Leggiamo il codice del Vertex Shader
+    // Create shader objects
+    // Read vertex shader source
 	GLchar* VertexShader = readShaderSource(vertexfilename);
-	//Visualizzo sulla console il CODICE VERTEX SHADER
-	//cout << VertexShader;
+    // Print the VERTEX SHADER code to the console
+    //cout << VertexShader;
 
-	//Generiamo un identificativo per il vertex shader
-	GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
-	//Associamo all'identificativo il codice del vertex shader
-	glShaderSource(vertexShaderId, 1, (const char**)&VertexShader, NULL);
-	//Compiliamo il Vertex SHader
-	glCompileShader(vertexShaderId); 
+    // Generate an ID for the vertex shader
+    GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
+    // Associate the shader source with the shader object
+    glShaderSource(vertexShaderId, 1, (const char**)&VertexShader, NULL);
+    // Compile the vertex shader
+    glCompileShader(vertexShaderId); 
 	
 	glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &success);
 	if (!success) {
@@ -45,16 +45,16 @@ GLuint ShaderMaker::createProgram(char* vertexfilename, char *fragmentfilename) 
 		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
 
-	//Leggiamo il codice del Fragment Shader
-	const GLchar* FragmentShader = readShaderSource(fragmentfilename);
-	//Visualizzo sulla console il CODICE FRAGMENT SHADER
-	//cout << FragmentShader;
+    // Read fragment shader source
+    const GLchar* FragmentShader = readShaderSource(fragmentfilename);
+    // Print the FRAGMENT SHADER code to the console
+    //cout << FragmentShader;
 
-	//Generiamo un identificativo per il FRAGMENT shader
-	GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShaderId, 1, (const char**)&FragmentShader, NULL);
-	//Compiliamo il FRAGMENT SHader
-	glCompileShader(fragmentShaderId);
+    // Generate an ID for the fragment shader
+    GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShaderId, 1, (const char**)&FragmentShader, NULL);
+    // Compile the fragment shader
+    glCompileShader(fragmentShaderId);
 	 
 	glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &success);
 	if (!success) {
@@ -62,12 +62,23 @@ GLuint ShaderMaker::createProgram(char* vertexfilename, char *fragmentfilename) 
 		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
  
-	//Creiamo un identificativo di un eseguibile e gli colleghiamo i due shader compilati
+    // Create a program object and attach the compiled shaders
 	GLuint programId = glCreateProgram();
 
 	glAttachShader(programId, vertexShaderId);
 	glAttachShader(programId, fragmentShaderId);
 	glLinkProgram(programId);
 	
+	// Validate linking
+	glGetProgramiv(programId, GL_LINK_STATUS, &success);
+	if (!success) {
+		glGetProgramInfoLog(programId, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+	}
+
+	// Clean up shader objects after linking it to the program
+	glDeleteShader(vertexShaderId);
+	glDeleteShader(fragmentShaderId);
+
 	return programId;
 }

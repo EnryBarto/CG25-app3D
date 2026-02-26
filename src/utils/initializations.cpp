@@ -90,11 +90,11 @@ void init_imgui(GLFWwindow* window) {
 
 std::map<std::string, Shader*>* init_shaders() {
     std::map<std::string, Shader*>* shaders = new std::map<std::string, Shader*>();
-    shaders->insert({ BASIC_SHADER_NAME, new Shader(BASIC_SHADER_NAME, "basic_vertex_shader.glsl", "basic_fragment_shader.glsl") });
-    shaders->insert({ GOURAUD_SHADER_NAME, new Shader(GOURAUD_SHADER_NAME, "interpolation_vertex_shader.glsl", "interpolation_fragment_shader.glsl") });
-    shaders->insert({ PHONG_SHADER_NAME, new Shader(PHONG_SHADER_NAME, "phong_vertex_shader.glsl", "phong_fragment_shader.glsl") });
-    shaders->insert({ REFLECTION_SHADER_NAME, new Shader(REFLECTION_SHADER_NAME, "reflection_vertex_shader.glsl", "reflection_fragment_shader.glsl") });
-    shaders->insert({ WAVE_SHADER_NAME, new Shader(WAVE_SHADER_NAME, "wave_vertex_shader.glsl", "interpolation_fragment_shader.glsl") });
+    shaders->insert({ FLAT_SHADER_NAME, new Shader(FLAT_SHADER_NAME, "flat.vert", "flat.frag") });
+    shaders->insert({ GOURAUD_SHADER_NAME, new Shader(GOURAUD_SHADER_NAME, "gouraud.vert", "gouraud.frag") });
+    shaders->insert({ PHONG_SHADER_NAME, new Shader(PHONG_SHADER_NAME, "phong.vert", "phong.frag") });
+    shaders->insert({ REFLECTION_SHADER_NAME, new Shader(REFLECTION_SHADER_NAME, "reflection.vert", "reflection.frag") });
+    shaders->insert({ WAVE_SHADER_NAME, new Shader(WAVE_SHADER_NAME, "wave.vert", "gouraud.frag") });
     return shaders;
 }
 

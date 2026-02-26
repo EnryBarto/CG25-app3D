@@ -1,7 +1,7 @@
 #version 330 core
-layout (location = 0) in vec3 aPos;   // Attributo Posizione
-layout (location = 2) in vec3 aNormal; // Attributo Normale
- 
+layout (location = 0) in vec3 aPos;
+layout (location = 2) in vec3 aNormal;
+
 uniform mat4 Model;
 uniform mat4 Projection;
 uniform mat4 View;

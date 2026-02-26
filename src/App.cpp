@@ -16,7 +16,7 @@ App::App() {
 	}
 
 	this->shaders = init_shaders();
-	this->cubemapShader = new Shader(CUBEMAP_SHADER_NAME, "cubemap_vertex_shader.glsl", "cubemap_fragment_shader.glsl");
+	this->cubemapShader = new Shader(CUBEMAP_SHADER_NAME, "cubemap.vert", "cubemap.frag");
 	if (this->shaders == NULL) {
 		throw std::runtime_error("Shaders initialization failed!");
 	} else {
@@ -33,7 +33,7 @@ App::App() {
 	this->materials = init_materials();
 
 	this->currentSettings = new AppSettings();
-	this->scene = new Scene(windowManager, currentSettings, shaders->at(GOURAUD_SHADER_NAME), shaders->at(BASIC_SHADER_NAME), materials->at(NO_MATERIAL_NAME), this->cubemapShader, SKYBOX_CUBEMAP_DIRECTORY);
+	this->scene = new Scene(windowManager, currentSettings, shaders->at(GOURAUD_SHADER_NAME), shaders->at(FLAT_SHADER_NAME), materials->at(NO_MATERIAL_NAME), this->cubemapShader, SKYBOX_CUBEMAP_DIRECTORY);
 
     // Assign random materials
     std::vector<Material*> matList;
