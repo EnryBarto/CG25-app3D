@@ -19,50 +19,56 @@
     <Filter Include="Source Files\ImGui">
       <UniqueIdentifier>{47161b6a-3f03-45c2-9f87-78af49d47027}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\App">
-      <UniqueIdentifier>{d5b2bc5f-69ff-466f-b85a-3f055a14e1d0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\App">
-      <UniqueIdentifier>{cec36df1-d8e0-496d-a788-6ed81a9102da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics">
-      <UniqueIdentifier>{153c86d8-1339-42b0-9772-7ef15c87cbaf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Graphics">
-      <UniqueIdentifier>{886d179b-7bfc-43d2-ba25-34777af35d98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics\Shader">
-      <UniqueIdentifier>{24c189cf-06d4-4c94-b8a8-378aefcd50d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Graphics\Shader">
-      <UniqueIdentifier>{ae5fe336-ccf1-4007-9dcc-12ccb519e043}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{586feabb-8f0d-40df-ab03-46d6960d4f95}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Graphics\Renderable">
-      <UniqueIdentifier>{16148c9c-c264-46b8-8edd-4248c6142df0}</UniqueIdentifier>
+    <Filter Include="Header Files\Entities">
+      <UniqueIdentifier>{d6f64aad-5ff4-4d5c-bd3d-49f6f6bdde07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graphics\Renderable">
-      <UniqueIdentifier>{6e38af47-a20d-4bc8-ae95-08d53babb409}</UniqueIdentifier>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{8137d16d-74c3-43ca-b3e8-09a09f126a0b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Graphics\Texture">
-      <UniqueIdentifier>{7e82041f-abeb-4d03-906f-353b60d23c32}</UniqueIdentifier>
+    <Filter Include="Header Files\Geometry">
+      <UniqueIdentifier>{e98ece6c-1fdb-4416-b6b1-b0ac5085aef4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graphics\Texture">
-      <UniqueIdentifier>{2f15ed48-7f79-468a-8c65-44eb72424ce3}</UniqueIdentifier>
+    <Filter Include="Source Files\Geometry">
+      <UniqueIdentifier>{d8093d9c-0062-41c5-b736-e32020f4c257}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Graphics\Lighting">
-      <UniqueIdentifier>{3541f57a-059d-4add-849f-416525790d4b}</UniqueIdentifier>
+    <Filter Include="Header Files\Gpu Objects">
+      <UniqueIdentifier>{eadebdc9-e78b-4db1-a7bc-321bd5c3a89f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graphics\Lighting">
-      <UniqueIdentifier>{b6bd974f-ce5a-4905-ba1f-cb70839538cd}</UniqueIdentifier>
+    <Filter Include="Source Files\Gpu Objects">
+      <UniqueIdentifier>{9bb4d95e-f3a8-45c3-83af-cd89591b5916}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graphics\Renderable\Gpu Objects">
-      <UniqueIdentifier>{d0c07bcf-4706-4983-b351-af93d15f745f}</UniqueIdentifier>
+    <Filter Include="Header Files\Lighting">
+      <UniqueIdentifier>{e1288f46-4de0-46d6-a252-6b4b77a93261}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Graphics\Renderable\Gpu Objects">
-      <UniqueIdentifier>{ece88845-0698-4d41-acb6-b6dbd19c0624}</UniqueIdentifier>
+    <Filter Include="Source Files\Lighting">
+      <UniqueIdentifier>{056b2440-09f3-4098-9936-15994bc06600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{c878bb33-c7c9-4e1e-b3cd-9db2afaa2f4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{e42ea8a9-5c05-4ecc-8402-e75c98d09b11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shader">
+      <UniqueIdentifier>{2087c500-c33d-4f3e-80f4-58f7fc418ba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shader">
+      <UniqueIdentifier>{15ea9827-2977-4440-b788-04999caf8421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Texture">
+      <UniqueIdentifier>{3b923549-55ef-419d-9daa-3e09e5d0b310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Texture">
+      <UniqueIdentifier>{55e29cd3-448f-474c-ad63-55c0c385abe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{c623e9df-3856-4cc1-9fda-1ec2a8eef2ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{9b7cc471-b31c-429a-aab9-23a0408f21b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -123,89 +129,89 @@
     <ClCompile Include="dependencies\ImGui\imgui_widgets.cpp">
       <Filter>Source Files\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\glad.c">
-      <Filter>Source Files\App</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\initializations.cpp">
-      <Filter>Source Files\App</Filter>
+    <ClCompile Include="src\entities\BoundingBox.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\callbacks.cpp">
-      <Filter>Source Files\App</Filter>
+    <ClCompile Include="src\entities\Mesh.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\gui.cpp">
-      <Filter>Source Files\App</Filter>
+    <ClCompile Include="src\entities\PhysicalObject.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\shader\Shader.cpp">
-      <Filter>Source Files\Graphics\Shader</Filter>
+    <ClCompile Include="src\entities\PhysicalObjectFactory.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\shader\ShaderMaker.cpp">
-      <Filter>Source Files\Graphics\Shader</Filter>
+    <ClCompile Include="src\entities\Skybox.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\Mesh.cpp">
-      <Filter>Source Files\Graphics\Renderable</Filter>
+    <ClCompile Include="src\geometry\MeshGeometryFactory.cpp">
+      <Filter>Source Files\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Camera.cpp">
-      <Filter>Source Files\Graphics</Filter>
+    <ClCompile Include="src\gpu_objects\GpuBuffers.cpp">
+      <Filter>Source Files\Gpu Objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Projection.cpp">
-      <Filter>Source Files\Graphics</Filter>
+    <ClCompile Include="src\gpu_objects\RenderableBackground.cpp">
+      <Filter>Source Files\Gpu Objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Scene.cpp">
-      <Filter>Source Files\Graphics</Filter>
+    <ClCompile Include="src\gpu_objects\RenderableObject.cpp">
+      <Filter>Source Files\Gpu Objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\Skybox.cpp">
-      <Filter>Source Files\Graphics\Renderable</Filter>
+    <ClCompile Include="src\gpu_objects\RenderablePointLight.cpp">
+      <Filter>Source Files\Gpu Objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\texture\Texture.cpp">
-      <Filter>Source Files\Graphics\Texture</Filter>
+    <ClCompile Include="src\lighting\PointLight.cpp">
+      <Filter>Source Files\Lighting</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\texture\TextureMaker.cpp">
-      <Filter>Source Files\Graphics\Texture</Filter>
+    <ClCompile Include="src\lighting\Material.cpp">
+      <Filter>Source Files\Lighting</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\MeshGeometryFactory.cpp">
-      <Filter>Source Files\Graphics\Renderable</Filter>
+    <ClCompile Include="src\utils\callbacks.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\PhysicalObject.cpp">
-      <Filter>Source Files\Graphics\Renderable</Filter>
+    <ClCompile Include="src\utils\glad.c">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\PhysicalObjectFactory.cpp">
-      <Filter>Source Files\Graphics\Renderable</Filter>
+    <ClCompile Include="src\utils\gui.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\WindowManager.cpp">
-      <Filter>Source Files\Graphics</Filter>
+    <ClCompile Include="src\utils\initializations.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\AppSettings.cpp">
-      <Filter>Source Files\App</Filter>
+    <ClCompile Include="src\utils\WindowManager.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\App.cpp">
-      <Filter>Source Files\App</Filter>
+    <ClCompile Include="src\utils\AppSettings.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\lighting\Material.cpp">
-      <Filter>Source Files\Graphics\Lighting</Filter>
+    <ClCompile Include="src\texture\TextureMaker.cpp">
+      <Filter>Source Files\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\lighting\PointLight.cpp">
-      <Filter>Source Files\Graphics\Lighting</Filter>
+    <ClCompile Include="src\texture\Texture.cpp">
+      <Filter>Source Files\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\BoundingBox.cpp">
-      <Filter>Source Files\Graphics\Renderable</Filter>
+    <ClCompile Include="src\shader\ShaderMaker.cpp">
+      <Filter>Source Files\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\gpu_objects\GpuBuffers.cpp">
-      <Filter>Source Files\Graphics\Renderable\Gpu Objects</Filter>
+    <ClCompile Include="src\shader\Shader.cpp">
+      <Filter>Source Files\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\gpu_objects\RenderablePointLight.cpp">
-      <Filter>Source Files\Graphics\Renderable\Gpu Objects</Filter>
+    <ClCompile Include="src\scene\Camera.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\gpu_objects\RenderableBackground.cpp">
-      <Filter>Source Files\Graphics\Renderable\Gpu Objects</Filter>
+    <ClCompile Include="src\scene\Projection.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\gpu_objects\RenderableObject.cpp">
-      <Filter>Source Files\Graphics\Renderable\Gpu Objects</Filter>
+    <ClCompile Include="src\scene\Scene.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderable\MeshGeometry.cpp">
-      <Filter>Source Files\Graphics\Renderable</Filter>
+    <ClCompile Include="src\geometry\MeshGeometry.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,92 +242,89 @@
     <ClInclude Include="dependencies\ImGui\imgui_impl_opengl3.h">
       <Filter>Header Files\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="src\app\initializations.h">
-      <Filter>Header Files\App</Filter>
+    <ClInclude Include="src\entities\Mesh.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\app\callbacks.h">
-      <Filter>Header Files\App</Filter>
+    <ClInclude Include="src\entities\PhysicalObject.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\app\gui.h">
-      <Filter>Header Files\App</Filter>
+    <ClInclude Include="src\entities\PhysicalObjectFactory.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\shader\ShaderMaker.h">
-      <Filter>Header Files\Graphics\Shader</Filter>
+    <ClInclude Include="src\entities\Skybox.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\shader\Shader.h">
-      <Filter>Header Files\Graphics\Shader</Filter>
+    <ClInclude Include="src\entities\BoundingBox.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\settings.h">
+    <ClInclude Include="src\geometry\MeshGeometry.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\geometry\MeshGeometryFactory.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpu_objects\RenderableBackground.h">
+      <Filter>Header Files\Gpu Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpu_objects\RenderableObject.h">
+      <Filter>Header Files\Gpu Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpu_objects\RenderablePointLight.h">
+      <Filter>Header Files\Gpu Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gpu_objects\GpuBuffers.h">
+      <Filter>Header Files\Gpu Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lighting\PointLight.h">
+      <Filter>Header Files\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lighting\Material.h">
+      <Filter>Header Files\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\WindowManager.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\initializations.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\gui.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\constants.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\callbacks.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\AppState.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\AppSettings.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texture\Texture.h">
+      <Filter>Header Files\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texture\TextureMaker.h">
+      <Filter>Header Files\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\ShaderMaker.h">
+      <Filter>Header Files\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\Shader.h">
+      <Filter>Header Files\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\Camera.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\Projection.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\Scene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\Mesh.h">
-      <Filter>Header Files\Graphics\Renderable</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\MeshGeometry.h">
-      <Filter>Header Files\Graphics\Renderable</Filter>
-    </ClInclude>
-    <ClInclude Include="src\libs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\Camera.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\Projection.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\Scene.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\Skybox.h">
-      <Filter>Header Files\Graphics\Renderable</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\texture\Texture.h">
-      <Filter>Header Files\Graphics\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\texture\TextureMaker.h">
-      <Filter>Header Files\Graphics\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\MeshGeometryFactory.h">
-      <Filter>Header Files\Graphics\Renderable</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\PhysicalObject.h">
-      <Filter>Header Files\Graphics\Renderable</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\PhysicalObjectFactory.h">
-      <Filter>Header Files\Graphics\Renderable</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\WindowManager.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\app\AppSettings.h">
-      <Filter>Header Files\App</Filter>
-    </ClInclude>
-    <ClInclude Include="src\app\App.h">
-      <Filter>Header Files\App</Filter>
-    </ClInclude>
-    <ClInclude Include="src\app\AppState.h">
-      <Filter>Header Files\App</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\lighting\Material.h">
-      <Filter>Header Files\Graphics\Lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\lighting\PointLight.h">
-      <Filter>Header Files\Graphics\Lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\BoundingBox.h">
-      <Filter>Header Files\Graphics\Renderable</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\gpu_objects\GpuBuffers.h">
-      <Filter>Header Files\Graphics\Renderable\Gpu Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\gpu_objects\RenderablePointLight.h">
-      <Filter>Header Files\Graphics\Renderable\Gpu Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\gpu_objects\RenderableBackground.h">
-      <Filter>Header Files\Graphics\Renderable\Gpu Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderable\gpu_objects\RenderableObject.h">
-      <Filter>Header Files\Graphics\Renderable\Gpu Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

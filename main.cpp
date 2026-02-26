@@ -1,9 +1,13 @@
 #include <chrono>
 #include <thread>
-#include "src/app/App.h"
-#include "src/app/AppState.h"
-#include "src/settings.h"
-#include "GLFW/glfw3.h"
+
+#define GLFW_INCLUDE_NONE
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+#include "src/App.h"
+#include "src/utils/AppState.h"
+#include "src/utils/AppSettings.h"
 
 using namespace std;
 using namespace this_thread;
