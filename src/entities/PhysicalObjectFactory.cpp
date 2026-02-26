@@ -17,16 +17,17 @@
 using namespace std;
 using namespace glm;
 
-PhysicalObjectFactory::PhysicalObjectFactory(Shader* defaultShader, Material* defaultMaterial, Shader* boundingBoxShader) {
+PhysicalObjectFactory::PhysicalObjectFactory(Shader* defaultShader, Material* defaultMaterial, Shader* boundingBoxShader, Texture *skybox) {
 	this->defaultShader = defaultShader;
 	this->defaultMaterial = defaultMaterial;
 	this->boundingBoxShader = boundingBoxShader;
+	this->skybox = skybox;
 }
 
 PhysicalObject* PhysicalObjectFactory::createSimpleCube(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple Cube", spawnPoint, vec3(0), 0, vec3(2), this->boundingBoxShader);
 	MeshGeometry* cubeGeometry = MeshGeometryFactory::createCube(vec4(0.196078f, 0.568627f, 0.658824f, 1));
-    Mesh* cube = new Mesh(cubeGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 1, 0), vec3(0), 0, vec3(1), this->boundingBoxShader);
+    Mesh* cube = new Mesh(cubeGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 1, 0), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
 	toReturn->addMesh(cube, "Cube");
 	return toReturn;
 }
@@ -34,7 +35,7 @@ PhysicalObject* PhysicalObjectFactory::createSimpleCube(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createSimpleSphere(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple sphere", spawnPoint, vec3(0), 0, vec3(2), this->boundingBoxShader);
 	MeshGeometry* sphereGeometry = MeshGeometryFactory::createSphere(vec4(0.5f, 0.8f, 1, 1));
-    Mesh* sphere = new Mesh(sphereGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 1, 0), vec3(0), 0, vec3(1), this->boundingBoxShader);
+    Mesh* sphere = new Mesh(sphereGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 1, 0), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
 	toReturn->addMesh(sphere, "Sphere");
 	return toReturn;
 }
@@ -42,7 +43,7 @@ PhysicalObject* PhysicalObjectFactory::createSimpleSphere(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createSimpleTorus(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple torus", spawnPoint, vec3(0), 0, vec3(2), this->boundingBoxShader);
 	MeshGeometry* torusGeometry = MeshGeometryFactory::createTorus(vec4(0.9f, 0.2f, 0.7f, 1));
-    Mesh* torus = new Mesh(torusGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 0.5f, 0), vec3(0), 0, vec3(1), this->boundingBoxShader);
+    Mesh* torus = new Mesh(torusGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 0.5f, 0), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
 	toReturn->addMesh(torus, "Torus");
 	return toReturn;
 }
@@ -50,7 +51,7 @@ PhysicalObject* PhysicalObjectFactory::createSimpleTorus(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createSimpleCone(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple cone", spawnPoint, vec3(1, 0, 0), 180, vec3(2), this->boundingBoxShader);
 	MeshGeometry* coneGeometry = MeshGeometryFactory::createCone(vec4(0.9f, 0.7f, 0.15f, 1));
-    Mesh* cone = new Mesh(coneGeometry, this->defaultShader, this->defaultMaterial, vec3(0, -1, 0), vec3(0), 0, vec3(1), this->boundingBoxShader);
+    Mesh* cone = new Mesh(coneGeometry, this->defaultShader, this->defaultMaterial, vec3(0, -1, 0), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
 	toReturn->addMesh(cone, "Cone");
 	return toReturn;
 }
@@ -58,7 +59,7 @@ PhysicalObject* PhysicalObjectFactory::createSimpleCone(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createSimpleCylinder(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple cylinder", spawnPoint, vec3(0), 0, vec3(2), this->boundingBoxShader);
 	MeshGeometry* cylinderGeometry = MeshGeometryFactory::createCylinder(vec4(0.2f, 0.8f, 0.1f, 1));
-    Mesh* cylinder = new Mesh(cylinderGeometry, this->defaultShader, this->defaultMaterial, vec3(0), vec3(0), 0, vec3(1), this->boundingBoxShader);
+    Mesh* cylinder = new Mesh(cylinderGeometry, this->defaultShader, this->defaultMaterial, vec3(0), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
 	toReturn->addMesh(cylinder, "Cylinder");
 	return toReturn;
 }
@@ -66,7 +67,7 @@ PhysicalObject* PhysicalObjectFactory::createSimpleCylinder(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createBase() {
 	PhysicalObject* toReturn = new PhysicalObject("Floor", vec3(0), vec3(0), 0, vec3(2), this->boundingBoxShader);
 	MeshGeometry* planeGeometry = MeshGeometryFactory::createTriangulatedPlane(512, vec4(0.196078f, 0.568627f, 0.658824f, 1));
-    Mesh* cube = new Mesh(planeGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 0, 0), vec3(0), 0, vec3(1000, 1, 1000), this->boundingBoxShader);
+    Mesh* cube = new Mesh(planeGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 0, 0), vec3(0), 0, vec3(1000, 1, 1000), this->boundingBoxShader, this->skybox);
 	toReturn->addMesh(cube, "Plane");
 	return toReturn;
 }
@@ -74,10 +75,10 @@ PhysicalObject* PhysicalObjectFactory::createBase() {
 PhysicalObject* PhysicalObjectFactory::createHouse(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("House", spawnPoint, vec3(0), 0, vec3(2), this->boundingBoxShader);
 	MeshGeometry* geometry = MeshGeometryFactory::createCube(vec4(0.196078f, 0.568627f, 0.658824f, 1));
-    Mesh* mesh = new Mesh(geometry, this->defaultShader, this->defaultMaterial, vec3(0, 1, 0), vec3(0), 0, vec3(1), this->boundingBoxShader);
+    Mesh* mesh = new Mesh(geometry, this->defaultShader, this->defaultMaterial, vec3(0, 1, 0), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
 	toReturn->addMesh(mesh, "Cube");
 	geometry = MeshGeometryFactory::createPyramid(vec4(0.196078f, 0.568627f, 0.658824f, 1));
-    mesh = new Mesh(geometry, this->defaultShader, this->defaultMaterial, vec3(0, 2, 0), vec3(0), 0, vec3(1), this->boundingBoxShader);
+    mesh = new Mesh(geometry, this->defaultShader, this->defaultMaterial, vec3(0, 2, 0), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
 	toReturn->addMesh(mesh, "Pyramid");
 	return toReturn;
 }
@@ -121,7 +122,7 @@ PhysicalObject* PhysicalObjectFactory::createFromFile(const char* path) {
 
 	for (auto [ geometry, name ] : models) {
 		Material* material = materials.at(geometry);
-        Mesh* mesh = new Mesh(geometry, this->defaultShader, material, vec3(0), vec3(0), 0, vec3(1), this->boundingBoxShader);
+        Mesh* mesh = new Mesh(geometry, this->defaultShader, material, vec3(0), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
 		if (material != this->defaultMaterial) mesh->setFileLoadedMaterial(material);
 		toReturn->addMesh(mesh, name);
 	}

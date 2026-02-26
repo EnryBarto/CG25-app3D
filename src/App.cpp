@@ -34,6 +34,12 @@ App::App() {
 
 	this->currentSettings = new AppSettings();
 	this->scene = new Scene(windowManager, currentSettings, shaders->at(GOURAUD_SHADER_NAME), shaders->at(FLAT_SHADER_NAME), materials->at(NO_MATERIAL_NAME), this->cubemapShader, SKYBOX_CUBEMAP_DIRECTORY);
+	if (this->scene == NULL) {
+		throw std::runtime_error("Scene initialization failed!");
+	}
+	else {
+		cout << "Scene initialized" << endl;
+	}
 
     // Assign random materials
     std::vector<Material*> matList;

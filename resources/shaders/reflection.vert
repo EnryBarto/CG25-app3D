@@ -10,6 +10,9 @@ out vec3 Normal;
 out vec3 Position;
  
 void main() {
-	Normal = mat3(transpose(inverse(Model))) * aNormal; // Trasforma le normali in coordinate del mondo
-	Position = aPos;
+	gl_Position = Projection * View * Model * vec4(aPos,1.0);
+
+	// Transform to WCS
+	Normal = mat3(transpose(inverse(Model))) * aNormal;
+	Position = vec3(Model * vec4(aPos, 1.0));
 } 

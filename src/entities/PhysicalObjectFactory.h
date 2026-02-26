@@ -13,7 +13,7 @@
 class PhysicalObjectFactory {
 		
 	public:
-		PhysicalObjectFactory(Shader* defaultShader, Material* defaultMaterial, Shader* boundingBoxShader);
+		PhysicalObjectFactory(Shader* defaultShader, Material* defaultMaterial, Shader* boundingBoxShader, Texture* skybox);
 		PhysicalObject* createSimpleCube(vec3 spawnPoint);
 		PhysicalObject* createSimpleSphere(vec3 spawnPoint);
 		PhysicalObject* createSimpleTorus(vec3 spawnPoint);
@@ -28,4 +28,5 @@ class PhysicalObjectFactory {
 		Shader* defaultShader;
 		Material* defaultMaterial;
 		Shader* boundingBoxShader;
+		Texture* skybox;
 };

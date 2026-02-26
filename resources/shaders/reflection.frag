@@ -9,7 +9,7 @@ uniform samplerCube cubemap;
 out vec4 FragColor;
 
 void main() {
-     vec3 E = normalize(Position-ViewPos);
-     vec3 R = reflect(E, normalize(Normal));
-     FragColor = texture(cubemap, R);
+     vec3 V = normalize(Position-ViewPos);      // View vector
+     vec3 R = reflect(V, normalize(Normal));    // Reflection vector
+     FragColor = texture(cubemap, R);           // Sample the cubemap with the reflection vector
 }

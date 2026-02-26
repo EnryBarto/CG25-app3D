@@ -28,6 +28,7 @@ void RenderableObject::getUniforms() {
 	this->uniform_UsingTexture = glGetUniformLocation(shader->getProgramId(), "uUseTexture");
 	this->uniform_Time = glGetUniformLocation(shader->getProgramId(), "time");
 	this->uniform_UsingBlinnPhong = glGetUniformLocation(shader->getProgramId(), "uUseBlinnPhong");
+	this->uniform_Cubemap = glGetUniformLocation(shader->getProgramId(), "cubemap");
 }
 
 void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, Material* material, const vector<PointLight*>* lights) {
@@ -53,6 +54,16 @@ void RenderableObject::render(const mat4& modelMatrix, const mat4& viewMatrix, c
 	} else {
 		glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture
 		if (this->uniform_UsingTexture != -1) glUniform1i(this->uniform_UsingTexture, 0); // Don't use texture
+	}
+
+	if (this->uniform_Cubemap != -1) {
+		glActiveTexture(GL_TEXTURE1);
+		if (this->cubemapTexture != nullptr) {
+			glBindTexture(GL_TEXTURE_CUBE_MAP, this->cubemapTexture->getProgramId());
+			glUniform1i(this->uniform_Cubemap, 1); // Read cubemap from texture unit 1
+		} else {
+			glBindTexture(GL_TEXTURE_CUBE_MAP, 0); // Unbind cubemap
+		}
 	}
 
 	// Check for uniform existence in the active shader; if present, update them
@@ -101,4 +112,8 @@ bool RenderableObject::supportsTexture() {
 
 bool RenderableObject::supportsMaterial() {
 	return this->uniform_MaterialAmbient != -1 || this->uniform_MaterialDiffuse != -1 || this->uniform_MaterialShininess != -1 || this->uniform_MaterialSpecular != -1;
+}
+
+void RenderableObject::setCubemapTexture(Texture* cubemap) {
+	this->cubemapTexture = cubemap;
 }

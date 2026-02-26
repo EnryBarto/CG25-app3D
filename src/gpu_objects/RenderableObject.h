@@ -22,11 +22,14 @@ class RenderableObject: public GpuBuffers {
         bool isUsingBlinnPhong();
 		bool supportsTexture();
 		bool supportsMaterial();
+		void setCubemapTexture(Texture *cubemap);
 
     protected:
         void getUniforms() override;
 
     private:
+		Texture* cubemapTexture = nullptr;
+
         // Cached handles to shader uniform variables to avoid repeated lookups, -1 if not used by the shader
         GLint uniform_Projection = -1;
         GLint uniform_Model = -1;
@@ -44,6 +47,7 @@ class RenderableObject: public GpuBuffers {
         GLint uniform_UsingTexture = -1;
         GLint uniform_Time = -1;
         GLint uniform_UsingBlinnPhong = -1;
+		GLint uniform_Cubemap = -1;
 
         bool usingBlinnPhong = false;
 };  

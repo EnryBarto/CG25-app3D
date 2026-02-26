@@ -19,7 +19,7 @@ class Mesh {
 	friend class PhysicalObject; // Needs access to recompute bounding box if the mesh model matrix is changed
 
 	public:
-		Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMaterial, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector, Shader* boundingBoxShader);
+		Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMaterial, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector, Shader* boundingBoxShader, Texture* skybox);
 		~Mesh();
 		void render(const mat4& modelMatrix, const mat4& viewMatrix, const mat4& projectionMatrix, const vec3& camPos, bool showAnchor, const vector<PointLight*>* lights, bool showBoundingBox);
 		float distanceFromAnchor(vec3 point, vec3 direction, mat4 worldModelMatrix);

@@ -2,11 +2,12 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-Mesh::Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMaterial, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector, Shader* boundingBoxShader) {
+Mesh::Mesh(MeshGeometry* geometry, Shader* basicShader, Material* defaultMaterial, vec3 translation, vec3 rotationAxis, float angle, vec3 scaleVector, Shader* boundingBoxShader, Texture* skybox) {
     this->geometry = geometry;
 	this->gpuObject = new RenderableObject();
 	this->gpuObject->initVao(geometry);
 	this->gpuObject->setShader(basicShader);
+	this->gpuObject->setCubemapTexture(skybox);
 	this->updateModelMatrix(translation, rotationAxis, angle, scaleVector);
     this->material = defaultMaterial;
     this->customMaterial = new Material("Custom", vec3(0.1f), vec3(1.0f, 0.2f, 0.1f), vec3(0.5f), 50);
