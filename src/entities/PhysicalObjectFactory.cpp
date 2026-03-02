@@ -1,5 +1,6 @@
 #include "PhysicalObjectFactory.h"
 
+#include <assimp/types.h>
 #include <algorithm>
 #include <iostream>
 #include <limits>
@@ -86,6 +87,7 @@ PhysicalObject* PhysicalObjectFactory::createHouse(vec3 spawnPoint) {
 PhysicalObject* PhysicalObjectFactory::createFromFile(const char* path) {
 	vector<pair<MeshGeometry*, string>> models;
 	map<MeshGeometry*, Material*> materials;
+	map<MeshGeometry*, Texture*> textures;
 	cout << "+ Started loading " << path << endl;
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -102,28 +104,52 @@ PhysicalObject* PhysicalObjectFactory::createFromFile(const char* path) {
 	for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
 		assimpMesh = scene->mMeshes[i];
 
+		// GEOMETRY LOADING
 		MeshGeometry* geometry = MeshGeometryFactory::createFromAssimpMesh(assimpMesh);
 		if (geometry != nullptr) {
 			models.push_back({geometry, assimpMesh->mName.C_Str() });
 		}
 
-		assimpMaterial = scene->mMaterials[assimpMesh->mMaterialIndex];
-		Material* loadedMaterial = nullptr;
-		try {
-			loadedMaterial = new Material(assimpMaterial);
-		} catch (const std::runtime_error& e) {
-			cerr << "Warning: Material load failed for mesh " << assimpMesh->mName.C_Str() << ". Error: " << e.what() << ". Using default material." << endl;
-			loadedMaterial = this->defaultMaterial;
-		}
-		materials.insert({geometry, loadedMaterial});
+		// MATERIAL LOADING
+        assimpMaterial = scene->mMaterials[assimpMesh->mMaterialIndex];
+        Material* loadedMaterial = nullptr;
+        try {
+            loadedMaterial = new Material(assimpMaterial);
+        } catch (const std::runtime_error& e) {
+            cerr << "Warning: Material load failed for mesh " << assimpMesh->mName.C_Str() << ". Error: " << e.what() << ". Using default material." << endl;
+            loadedMaterial = this->defaultMaterial;
+        }
+        materials.insert({geometry, loadedMaterial});
+
+		// TEXTURE LOADING
+        aiString str;
+        if (assimpMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &str) == AI_SUCCESS && str.length > 0) { // Try to read the first diffuse texture from the material (use index 0)
+            string texRef = str.C_Str();
+            
+            if (!texRef.empty() && texRef[0] != '*') { // Check if the texture is saved into a file
+				string modelPath = path;
+                size_t folderPos = modelPath.find_last_of("/\\"); // Find the object folder
+                string folder = (folderPos == string::npos) ? string() : modelPath.substr(0, folderPos + 1);
+                string fullPath = folder + texRef;
+
+                Texture* t = new Texture("File loaded", fullPath.c_str());
+                cout << "Loaded texture: " << fullPath << endl;
+				textures.insert({ geometry, t });
+            }
+        }
 	}
 
 	PhysicalObjectFactory::normalizeModel(models);
 
 	for (auto [ geometry, name ] : models) {
 		Material* material = materials.at(geometry);
+		Texture* texture = nullptr;
+		try {
+			texture = textures.at(geometry);
+		} catch (exception e) {} // If no texture is found, ignore it
         Mesh* mesh = new Mesh(geometry, this->defaultShader, material, vec3(0), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
 		if (material != this->defaultMaterial) mesh->setFileLoadedMaterial(material);
+		if (texture != nullptr) mesh->setFileLoadedTexture(texture);
 		toReturn->addMesh(mesh, name);
 	}
 

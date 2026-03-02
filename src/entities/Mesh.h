@@ -35,14 +35,16 @@ class Mesh {
 		Shader* getCurrentShader();
 		Material* getCurrentMaterial();
 		Material* getFileLoadedMaterial();
-		Material* getCustomMaterial();;
+		Material* getCustomMaterial();
 		Texture* getCurrentTexture();
+		Texture* getFileLoadedTexture();
 
 		// SETTERS
 		void setShader(Shader* shader);
 		void setMaterial(Material* material);
 		void setFileLoadedMaterial(Material* material);
 		void setTexture(Texture* texture);
+		void setFileLoadedTexture(Texture* texture);
 
 	protected:
 		// The mesh model matrix cannot be directly edited because we want to update the object model matrix as well to keep them consistent
@@ -55,6 +57,7 @@ class Mesh {
 		Material* fileLoadedMaterial = nullptr;
 		Material* customMaterial;
 		BoundingBox* boundingBox;
+		Texture* fileLoaded = nullptr;
 
 		mat4 modelMatrix;
 		vec3 translation;

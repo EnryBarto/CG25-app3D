@@ -544,25 +544,28 @@ void show_material_selector(Mesh* selectedMesh) {
     Material* fileLoadedMaterial = selectedMesh->getFileLoadedMaterial();
     Material* customMaterial = selectedMesh->getCustomMaterial();
     bool isCustomSelected = currentMaterial == customMaterial;
-    const char* previewName = "-----";
-    if (materials != nullptr) {
+    char previewName[20];
+    strcpy_s(previewName, "-----");
+
+    if (isCustomSelected) strcpy_s(previewName, "Custom");
+    else if (currentMaterial == fileLoadedMaterial) strcpy_s(previewName, fileLoadedMaterial->getName().c_str());
+    else if (materials != nullptr) {
         for (const auto& m : *materials) {
             if (m.second == currentMaterial) {
-                previewName = m.first.c_str();
+                strcpy_s(previewName, m.first.c_str());
                 break;
             }
         }
     }
-    if (isCustomSelected) previewName = "Custom";
-    if (ImGui::BeginCombo(" Material", currentMaterial == fileLoadedMaterial ? fileLoadedMaterial->getName().c_str() : previewName) && materials != NULL) {
-        for (const auto& m : *materials) {
-            bool isSelected = (currentMaterial == m.second);
-            if (ImGui::Selectable(m.first.c_str(), isSelected)) selectedMesh->setMaterial(m.second);
-            if (isSelected) ImGui::SetItemDefaultFocus();
-        }
+    if (ImGui::BeginCombo(" Material", previewName) && materials != NULL) {
         if (fileLoadedMaterial != nullptr) {
             bool isSelected = (currentMaterial == fileLoadedMaterial);
             if (ImGui::Selectable(fileLoadedMaterial->getName().c_str(), isSelected)) selectedMesh->setMaterial(fileLoadedMaterial);
+            if (isSelected) ImGui::SetItemDefaultFocus();
+        }
+        for (const auto& m : *materials) {
+            bool isSelected = (currentMaterial == m.second);
+            if (ImGui::Selectable(m.first.c_str(), isSelected)) selectedMesh->setMaterial(m.second);
             if (isSelected) ImGui::SetItemDefaultFocus();
         }
         if (ImGui::Selectable(customMaterial->getName().c_str(), isCustomSelected)) selectedMesh->setMaterial(customMaterial);
@@ -586,21 +589,30 @@ void show_material_selector(Mesh* selectedMesh) {
 void show_texture_selector(Mesh* selectedMesh) {
     map<string, Texture*>* textures = app.getTextures();
     Texture* currentTexture = selectedMesh->getCurrentTexture();
-    const char *previewName = "None";
-
-    if (textures != nullptr) {
+    Texture* fileLoadedTexture = selectedMesh->getFileLoadedTexture();
+    char previewName[20];
+    
+    strcpy_s(previewName, "None");
+    if (fileLoadedTexture != nullptr && currentTexture == fileLoadedTexture) strcpy_s(previewName, fileLoadedTexture->getName().c_str());
+    else if (textures != nullptr) {
         for (const auto& t : *textures) {
             if (t.second == currentTexture) {
-                previewName = t.first.c_str();
+                strcpy_s(previewName, t.first.c_str());
                 break;
             }
         }
     }
+
     if (ImGui::BeginCombo(" Texture", previewName) && textures != NULL) {
         bool isNone = (currentTexture == nullptr);
         if (ImGui::Selectable("None", isNone)) selectedMesh->setTexture(nullptr);
         if (isNone) ImGui::SetItemDefaultFocus();
 
+        if (fileLoadedTexture != nullptr) {
+            bool isSelected = (currentTexture == fileLoadedTexture);
+            if (ImGui::Selectable(fileLoadedTexture->getName().c_str(), isSelected)) selectedMesh->setTexture(fileLoadedTexture);
+            if (isSelected) ImGui::SetItemDefaultFocus();
+        }
         for (const auto& t : *textures) {
             bool isSelected = (currentTexture == t.second);
             if (ImGui::Selectable(t.first.c_str(), isSelected)) selectedMesh->setTexture(t.second);

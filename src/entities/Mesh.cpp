@@ -107,7 +107,16 @@ Texture* Mesh::getCurrentTexture() {
     return this->gpuObject->getCurrentTexture();
 }
 
+Texture* Mesh::getFileLoadedTexture() {
+    return this->fileLoaded;
+}
+
 void Mesh::setTexture(Texture* texture) {
+    this->gpuObject->setTexture(texture);
+}
+
+void Mesh::setFileLoadedTexture(Texture* texture) {
+    this->fileLoaded = texture;
     this->gpuObject->setTexture(texture);
 }
 

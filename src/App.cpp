@@ -353,7 +353,7 @@ void App::loopFileUpload() {
 
 		case AppState::FILE_LOAD:
 			file = this->filesToLoad.front();
-			if (compareStrings(file.substr(file.size() - 4), ".obj")) { // Load obj file
+			if (compareStrings(file.substr(file.size() - 4), ".obj") || compareStrings(file.substr(file.size() - 4), ".dae")) { // Load obj file
 				PhysicalObject* loaded = this->scene->loadObjectFromFile(file.c_str());
 				if (loaded != nullptr) {
 					this->nextState = AppState::WAIT_OBJ_FILE_CONFIRM;
@@ -383,7 +383,7 @@ void App::loopFileUpload() {
 				this->nextState = AppState::LOADING_FILES;
 			} else {
 				this->nextState = AppState::WAIT_FILE_ABORT;
-				strcpy_s(this->stringBuffer, "The file is not .obj, .jpg, .jpeg, or .png");
+				strcpy_s(this->stringBuffer, "The file is not .obj, .dae, .jpg, .jpeg, or .png");
 			}
 			break;
 
