@@ -34,24 +34,13 @@ App::App() {
 
 	this->currentSettings = new AppSettings();
 	this->scene = new Scene(windowManager, currentSettings, shaders->at(PHONG_SHADER_NAME), shaders->at(FLAT_SHADER_NAME), materials->at(NO_MATERIAL_NAME), this->cubemapShader, SKYBOX_CUBEMAP_DIRECTORY);
-	if (this->scene == NULL) {
+	add_scene_objects(this->scene, this->shaders, this->textures, this->materials);
+	if (this->scene == nullptr) {
 		throw std::runtime_error("Scene initialization failed!");
 	}
 	else {
 		cout << "Scene initialized" << endl;
 	}
-
-    // Assign random materials
-    std::vector<Material*> matList;
-    for (auto const& p : *this->materials) if (p.first != NO_MATERIAL_NAME) matList.push_back(p.second);
-    if (!matList.empty()) {
-        std::srand((unsigned)std::time(nullptr));
-        for (PhysicalObject* obj : this->scene->objects) {
-            for (auto &me : *obj->getMeshes()) {
-                me.second->setMaterial(matList[std::rand() % matList.size()]);
-            }
-        }
-    }
 
 	this->nextState = AppState::PAUSED;
 	this->currentState = AppState::NAVIGATION;

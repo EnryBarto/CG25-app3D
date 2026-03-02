@@ -151,7 +151,7 @@ MeshGeometry* MeshGeometryFactory::createPlane(vec4 color) {
 	return new MeshGeometry(&vertices, &colors, &indices, &normals, &texCoords);
 }
 
-MeshGeometry* MeshGeometryFactory::createTriangulatedPlane(int n, vec4 color) {
+MeshGeometry* MeshGeometryFactory::createTriangulatedPlane(int n, vec4 color, int tiling) {
 	vector<vec3> vertices;
 	vector<vec4> colors;
 	vector<GLuint> indices;
@@ -161,6 +161,8 @@ MeshGeometry* MeshGeometryFactory::createTriangulatedPlane(int n, vec4 color) {
 	float x, y, s, t;
 	int i, j;
 
+	int denom = n - 1;
+
 	for (i = 0; i < n; i++) {
 		x = -0.5f + (float)i / n;
 		for (j = 0; j < n; j++) {
@@ -169,9 +171,9 @@ MeshGeometry* MeshGeometryFactory::createTriangulatedPlane(int n, vec4 color) {
 			colors.push_back(color);
 			normals.push_back(vec3(0.0, 1.0, 0.0));
 			
-			//Coordinate di texture
-			s = x;
-			t = y;
+			// Texture coordinates with tiling
+			s = (float)i / (float)denom * tiling;
+			t = (float)j / (float)denom * tiling;
 			texCoords.push_back(vec2(s, t));
 		}
 	}
@@ -490,7 +492,7 @@ MeshGeometry* MeshGeometryFactory::createFromAssimpMesh(const aiMesh* mesh) {
 			texCoords.push_back(vec2(uv.x, uv.y));
 		}
 	} else {
-		cerr << "Texture coordinates missing - Using vec2(0)" << endl;
+		// cerr << "Texture coordinates missing - Using vec2(0)" << endl;
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 			texCoords.push_back(vec2(0));
 		}
@@ -503,7 +505,7 @@ MeshGeometry* MeshGeometryFactory::createFromAssimpMesh(const aiMesh* mesh) {
 			colors.push_back(vec4(c.r, c.g, c.b, c.a));
 		}
 	} else {
-		cerr << "Colors data missing - Using vec4(0.1f, 0.5f, 1.0f, 1.0f)" << endl;
+		// cerr << "Colors data missing - Using vec4(0.1f, 0.5f, 1.0f, 1.0f)" << endl;
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 			colors.push_back(vec4(0.1f, 0.5f, 1.0f, 1.0f));
 		}

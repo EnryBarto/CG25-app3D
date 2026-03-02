@@ -27,7 +27,7 @@ void show_commands() {
     ImGui::Text("F1: Toggle commands window");
     ImGui::Text("F11: Toggle fullscreen mode");
     ImGui::Text("ESC: Go back to previous mode");
-    ImGui::Text("Space bar: Toggle Picking / Navigation modes");
+    ImGui::Text("Space bar: Toggle Navigation / Trackball / Picking");
     ImGui::Text("Drag & Drop: Upload obj or texture file");
     ImGui::NewLine();
     ImGui::Text("----- CAMERA COMMANDS -----");
@@ -544,7 +544,7 @@ void show_material_selector(Mesh* selectedMesh) {
     Material* fileLoadedMaterial = selectedMesh->getFileLoadedMaterial();
     Material* customMaterial = selectedMesh->getCustomMaterial();
     bool isCustomSelected = currentMaterial == customMaterial;
-    char previewName[20];
+    char previewName[50];
     strcpy_s(previewName, "-----");
 
     if (isCustomSelected) strcpy_s(previewName, "Custom");

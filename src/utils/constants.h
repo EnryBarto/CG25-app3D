@@ -6,13 +6,11 @@
 #define HEIGHT_RESIZE_FACTOR 0.8f
 #define FONT_RESIZE_FACTOR 2.0f
 #define MAX_FPS 100
-#define SKYBOX_CUBEMAP_DIRECTORY "resources/skyboxes/icebergs/"
+#define SKYBOX_CUBEMAP_DIRECTORY "resources/skyboxes/field/"
 #define ANCHOR_SIZE 15
 #define ANCHOR_SPERE_RADIUS 0.5f
 #define GUI_WINDOWS_PADDING 10
 #define MAX_LENGTH_OBJ_NAME 25
-#define NO_MATERIAL_NAME "No Material"
-#define TEXTURES_PATH "resources/textures/"
 
 // LIGHT SETTINGS
 // NB: THE VALUE CAN MAKE THE SHADER LINKING FAIL: IF SO, LOWER IT
@@ -28,7 +26,7 @@
 #define PROJ_NEARPLANE 0.1f
 
 // CAMERA SETTINGS
-#define CAMERA_SPEED_DEFAULT 8.0f
+#define CAMERA_SPEED_DEFAULT 15.0f
 #define CAMERA_SPEED_MIN 1.5f
 #define CAMERA_SPEED_MAX 40.0f
 #define MOUSE_SENSITIVITY_DEFAULT 0.05f
@@ -48,5 +46,19 @@
 #define CUBEMAP_SHADER_NAME "Cubemap"
 #define REFLECTION_SHADER_NAME "Reflection"
 #define WAVE_SHADER_NAME "Gouraud (Wave effect)"
+
+// MATERIALS
+#define MESHES_PATH "resources/meshes/"
+#define NO_MATERIAL_NAME "No Material"
+#define GRASS_MATERIAL_NAME "Grass"
+#define WATER_MATERIAL_NAME "Water"
+#define EMERALD_MATERIAL_NAME "Emerald"
+
+// TEXTURES
+#define TEXTURES_PATH "resources/textures/"
+#define GRASS_TEXTURE_NAME "Grass"
+#define WATER_TEXTURE_NAME "Water"
+
+#define CHARACTER_SIZE 5.0f
 
 #endif

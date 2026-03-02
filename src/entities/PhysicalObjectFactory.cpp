@@ -66,9 +66,17 @@ PhysicalObject* PhysicalObjectFactory::createSimpleCylinder(vec3 spawnPoint) {
 }
 
 PhysicalObject* PhysicalObjectFactory::createBase() {
-	PhysicalObject* toReturn = new PhysicalObject("Floor", vec3(0), vec3(0), 0, vec3(2), this->boundingBoxShader);
-	MeshGeometry* planeGeometry = MeshGeometryFactory::createTriangulatedPlane(512, vec4(0.196078f, 0.568627f, 0.658824f, 1));
+	PhysicalObject* toReturn = new PhysicalObject("Ground", vec3(0), vec3(0), 0, vec3(2), this->boundingBoxShader);
+	MeshGeometry* planeGeometry = MeshGeometryFactory::createTriangulatedPlane(512, vec4(0.196078f, 0.568627f, 0.658824f, 1), 64);
     Mesh* cube = new Mesh(planeGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 0, 0), vec3(0), 0, vec3(1000, 1, 1000), this->boundingBoxShader, this->skybox);
+	toReturn->addMesh(cube, "Plane");
+	return toReturn;
+}
+
+PhysicalObject* PhysicalObjectFactory::createSimplePlane(vec3 spawnPoint) {
+	PhysicalObject* toReturn = new PhysicalObject("Plane", spawnPoint, vec3(0), 0, vec3(1), this->boundingBoxShader);
+	MeshGeometry* planeGeometry = MeshGeometryFactory::createTriangulatedPlane(128, vec4(0.196078f, 0.568627f, 0.658824f, 1), 4);
+	Mesh* cube = new Mesh(planeGeometry, this->defaultShader, this->defaultMaterial, vec3(0), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
 	toReturn->addMesh(cube, "Plane");
 	return toReturn;
 }
@@ -132,8 +140,8 @@ PhysicalObject* PhysicalObjectFactory::createFromFile(const char* path) {
                 string folder = (folderPos == string::npos) ? string() : modelPath.substr(0, folderPos + 1);
                 string fullPath = folder + texRef;
 
-                Texture* t = new Texture("File loaded", fullPath.c_str());
-                cout << "Loaded texture: " << fullPath << endl;
+                Texture* t = new Texture("File default", fullPath.c_str());
+                // cout << "Loaded texture: " << fullPath << endl;
 				textures.insert({ geometry, t });
             }
         }

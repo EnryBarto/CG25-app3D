@@ -20,6 +20,7 @@ class PhysicalObjectFactory {
 		PhysicalObject* createSimpleCone(vec3 spawnPoint);
 		PhysicalObject* createSimpleCylinder(vec3 spawnPoint);
 		PhysicalObject* createBase();
+		PhysicalObject* createSimplePlane(vec3 spawnPoint);
 		PhysicalObject* createHouse(vec3 spawnPoint);
 		PhysicalObject* createFromFile(const char* path);
 

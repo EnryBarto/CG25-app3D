@@ -3,6 +3,9 @@
 #include <glm/glm.hpp>
 #include <glm/fwd.hpp>
 
+#include "../entities/PhysicalObjectFactory.h"
+#include "../entities/PhysicalObject.h"
+
 int init_gl_glfw() {
 
 	if (!glfwInit()) return -1;
@@ -100,9 +103,10 @@ std::map<std::string, Shader*>* init_shaders() {
 
 std::map<std::string, Texture*>* init_textures() {
     std::map<std::string, Texture*>* textures = new std::map<std::string, Texture*>();
-    textures->insert({ "Cement", new Texture("Cement", (std::string(TEXTURES_PATH) + std::string("grey_cement.jpg")).c_str())});
+    textures->insert({ GRASS_TEXTURE_NAME, new Texture("Grass", (std::string(TEXTURES_PATH) + std::string("grass.png")).c_str()) });
+    textures->insert({ "Cement", new Texture("Cement", (std::string(TEXTURES_PATH) + std::string("grey_cement.jpg")).c_str()) });
     textures->insert({ "Italian flag", new Texture("Italian flag", (std::string(TEXTURES_PATH) + std::string("italian_flag.jpg")).c_str())});
-    textures->insert({ "Sea", new Texture("Sea", (std::string(TEXTURES_PATH) + std::string("sea.jpg")).c_str())});
+    textures->insert({ WATER_TEXTURE_NAME, new Texture(WATER_TEXTURE_NAME, (std::string(TEXTURES_PATH) + std::string("water.jpg")).c_str())});
     textures->insert({ "Mickey Mouse", new Texture("Mickey Mouse", (std::string(TEXTURES_PATH) + std::string("mickey_mouse.jpg")).c_str())});
     textures->insert({ "Brick Wall", new Texture("Brick Wall", (std::string(TEXTURES_PATH) + std::string("brick_wall.jpg")).c_str())});
     textures->insert({ "Steve", new Texture("Steve", (std::string(TEXTURES_PATH) + std::string("steve.jpg")).c_str()) });
@@ -169,5 +173,85 @@ std::map<std::string, Material*>* init_materials() {
     float brown_shininess = 12.8f;
     materials->insert({ "Brown", new Material("Brown", brown_ambient, brown_diffuse, brown_specular, brown_shininess) });
 
+    // Grass
+    glm::vec3 grass_ambient = { 0.02f, 0.04f, 0.02f };
+    glm::vec3 grass_diffuse = { 0.8f, 0.9f, 0.7f };
+    glm::vec3 grass_specular = { 0.02f, 0.02f, 0.02f };
+    float grass_shininess = 2.0f;
+    materials->insert({ GRASS_MATERIAL_NAME, new Material(GRASS_MATERIAL_NAME, grass_ambient, grass_diffuse, grass_specular, grass_shininess) });
+
+    // Water
+    glm::vec3 water_ambient = { 0.0f, 0.1f, 0.2f };
+    glm::vec3 water_diffuse = { 0.1f, 0.3f, 0.5f };
+    glm::vec3 water_specular = { 0.9f, 0.9f, 0.9f };
+    float water_shininess = 65.0f;
+    materials->insert({ WATER_MATERIAL_NAME, new Material(WATER_MATERIAL_NAME, water_ambient, water_diffuse, water_specular, water_shininess) });
+
     return materials;
+}
+
+void add_scene_objects(Scene* scene, map<string, Shader*>* shaders, map<string, Texture*>* textures, map<string, Material*>* materials) {
+    PhysicalObjectFactory* objectsFactory = scene->getObjectsFactory();
+    PhysicalObject* toAdd;
+    toAdd = objectsFactory->createBase();
+    toAdd->getMeshes()->at("Plane")->setTexture(textures->at(GRASS_TEXTURE_NAME));
+    toAdd->getMeshes()->at("Plane")->setMaterial(materials->at(GRASS_MATERIAL_NAME));
+    scene->addObject(toAdd);
+    toAdd = objectsFactory->createFromFile((string(MESHES_PATH) + "Hyrule_Castle.obj").c_str());
+    toAdd->setName("Castle");
+    toAdd->updateModelMatrix(vec3(-52, 40, -70), vec3(0, 1, 0), 35, vec3(40));
+    scene->addObject(toAdd);
+    toAdd = objectsFactory->createFromFile((string(MESHES_PATH) + "Island.obj").c_str());
+    toAdd->setName("Island");
+    toAdd->updateModelMatrix(vec3(160, 149, 105), vec3(0, 1, 0), 60, vec3(150));
+    scene->addObject(toAdd);
+    toAdd = objectsFactory->createSimplePlane(vec3(1));
+    toAdd->setName("Lake");
+    toAdd->getMeshes()->at("Plane")->setTexture(textures->at(WATER_TEXTURE_NAME));
+    toAdd->getMeshes()->at("Plane")->setMaterial(materials->at(WATER_MATERIAL_NAME));
+    toAdd->getMeshes()->at("Plane")->setShader(shaders->at(WAVE_SHADER_NAME));
+    toAdd->updateModelMatrix(vec3(160, 0.4f, 105), vec3(0, 1, 0), 60, vec3(300, 0.4f, 300));
+    scene->addObject(toAdd);
+    toAdd = objectsFactory->createFromFile((string(MESHES_PATH) + "Urbosa.obj").c_str());
+    toAdd->setName("Urbosa");
+    toAdd->updateModelMatrix(vec3(42.5f, CHARACTER_SIZE, -34.5f), vec3(0, 1, 0), -27, vec3(CHARACTER_SIZE));
+    scene->addObject(toAdd);
+    toAdd = objectsFactory->createFromFile((string(MESHES_PATH) + "Paya.obj").c_str());
+    toAdd->setName("Paya");
+    toAdd->updateModelMatrix(vec3(20, CHARACTER_SIZE, -43), vec3(0, 1, 0), -19, vec3(CHARACTER_SIZE));
+    scene->addObject(toAdd);
+    toAdd = objectsFactory->createFromFile((string(MESHES_PATH) + "Zelda.obj").c_str());
+    toAdd->setName("Zelda");
+    toAdd->updateModelMatrix(vec3(-2, CHARACTER_SIZE, -42), vec3(0, 1, 0), 6.3f, vec3(CHARACTER_SIZE));
+    scene->addObject(toAdd);
+    toAdd = objectsFactory->createFromFile((string(MESHES_PATH) + "Horse.obj").c_str());
+    toAdd->setName("Horse");
+    toAdd->updateModelMatrix(vec3(-28, CHARACTER_SIZE, 60), vec3(0, 1, 0), 145, vec3(CHARACTER_SIZE));
+    scene->addObject(toAdd);
+    toAdd = objectsFactory->createFromFile((string(MESHES_PATH) + "Ganon.obj").c_str());
+    toAdd->setName("Ganon");
+    toAdd->updateModelMatrix(vec3(-48, CHARACTER_SIZE * 3, -10), vec3(0, 1, 0), 80, vec3(CHARACTER_SIZE * 3));
+    scene->addObject(toAdd);
+    toAdd = objectsFactory->createFromFile((string(MESHES_PATH) + "House.obj").c_str());
+    toAdd->setName("House");
+    toAdd->updateModelMatrix(vec3(-66, 27.9f, 51), vec3(0, 1, 0), 115, vec3(30));
+    scene->addObject(toAdd);
+    toAdd = objectsFactory->createFromFile((string(MESHES_PATH) + "Link.obj").c_str());
+    toAdd->setName("Link");
+    toAdd->updateModelMatrix(vec3(-25, CHARACTER_SIZE, 52), vec3(0, 1, 0), 120, vec3(CHARACTER_SIZE));
+    scene->addObject(toAdd);
+    toAdd = objectsFactory->createFromFile((string(MESHES_PATH) + "Bass.obj").c_str());
+    toAdd->setName("Fish");
+    toAdd->updateModelMatrix(vec3(56, 2, 20), vec3(0, 1, 0), 190, vec3(3));
+    scene->addObject(toAdd);
+    toAdd = objectsFactory->createSimpleTorus(vec3(1));
+    toAdd->setName("Swim Ring");
+    toAdd->updateModelMatrix(vec3(26.5f, -1.3, 78), vec3(0), 0, vec3(3));
+    toAdd->getMeshes()->at("Torus")->setMaterial(materials->at(EMERALD_MATERIAL_NAME));
+    scene->addObject(toAdd);
+    toAdd = objectsFactory->createFromFile((string(MESHES_PATH) + "Diamond.obj").c_str());
+    toAdd->setName("Diamond");
+    toAdd->updateModelMatrix(vec3(-10, 3, -10), vec3(1, 0, 0), 90, vec3(3));
+    toAdd->getMeshes()->at("Body__Mt_Ore")->setShader(shaders->at(REFLECTION_SHADER_NAME));
+    scene->addObject(toAdd);
 }

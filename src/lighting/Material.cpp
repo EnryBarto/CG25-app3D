@@ -45,7 +45,7 @@ Material::Material(const aiMaterial* loadedMaterial) {
 	if (loadedMaterial->Get(AI_MATKEY_SHININESS_STRENGTH, value) == aiReturn_SUCCESS) {
 		this->shininess = value;
 	} else {
-		std::cerr << "Error loading shininess component for " << this->name << std::endl;
+		//std::cerr << "Error loading shininess component for " << this->name << std::endl;
 		this->shininess = 50;
 	}
 }

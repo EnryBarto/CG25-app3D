@@ -1,0 +1,292 @@
+# Blender 4.5.1 LTS MTL File: 'None'
+# www.blender.org
+
+newmtl Mt_CmnTex_Builparts_HatenoHouse_C
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Builparts_HatenoHouse_C_Alb.png
+
+newmtl Mt_CmnTex_Builparts_HatenoHouse_D
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Builparts_HatenoHouse_D_Alb.png
+
+newmtl Mt_CmnTex_Builparts_HatenoHouse_D1
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Builparts_HatenoHouse_D_Alb.png
+
+newmtl Mt_CmnTex_Builparts_HatenoStone_B
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Builparts_HatenoStone_B_Alb.png
+
+newmtl Mt_CmnTex_Cloth_HatenoRope_A
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Cloth_HatenoRope_A_Alb.png
+
+newmtl Mt_CmnTex_Etc_HatenoArticle_B
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Etc_HatenoArticle_B_Alb.png
+
+newmtl Mt_CmnTex_Glass_HatenoHouseWindow_A
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Glass_HatenoHouseWindow_A_Alb.png
+
+newmtl Mt_CmnTex_Glass_HatenoHouseWindow_A1
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Glass_HatenoHouseWindow_A_Alb.png
+
+newmtl Mt_CmnTex_Rock_HatenoHouse_A
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Rock_HatenoHouse_A_Alb.png
+
+newmtl Mt_CmnTex_Rock_HatenoHouse_A1
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Rock_HatenoHouse_A_Alb.png
+
+newmtl Mt_CmnTex_Sign_HatenoSeal_A
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Sign_HatenoSeal_A_Alb.png
+
+newmtl Mt_CmnTex_Wall_HatenoHouseEdge_C
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wall_HatenoHouseEdge_C_Alb.png
+
+newmtl Mt_CmnTex_Wall_HatenoHouse_N_blend
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wall_HatenoHouse_N_Alb.png
+
+newmtl Mt_CmnTex_Wall_HatenoHouse_P
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wall_HatenoHouse_P_Alb.png
+
+newmtl Mt_CmnTex_Wall_HatenoHouse_P1
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wall_HatenoHouse_P_Alb.png
+
+newmtl Mt_CmnTex_Wall_HatenoHouse_Q_02
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wall_HatenoHouse_Q_Alb.png
+
+newmtl Mt_CmnTex_Wall_HatenoHouse_R
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wall_HatenoHouse_R_Alb.png
+
+newmtl Mt_CmnTex_Wall_HatenoHouse_S
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wall_HatenoHouse_S_Alb.png
+
+newmtl Mt_CmnTex_Wall_HatenoHouse_T
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wall_HatenoHouse_T_Alb.png
+
+newmtl Mt_CmnTex_Wood_HatenoCeiling_A
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wood_HatenoCeiling_A_Alb.png
+
+newmtl Mt_CmnTex_Wood_HatenoHouseHovel_A
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wood_HatenoHouseHovel_A_Alb.png
+
+newmtl Mt_CmnTex_Wood_HatenoHousefloor_A
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wood_HatenoHousefloor_A_Alb.png
+
+newmtl Mt_CmnTex_Wood_HatenoPillar_A
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wood_HatenoPillar_A_Alb.png
+
+newmtl Mt_CmnTex_Wood_HatenoShutter_A
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wood_HatenoShutter_A_Alb.png
+
+newmtl Mt_CmnTex_Wood_Village_Hateno_F
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wood_Village_Hateno_F_Alb.png
+
+newmtl Mt_CmnTex_Wood_Village_Hateno_G
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Wood_Village_Hateno_G_Alb.png
+
+newmtl Mt_InsideMat_A
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Mt_Plant_GreenGrassAndMad_A
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/MaterialAlb_Slice_11_.png
+
+newmtl Mt_Plant_TempleOfTimeIvy_A
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd textures/house/CmnTex_Plant_TempleOfTimeIvy_A_Alb.png

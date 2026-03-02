@@ -18,6 +18,7 @@
 #include "../shader/Shader.h"
 #include "../lighting/Material.h"
 #include "../texture/Texture.h"
+#include "../scene/Scene.h"
 
 using namespace std;
 
@@ -28,5 +29,6 @@ void init_imgui(GLFWwindow* window);
 map<string, Shader*>* init_shaders();
 map<string, Texture*>* init_textures();
 map<string, Material*>* init_materials();
+void add_scene_objects(Scene* scene, map<string, Shader*>* shaders, map<string, Texture*>* textures, map<string, Material*>* materials);
 
 #endif

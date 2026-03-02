@@ -12,23 +12,16 @@ Scene::Scene(WindowManager* windowManager, AppSettings* currentSettings, Shader*
 	this->windowManager = windowManager;
 	this->window = windowManager->getWindow();
 	this->currentSettings = currentSettings;
-	this->camera = new Camera(vec3(0, 6, -10), vec3(0, 0, 20), this->currentSettings->getCurrentCameraSpeed());
+	this->camera = new Camera(vec3(0, 10, 0), vec3(0, 0, 30), this->currentSettings->getCurrentCameraSpeed());
 	this->projection = new Projection(windowManager->getAspectRatio(), this->currentSettings->getCurrentFov());
 	this->skybox = new Skybox(skyboxShader, skyboxCubemapDirectory);
 	this->objectFactory = new PhysicalObjectFactory(defaultShader, defaultMaterial, basicShader, this->skybox->getCubemapTexture());
-	this->objects.push_back(this->objectFactory->createBase());
-	this->objects.push_back(this->objectFactory->createSimpleCube(vec3(2, 0, 8)));
-	this->objects.push_back(this->objectFactory->createSimpleSphere(vec3(9, 0, 3)));
-	this->objects.push_back(this->objectFactory->createHouse(vec3(-5, 0, 4)));
-	this->objects.push_back(this->objectFactory->createSimpleCone(vec3(8, 0, -2)));
-	this->objects.push_back(this->objectFactory->createSimpleTorus(vec3(-6, 0, -3)));
-	this->objects.push_back(this->objectFactory->createSimpleCylinder(vec3(3, 0, 2)));
 	this->basicShader = basicShader;
-	this->lights.push_back(new PointLight(vec3(-500, 200, -1000), vec4(1), 1.7f, this->basicShader));
-	this->lights.push_back(new PointLight(vec3(15, 20, 15), vec4(1), 0.25f, this->basicShader));
-	this->lights.push_back(new PointLight(vec3(-15, 20, 15), vec4(1), 0.25f, this->basicShader));
-	this->lights.push_back(new PointLight(vec3(15, 20, -15), vec4(1), 0.25f, this->basicShader));
-	this->lights.push_back(new PointLight(vec3(-15, 20, -15), vec4(1), 0.25f, this->basicShader));
+	this->lights.push_back(new PointLight(vec3(600, 1000, 600), vec4(1), 1, this->basicShader));
+	this->lights.push_back(new PointLight(vec3(150, 100, 150), vec4(1), 0.65f, this->basicShader));
+	this->lights.push_back(new PointLight(vec3(-150, 100, 150), vec4(1), 0.65f, this->basicShader));
+	this->lights.push_back(new PointLight(vec3(150, 100, -150), vec4(1), 0.65f, this->basicShader));
+	this->lights.push_back(new PointLight(vec3(-150, 100, -150), vec4(1), 0.65f, this->basicShader));
 }
 
 Scene::~Scene() {
@@ -143,6 +136,10 @@ bool Scene::isCameraColliding() {
 	return false;
 }
 
+PhysicalObjectFactory* Scene::getObjectsFactory() {
+	return this->objectFactory;
+}
+
 tuple<PhysicalObject*, string> Scene::mousePicked(vec2 clickPosition) {
 	vec3 direction = this->getRayFromMouseClick(clickPosition);
 	float minDist = std::numeric_limits<float>::max();
@@ -234,4 +231,8 @@ vector<PhysicalObject*>* Scene::getObjects() {
 void Scene::removeObject(PhysicalObject* o) {
 	this->objects.erase(find(this->objects.begin(), this->objects.end(), o));
 	delete o;
+}
+
+void Scene::addObject(PhysicalObject* toAdd) {
+	this->objects.push_back(toAdd);
 }

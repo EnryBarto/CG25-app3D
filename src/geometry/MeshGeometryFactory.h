@@ -13,7 +13,7 @@ class MeshGeometryFactory {
 		static MeshGeometry* createCube(vec4 color);
 		static MeshGeometry* createPyramid(vec4 color);
 		static MeshGeometry* createPlane(vec4 color);
-		static MeshGeometry* createTriangulatedPlane(int n, vec4 color);
+		static MeshGeometry* createTriangulatedPlane(int n, vec4 color, int tiling);
 		static MeshGeometry* createSphere(vec4 color);
 		static MeshGeometry* createTorus(vec4 color);
 		static MeshGeometry* createCone(vec4 color);

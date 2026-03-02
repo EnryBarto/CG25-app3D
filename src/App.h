@@ -58,6 +58,7 @@ class App {
 		Shader* cubemapShader;
 		AppSettings* currentSettings;
 		WindowManager* windowManager;
+		PhysicalObjectFactory* objectFactory;
 		Scene* scene;
 		AppState nextState;
 		AppState currentState;
