@@ -111,6 +111,7 @@ std::map<std::string, Texture*>* init_textures() {
     textures->insert({ "Brick Wall", new Texture("Brick Wall", (std::string(TEXTURES_PATH) + std::string("brick_wall.jpg")).c_str())});
     textures->insert({ "Steve", new Texture("Steve", (std::string(TEXTURES_PATH) + std::string("steve.jpg")).c_str()) });
     textures->insert({ "Horse", new Texture("Horse", (std::string(TEXTURES_PATH) + std::string("horse.jpg")).c_str()) });
+    textures->insert({ BRASS_TEXTURE_NAME, new Texture(BRASS_TEXTURE_NAME, (std::string(TEXTURES_PATH) + std::string("brass.png")).c_str()) });
     return textures;
 }
 
@@ -136,7 +137,7 @@ std::map<std::string, Material*>* init_materials() {
     glm::vec3 brass_diffuse = { 0.78f, 0.57f, 0.11f };
     glm::vec3 brass_specular = { 0.99f, 0.91f, 0.81f };
     float brass_shininess = 27.8f;
-    materials->insert({ "Brass", new Material("Brass", brass_ambient, brass_diffuse, brass_specular, brass_shininess) });
+    materials->insert({ BRASS_MATERIAL_NAME, new Material(BRASS_MATERIAL_NAME, brass_ambient, brass_diffuse, brass_specular, brass_shininess)});
 
     // Emerald
     glm::vec3 emerald_ambient = { 0.0215f, 0.04745f, 0.0215f };
@@ -251,7 +252,16 @@ void add_scene_objects(Scene* scene, map<string, Shader*>* shaders, map<string, 
     scene->addObject(toAdd);
     toAdd = objectsFactory->createFromFile((string(MESHES_PATH) + "Diamond.obj").c_str());
     toAdd->setName("Diamond");
-    toAdd->updateModelMatrix(vec3(-10, 3, -10), vec3(1, 0, 0), 90, vec3(3));
+    toAdd->updateModelMatrix(vec3(19, 3, -16), vec3(1, 0, 0), 90, vec3(3));
     toAdd->getMeshes()->at("Body__Mt_Ore")->setShader(shaders->at(REFLECTION_SHADER_NAME));
     scene->addObject(toAdd);
+    toAdd = objectsFactory->createTriforce(vec3(0));
+    toAdd->setName("Triforce");
+    toAdd->updateModelMatrix(vec3(-1, 0, 17.5f), vec3(0), 0, vec3(3, 4.5f, 3));
+    for (auto m : *toAdd->getMeshes()) {
+        m.second->setMaterial(materials->at(BRASS_MATERIAL_NAME));
+        m.second->setTexture(textures->at(BRASS_TEXTURE_NAME));
+    }
+    scene->addObject(toAdd);
+    scene->setRotatingObject(toAdd);
 }

@@ -57,6 +57,26 @@ PhysicalObject* PhysicalObjectFactory::createSimpleCone(vec3 spawnPoint) {
 	return toReturn;
 }
 
+PhysicalObject* PhysicalObjectFactory::createTriforce(vec3 spawnPoint) {
+	PhysicalObject* toReturn = new PhysicalObject("Triforce", spawnPoint, vec3(0), 0, vec3(2), this->boundingBoxShader);
+	MeshGeometry* pyramidGeometry = MeshGeometryFactory::createPyramid(vec4(0.83f, 0.66f, 0.08f, 1));
+	Mesh* pyramid = new Mesh(pyramidGeometry, this->defaultShader, this->defaultMaterial, vec3(-1, 0, -1), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
+	toReturn->addMesh(pyramid, "Pyramid 1");
+	pyramidGeometry = MeshGeometryFactory::createPyramid(vec4(0.83f, 0.66f, 0.08f, 1));
+	pyramid = new Mesh(pyramidGeometry, this->defaultShader, this->defaultMaterial, vec3(-1, 0, 1), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
+	toReturn->addMesh(pyramid, "Pyramid 2");
+	pyramidGeometry = MeshGeometryFactory::createPyramid(vec4(0.83f, 0.66f, 0.08f, 1));
+	pyramid = new Mesh(pyramidGeometry, this->defaultShader, this->defaultMaterial, vec3(1, 0, 1), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
+	toReturn->addMesh(pyramid, "Pyramid 3");
+	pyramidGeometry = MeshGeometryFactory::createPyramid(vec4(0.83f, 0.66f, 0.08f, 1));
+	pyramid = new Mesh(pyramidGeometry, this->defaultShader, this->defaultMaterial, vec3(1, 0, -1), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
+	toReturn->addMesh(pyramid, "Pyramid 4");
+	pyramidGeometry = MeshGeometryFactory::createPyramid(vec4(0.83f, 0.66f, 0.08f, 1));
+	pyramid = new Mesh(pyramidGeometry, this->defaultShader, this->defaultMaterial, vec3(0, 1, 0), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
+	toReturn->addMesh(pyramid, "Pyramid 5");
+	return toReturn;
+}
+
 PhysicalObject* PhysicalObjectFactory::createSimpleCylinder(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Simple cylinder", spawnPoint, vec3(0), 0, vec3(2), this->boundingBoxShader);
 	MeshGeometry* cylinderGeometry = MeshGeometryFactory::createCylinder(vec4(0.2f, 0.8f, 0.1f, 1));
@@ -76,8 +96,8 @@ PhysicalObject* PhysicalObjectFactory::createBase() {
 PhysicalObject* PhysicalObjectFactory::createSimplePlane(vec3 spawnPoint) {
 	PhysicalObject* toReturn = new PhysicalObject("Plane", spawnPoint, vec3(0), 0, vec3(1), this->boundingBoxShader);
 	MeshGeometry* planeGeometry = MeshGeometryFactory::createTriangulatedPlane(128, vec4(0.196078f, 0.568627f, 0.658824f, 1), 4);
-	Mesh* cube = new Mesh(planeGeometry, this->defaultShader, this->defaultMaterial, vec3(0), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
-	toReturn->addMesh(cube, "Plane");
+	Mesh* plane = new Mesh(planeGeometry, this->defaultShader, this->defaultMaterial, vec3(0), vec3(0), 0, vec3(1), this->boundingBoxShader, this->skybox);
+	toReturn->addMesh(plane, "Plane");
 	return toReturn;
 }
 

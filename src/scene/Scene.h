@@ -47,6 +47,7 @@ class Scene {
 		void addObject(PhysicalObject* toAdd);
 		bool isCameraColliding();
 		PhysicalObjectFactory* getObjectsFactory();
+		void setRotatingObject(PhysicalObject* object);
 
 		// Object and mesh selection
 		tuple<PhysicalObject*, string> mousePicked(vec2 clickPosition);
@@ -67,6 +68,7 @@ class Scene {
 		Skybox* skybox;
 		Shader* basicShader; // Used to render bounding boxes and point lights
 		vector<PhysicalObject*> objects;
+		PhysicalObject* rotatingObject = nullptr;
 		PhysicalObjectFactory* objectFactory;
 		WindowManager* windowManager;
 		GLFWwindow* window;

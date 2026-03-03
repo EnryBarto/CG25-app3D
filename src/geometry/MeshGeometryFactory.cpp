@@ -75,7 +75,7 @@ MeshGeometry* MeshGeometryFactory::createPyramid(vec4 color) {
 	vertices.push_back(vec3(1.0, 0.0, 1.0));
 	vertices.push_back(vec3(1.0, 0.0, -1.0));
 	vertices.push_back(vec3(-1.0, 0.0, -1.0));
-	vertices.push_back(vec3(0.0, 1.0, 0.0));
+	vertices.push_back(vec3(0.0, 1, 0.0));
 
 	for (int i = 0; i < vertices.size(); i++) colors.push_back(color);
 

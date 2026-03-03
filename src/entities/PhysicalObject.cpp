@@ -41,6 +41,8 @@ void PhysicalObject::updateModelMatrix(vec3 translation, vec3 rotationAxis, floa
 	this->translation = translation;
 	this->rotationAxis = rotationAxis;
 	this->angle = angle;
+	while (this->angle >= 360) this->angle -= 360;
+	while (this->angle < 0) this->angle += 360;
 	this->scaleVector = scaleVector;
 	this->modelMatrix = translate(mat4(1.0), this->translation);
 	if (this->angle != 0 && this->rotationAxis != vec3(0)) this->modelMatrix = rotate(this->modelMatrix, radians(this->angle), normalize(this->rotationAxis));

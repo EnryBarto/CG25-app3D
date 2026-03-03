@@ -70,6 +70,11 @@ void Scene::update(float deltaTime, AppState currentState) {
     if (this->windowManager->isFrameBufferChanged()) this->projection->changeAspectRatio(this->windowManager->getAspectRatio());
 	if (this->currentSettings->isFovChanged()) this->projection->changeFov(this->currentSettings->getCurrentFov());
 	if (this->currentSettings->isCameraSpeedChanged()) this->camera->setSpeed(this->currentSettings->getCurrentCameraSpeed());
+
+	if (this->rotatingObject != nullptr) {
+		this->rotatingObject->updateModelMatrix(this->rotatingObject->getTranslationVector(), this->rotatingObject->getRotationAxis(), this->rotatingObject->getRotationAngle() + OBJECT_ROTATION_SPEED * deltaTime, this->rotatingObject->getScaleVector());
+		if (this->rotatingObject->isColliding(this->camera->getPosition())) this->rotatingObject->updateModelMatrix(this->rotatingObject->getTranslationVector(), this->rotatingObject->getRotationAxis(), this->rotatingObject->getRotationAngle() + OBJECT_ROTATION_SPEED * -deltaTime, this->rotatingObject->getScaleVector());
+	}
 }
 
 void Scene::render() {
@@ -138,6 +143,11 @@ bool Scene::isCameraColliding() {
 
 PhysicalObjectFactory* Scene::getObjectsFactory() {
 	return this->objectFactory;
+}
+
+void Scene::setRotatingObject(PhysicalObject* object) {
+	this->rotatingObject = object;
+	this->rotatingObject->updateModelMatrix(object->getTranslationVector(), vec3(0, 1, 0), object->getRotationAngle(), object->getScaleVector());
 }
 
 tuple<PhysicalObject*, string> Scene::mousePicked(vec2 clickPosition) {
