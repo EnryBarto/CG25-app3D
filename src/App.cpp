@@ -33,7 +33,7 @@ App::App() {
 	this->materials = init_materials();
 
 	this->currentSettings = new AppSettings();
-	this->scene = new Scene(windowManager, currentSettings, shaders->at(PHONG_SHADER_NAME), shaders->at(FLAT_SHADER_NAME), materials->at(NO_MATERIAL_NAME), this->cubemapShader, SKYBOX_CUBEMAP_DIRECTORY);
+	this->scene = new Scene(windowManager, currentSettings, shaders->at(DEFAULT_SHADER), shaders->at(FLAT_SHADER_NAME), materials->at(NO_MATERIAL_NAME), this->cubemapShader, SKYBOX_CUBEMAP_DIRECTORY);
 	add_scene_objects(this->scene, this->shaders, this->textures, this->materials);
 	if (this->scene == nullptr) {
 		throw std::runtime_error("Scene initialization failed!");

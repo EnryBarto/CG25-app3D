@@ -77,7 +77,7 @@ void main() {
         if (uUseBlinnPhong) {
             // Compute Halfway Vector (Vector halfway between the direction of view and the direction of light)
             vec3 H = normalize(L + V); 
-            cos_alfa = pow(max(dot(H, N), 0), material.shininess);
+            cos_alfa = pow(max(dot(H, N), 0), material.shininess * 4);
         } else {
             // Compute reflection direction R (light direction L compared to normal N)
             vec3 R = normalize(reflect(-L, N));

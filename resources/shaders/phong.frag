@@ -55,7 +55,7 @@ void main() {
         // Changes the calculation of specular reflection of light based on the chosen lighting model 
         if (uUseBlinnPhong) {
             vec3 H = normalize(L[i] + V[i]);
-            cos_alfa = pow(max(dot(H, N), 0), material.shininess);
+            cos_alfa = pow(max(dot(H, N), 0), material.shininess * 4);
         } else {    
             cos_alfa = pow(max(dot(V[i], R[i]), 0), material.shininess);
         }

@@ -49,5 +49,5 @@ class RenderableObject: public GpuBuffers {
         GLint uniform_UsingBlinnPhong = -1;
 		GLint uniform_Cubemap = -1;
 
-        bool usingBlinnPhong = true; // Enable default blinn phong if supported
+        bool usingBlinnPhong = DEFAULT_USE_BLINN_PHONG; // Enable default blinn phong if supported
 };  
