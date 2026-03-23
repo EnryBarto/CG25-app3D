@@ -39,6 +39,8 @@ WindowManager::WindowManager() {
     // Set polygon mode
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+    if (this->_vSync) glfwSwapInterval(1);
+
     init_imgui(this->window);
 }
 
@@ -63,6 +65,10 @@ bool WindowManager::isFullScreen() {
     return this->_fullScreen;
 }
 
+bool WindowManager::isVsyncActive() {
+    return this->_vSync;
+}
+
 float WindowManager::getAspectRatio() {
     vec2 res = this->getCurrentResolution();
     return res.x / res.y;
@@ -85,6 +91,13 @@ void WindowManager::toggleFullScreen() {
         glfwSetWindowMonitor(this->window, currentMonitor, 0, 0, mode->width, mode->height, mode->refreshRate);
     }
     this->_fullScreen = !this->_fullScreen;
+}
+
+void WindowManager::toggleVsync() {
+    this->_vSync = !this->_vSync;
+    glfwMakeContextCurrent(this->window);
+    if (this->_vSync) glfwSwapInterval(1);
+    else glfwSwapInterval(0);
 }
 
 vec2 WindowManager::getCurrentResolution() {

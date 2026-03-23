@@ -5,7 +5,6 @@
 #define WIDTH_RESIZE_FACTOR 0.8f
 #define HEIGHT_RESIZE_FACTOR 0.8f
 #define FONT_RESIZE_FACTOR 2.0f
-#define MAX_FPS 100
 #define ANCHOR_SIZE 15
 #define ANCHOR_SPERE_RADIUS 0.5f
 #define GUI_WINDOWS_PADDING 10
@@ -67,5 +66,6 @@
 #define DEFAULT_SHADER PHONG_SHADER_NAME
 #define DEFAULT_USE_BLINN_PHONG true
 #define SKYBOX_CUBEMAP_DIRECTORY "resources/skyboxes/field/"
+#define VSYNC_ENABLED true
 
 #endif

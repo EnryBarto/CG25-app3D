@@ -101,7 +101,12 @@ void show_settings() {
     ImGui::NewLine();
     ImGui::Separator();
     ImGui::NewLine();
-    ImGui::Text("CAMERA SETTINGS");
+    ImGui::Text("CAMERA AND WINDOW SETTINGS");
+    ImGui::NewLine();
+
+    bool vSync = app.getWindowManager()->isVsyncActive();
+    if (ImGui::Checkbox("V-Sync", &vSync)) app.getWindowManager()->toggleVsync();
+    
     ImGui::NewLine();
 
     float tempFov = app.getAppSettings()->getCurrentFov();
